@@ -647,7 +647,7 @@ const navLinks = [{
   label: 'Contacto',
   href: '#contacto'
 }];
-const PAGE = typeof location !== 'undefined' ? location.pathname.split('/').pop() || 'index2.html' : '';
+const PAGE = typeof location !== 'undefined' ? location.pathname.split('/').pop() || 'index.html' : '';
 const isActive = href => !!href && !href.startsWith('#') && href.split('#')[0] === PAGE;
 const Navbar = ({
   scrolled

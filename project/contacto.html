@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Institucional | CIPBA – Distrito VII</title>
+<title>Contacto | CIPBA – Distrito VII</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -29,6 +29,7 @@ const { useState, useEffect } = React;
 const Icon = ({ name, size = 20, color = "currentColor" }) => {
   const icons = {
     menu: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+    copy: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>,
     close: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
     phone: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>,
     mail: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
@@ -38,10 +39,13 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
     chevronDown: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>,
     externalLink: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
     home: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-    award: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>,
-    star: <svg width={size} height={size} viewBox="0 0 24 24" fill={color} stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     users: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
     whatsapp: <svg width={size} height={size} viewBox="0 0 24 24" fill={color}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>,
+    building: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>,
+    calendar: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+    dollar: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>,
+    file: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+    check: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>,
     search: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>,
     instagram: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill={color} stroke="none"/></svg>,
     facebook: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>,
@@ -120,7 +124,7 @@ const navLinks = [
       { label: 'Sedes y delegaciones', href: 'index.html#institucional' },
     ] },
   ] },
-  { label: 'Contacto', href: 'index.html#contacto' },
+  { label: 'Contacto', href: 'contacto.html' },
 ];
 
 const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index.html') : '');
@@ -246,429 +250,225 @@ const AnnouncementBar = () => (
 /* ─── PAGE HERO ─── */
 const PageHero = () => (
   <section style={{ background: 'linear-gradient(135deg, #14484a 0%, #1a5f5c 60%, #00a48a 100%)', position: 'relative', overflow: 'hidden' }}>
-    {/* Decorative pattern */}
     <div style={{ position: 'absolute', inset: 0, opacity: 0.06, backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}/>
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 56px', position: 'relative' }}>
-      {/* Breadcrumb */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 22, fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>
         <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5, transition: 'color 0.2s' }}
           onMouseEnter={e=>e.currentTarget.style.color='#c0e2ca'} onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.65)'}>
           <Icon name="home" size={13}/> Inicio
         </a>
         <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
-        <span style={{ color: 'white', fontWeight: 700 }}>Institucional</span>
+        <span style={{ color: 'white', fontWeight: 700 }}>Contacto</span>
       </div>
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,164,138,0.22)', border: '1px solid rgba(0,164,138,0.4)', borderRadius: 20, padding: '5px 14px', marginBottom: 16 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#00a48a' }}/>
-        <span style={{ color: '#c0e2ca', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>Quiénes somos</span>
+        <span style={{ color: '#c0e2ca', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>Atención al matriculado</span>
       </div>
       <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18, fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: -0.5 }}>
-        Distrito VII
+        Contacto
       </h1>
       <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 17, lineHeight: 1.6, maxWidth: 720, marginBottom: 24, textWrap: 'pretty' }}>
-        Colegio de Ingenieros de la Provincia de Buenos Aires. Entidad pública no estatal creada por Ley 10.416, con sede principal en San Justo y delegaciones en toda la zona oeste y norte del Gran Buenos Aires.
+        Escribinos por el área que corresponda a tu consulta. También podés comunicarte por WhatsApp o acercarte a la sede de San Justo y a las delegaciones del Distrito.
       </p>
-      {/* Quick nav */}
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
-        {[
-          { id: 'autoridades', label: 'Autoridades' },
-          { id: 'partidos', label: 'Partidos comprendidos' },
-          { id: 'sedes', label: 'Sedes y delegaciones' },
-        ].map(t => (
-          <a key={t.id} href={`#${t.id}`} style={{
-            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)',
-            color: 'white', fontSize: 13, fontWeight: 600, padding: '8px 16px',
-            borderRadius: 6, transition: 'all 0.2s',
-          }}
-          onMouseEnter={e=>{e.currentTarget.style.background='rgba(0,164,138,0.4)'; e.currentTarget.style.borderColor='#00a48a'}}
-          onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.25)'}}>
-            {t.label}
-          </a>
-        ))}
-      </div>
+      <a href="#formulario" style={{
+        background: '#00a48a', color: 'white', fontSize: 13, fontWeight: 700, padding: '10px 20px',
+        borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 6, transition: 'background 0.2s',
+      }}
+      onMouseEnter={e=>e.currentTarget.style.background='#008c75'}
+      onMouseLeave={e=>e.currentTarget.style.background='#00a48a'}>
+        Escribinos <Icon name="chevronRight" size={13} color="white"/>
+      </a>
     </div>
   </section>
 );
 
-/* ─── AUTORIDADES ─── */
-const autoridades = [
-  { cargo: 'Presidente', nombre: 'Daniel Héctor PALACIOS', titulo: 'Ing. Electricista y Laboral', destacado: true },
-  { cargo: 'Secretario', nombre: 'Fabián José Miguel PORCILE', titulo: 'Ing. Civil' },
-  { cargo: 'Tesorero', nombre: 'Marina Helena VACA', titulo: 'Inga. Civil' },
-  { cargo: 'Vocal Titular 1°', nombre: 'Gabriel Esteban BUSNARDO', titulo: 'Ing. en Alimentos' },
-  { cargo: 'Vocal Titular 2°', nombre: 'Mariano Alejandro PRALONG', titulo: 'Ing. Civil' },
-  { cargo: 'Vocal Titular 3°', nombre: 'Fabián Roberto MONTERO', titulo: 'Ing. Civil' },
-  { cargo: 'Vocal Suplente 1°', nombre: 'Juan José URANGA', titulo: 'Ing. Mecánico' },
-  { cargo: 'Vocal Suplente 2°', nombre: 'Perla Beatriz ARMAGNAC', titulo: 'Inga. Civil' },
-  { cargo: 'Vocal Suplente 3°', nombre: 'María Claudia FILIPUZZI', titulo: 'Inga. en Ecología' },
+/* ─── CONTACTO ─── */
+const areas = [
+  { titulo: 'Área Administrativa', icon: 'users', personas: [
+    { nombre: 'Rolando Menna', tel: '(011) 15-5857-0060', link: '+5491158570060' },
+    { nombre: 'Griselda Bezerra', tel: '(011) 15-2713-4055', link: '+5491127134055' },
+    { nombre: 'Mónica Rodríguez', tel: '(011) 15-2713-3321', link: '+5491127133321' },
+  ], email: 'administracion@cipba.org' },
+  { titulo: 'Área Técnica', icon: 'building', personas: [
+    { nombre: 'Ing. Marcelo Romano', tel: '(011) 15-3829-3041', link: '+5491138293041' },
+    { nombre: 'Visador Ing. Pappolla', tel: '(011) 15-2713-3789', link: '+5491127133789' },
+  ], email: 'gerencia-tecnica@cipba.org' },
+  { titulo: 'Secretaría y Tesorería', icon: 'file', personas: [
+    { nombre: 'Sabrina Simone · Secretaría', tel: '(011) 15-2713-3330', link: '+5491127133330' },
+    { nombre: 'Tesorería', tel: '(011) 15-2713-3831', link: '+5491127133831' },
+  ], email: 'tesoreria@cipba.org' },
 ];
 
-const getInitials = (nombre) => nombre.split(' ').map(p => p[0]).slice(0, 2).join('');
 
-const Autoridades = () => (
-  <section id="autoridades" style={{ background: 'white', padding: '64px 24px' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      <div style={{ marginBottom: 36, textAlign: 'center' }}>
-        <div style={{ color: '#00a48a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-          <Icon name="users" size={14} color="#00a48a"/> Consejo Directivo
-        </div>
-        <h2 style={{ fontSize: 'clamp(24px, 3.4vw, 34px)', fontWeight: 900, color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", marginBottom: 10 }}>Autoridades</h2>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#e8f5f1', color: '#1a5f5c', fontSize: 13, fontWeight: 700, padding: '5px 14px', borderRadius: 20 }}>
-          Período 2024 – 2027
-        </div>
-      </div>
+const sedesLista = [
+  { nombre: 'Sede San Justo', tag: 'Sede principal', destacada: true, dir: 'Almafuerte N° 2868, San Justo (1754) – La Matanza', tel: '(011) 3535-0751', mail: 'info@cipba.org', hor: 'Lun a vie 9:00 a 16:00 hs' },
+];
 
-      {/* Featured: Presidente */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 18 }} className="autoridades-grid">
-        {autoridades.map((a, i) => {
-          const initials = getInitials(a.nombre);
-          return (
-            <div key={i} style={{
-              background: a.destacado ? 'linear-gradient(135deg, #14484a 0%, #1a5f5c 100%)' : 'white',
-              border: a.destacado ? 'none' : '1px solid #e8f5f1',
-              borderRadius: 12, padding: '24px 22px',
-              display: 'flex', gap: 16, alignItems: 'flex-start',
-              transition: 'all 0.25s', boxShadow: a.destacado ? '0 8px 24px rgba(20,72,74,0.18)' : '0 2px 8px rgba(0,0,0,0.04)',
-              color: a.destacado ? 'white' : '#373d3e',
-              gridColumn: a.destacado ? 'span 2' : 'auto',
-              position: 'relative', overflow: 'hidden',
-            }}
-            onMouseEnter={e=>{ if(!a.destacado){ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow='0 8px 20px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor='#00a48a'; } }}
-            onMouseLeave={e=>{ if(!a.destacado){ e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'; e.currentTarget.style.borderColor='#e8f5f1'; } }}>
-              {a.destacado && (
-                <div style={{ position: 'absolute', top: 14, right: 14, display: 'flex', alignItems: 'center', gap: 5, background: '#00a48a', borderRadius: 20, padding: '4px 10px' }}>
-                  <Icon name="star" size={11} color="white"/>
-                  <span style={{ fontSize: 10.5, fontWeight: 800, color: 'white', letterSpacing: 0.5, textTransform: 'uppercase' }}>Presidencia</span>
-                </div>
-              )}
-              <div style={{
-                width: a.destacado ? 72 : 56, height: a.destacado ? 72 : 56, borderRadius: '50%',
-                background: a.destacado ? 'linear-gradient(135deg, #00a48a, #008c75)' : 'linear-gradient(135deg, #e8f5f1, #c0e2ca)',
-                color: a.destacado ? 'white' : '#14484a',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 900, fontSize: a.destacado ? 22 : 18,
-                fontFamily: "'Roboto Condensed', sans-serif",
-                flexShrink: 0,
-                border: a.destacado ? '3px solid rgba(255,255,255,0.2)' : 'none',
-              }}>
-                {initials}
-              </div>
-              <div style={{ minWidth: 0, flex: 1 }}>
-                <div style={{
-                  fontSize: 11.5, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase',
-                  color: a.destacado ? '#c0e2ca' : '#00a48a', marginBottom: 4,
-                }}>
-                  {a.cargo}
-                </div>
-                <div style={{
-                  fontSize: a.destacado ? 19 : 15.5, fontWeight: 800,
-                  color: a.destacado ? 'white' : '#373d3e',
-                  lineHeight: 1.3, marginBottom: 4, textWrap: 'pretty',
-                }}>
-                  {a.nombre}
-                </div>
-                <div style={{
-                  fontSize: 13, color: a.destacado ? 'rgba(255,255,255,0.7)' : '#607a7c',
-                  fontStyle: 'italic',
-                }}>
-                  {a.titulo}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+const delegaciones = [
+  { nombre: 'Delegación Haedo', dir: 'Valentín Gómez N° 577, 1° of. 1', tel: '(011) 5433-5344', hor: 'Lun a vie 9:00 a 15:00 hs' },
+  { nombre: 'Delegación Olivos', dir: 'Ricardo Gutiérrez N° 1834', tel: '(011) 7398-2119', hor: 'Sólo correspondencia' },
+  { nombre: 'Delegación General Rodríguez', dir: 'Av. España 493', tel: '(011) 2563-1616', hor: 'Lun a vie 9:00 a 13:00 hs' },
+];
+
+const Contacto = () => {
+  const [form, setForm] = useState({ nombre: '', email: '', matricula: '', area: '', asunto: '', mensaje: '' });
+  const [sent, setSent] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = ev => {
+    ev.preventDefault();
+    const e = {};
+    if (!form.nombre.trim()) e.nombre = 'Requerido';
+    if (!form.email.includes('@')) e.email = 'Email inválido';
+    if (!form.mensaje.trim()) e.mensaje = 'Requerido';
+    if (Object.keys(e).length) { setErrors(e); return; }
+    setSent(true);
+  };
+
+  const field = (id, label, type, placeholder) => (
+    <div key={id}>
+      <label htmlFor={id} style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#4a6062', marginBottom: 6 }}>{label}</label>
+      <input id={id} type={type} placeholder={placeholder} value={form[id]}
+        onChange={e => setForm({ ...form, [id]: e.target.value })}
+        style={{
+          width: '100%', padding: '10px 14px', borderRadius: 6, fontSize: 14, outline: 'none',
+          border: errors[id] ? '1.5px solid #c0392b' : '1.5px solid #dbe6e3', transition: 'border .2s', fontFamily: 'inherit',
+        }}
+        onFocus={e => e.target.style.borderColor = '#00a48a'}
+        onBlur={e => e.target.style.borderColor = errors[id] ? '#c0392b' : '#dbe6e3'}/>
+      {errors[id] && <div style={{ color: '#c0392b', fontSize: 12, marginTop: 4 }}>{errors[id]}</div>}
     </div>
-  </section>
-);
+  );
 
-/* ─── PARTIDOS COMPRENDIDOS ─── */
-const partidos = [
-  'Escobar', 'Exaltación de la Cruz', 'General Las Heras', 'General Rodríguez',
-  'General San Martín', 'Hurlingham', 'Ituzaingó', 'José C. Paz',
-  'La Matanza', 'Luján', 'Malvinas Argentinas', 'Marcos Paz',
-  'Mercedes', 'Merlo', 'Moreno', 'Morón',
-  'Pilar', 'San Isidro', 'San Fernando', 'San Miguel',
-  'Tigre', 'Tres de Febrero', 'Vicente López',
-];
-
-const Partidos = () => {
-  const [search, setSearch] = useState('');
-  const filtered = partidos.filter(p => p.toLowerCase().includes(search.toLowerCase()));
   return (
-    <section id="partidos" style={{ background: '#eef2f1', padding: '64px 24px' }}>
+    <section id="formulario" style={{ background: '#eef2f1', padding: '56px 24px 64px' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ marginBottom: 36, textAlign: 'center' }}>
-          <div style={{ color: '#00a48a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-            <Icon name="location" size={14} color="#00a48a"/> Jurisdicción
+        <div className="cont-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 34, alignItems: 'stretch' }}>
+
+          <div style={{ display: 'grid', gap: 16 }}>
+            {areas.map(a => (
+              <div key={a.titulo} style={{ background: 'white', borderRadius: 10, padding: '22px 24px', border: '1px solid #e8f5f1' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 14 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 8, background: '#e8f5f1', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                    <Icon name={a.icon} size={18} color="#1a5f5c"/>
+                  </div>
+                  <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 17, fontWeight: 700, color: '#14484a' }}>{a.titulo}</h3>
+                </div>
+                <div style={{ display: 'grid', gap: 9 }}>
+                  {a.personas.map(p => (
+                    <div key={p.nombre} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 13.5, color: '#4a6062', fontWeight: 700 }}>{p.nombre}</span>
+                      <a href={'tel:' + p.link} style={{ fontSize: 13.5, color: '#00705e', whiteSpace: 'nowrap' }}>{p.tel}</a>
+                    </div>
+                  ))}
+                </div>
+                <a href={'mailto:' + a.email} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 14, paddingTop: 12, borderTop: '1px dashed #e8f5f1', fontSize: 13, fontWeight: 700, color: '#14484a', width: '100%' }}>
+                  <Icon name="mail" size={13} color="#00a48a"/> {a.email}
+                </a>
+              </div>
+            ))}
+            <a href="https://wa.me/541138293041" target="_blank" style={{
+              background: '#25d366', color: 'white', padding: '14px 20px', borderRadius: 8,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+              fontWeight: 700, fontSize: 15, transition: 'background .2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = '#1da851'}
+            onMouseLeave={e => e.currentTarget.style.background = '#25d366'}>
+              <Icon name="whatsapp" size={20} color="white"/> Consultar por WhatsApp
+            </a>
           </div>
-          <h2 style={{ fontSize: 'clamp(24px, 3.4vw, 34px)', fontWeight: 900, color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", marginBottom: 10 }}>Partidos comprendidos</h2>
-          <p style={{ color: '#607a7c', fontSize: 15, lineHeight: 1.6, maxWidth: 580, margin: '0 auto' }}>
-            Con localidad de asiento en la ciudad de <b style={{ color: '#14484a' }}>San Justo (La Matanza)</b>, el Distrito VII abarca <b style={{ color: '#00a48a' }}>{partidos.length} partidos</b> de la zona norte y oeste del Gran Buenos Aires.
-          </p>
+
+          <div style={{ display: 'grid', gap: 18, alignContent: 'stretch', height: '100%' }}>
+            {sent ? (
+              <div style={{ background: 'white', borderRadius: 10, padding: '48px 32px', textAlign: 'center', border: '1px solid #e8f5f1' }}>
+                <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#e8f5f1', display: 'grid', placeItems: 'center', margin: '0 auto 20px' }}>
+                  <Icon name="check" size={28} color="#00705e"/>
+                </div>
+                <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", color: '#14484a', fontSize: 22, fontWeight: 900, marginBottom: 10 }}>¡Mensaje enviado!</h3>
+                <p style={{ color: '#607a7c', lineHeight: 1.6, fontSize: 14.5 }}>Nos pondremos en contacto a la brevedad. Muchas gracias.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ background: 'white', borderRadius: 10, padding: '28px 30px 30px', border: '1px solid #e8f5f1', display: 'flex', flexDirection: 'column', gap: 16, height: '100%' }}>
+                <div>
+                  <div style={{ color: '#00a48a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Escribinos</div>
+                  <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(21px, 2.6vw, 27px)', fontWeight: 900, color: '#14484a' }}>Formulario de consulta</h2>
+                </div>
+                <div className="cont-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 16 }}>
+                  {field('nombre', 'Nombre completo', 'text', 'Ing. Juan Pérez')}
+                  {field('matricula', 'N° de matrícula (opcional)', 'text', '53.929')}
+                </div>
+                <div className="cont-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 16 }}>
+                  {field('email', 'Correo electrónico', 'email', 'correo@ejemplo.com')}
+                  <div>
+                    <label htmlFor="area" style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#4a6062', marginBottom: 6 }}>Área</label>
+                    <select id="area" value={form.area} onChange={e => setForm({ ...form, area: e.target.value })}
+                      style={{ width: '100%', padding: '10px 14px', borderRadius: 6, fontSize: 14, outline: 'none', border: '1.5px solid #dbe6e3', fontFamily: 'inherit', background: 'white', color: form.area ? '#373d3e' : '#9aa8a9' }}>
+                      <option value="">Elegí un área…</option>
+                      <option>Matrícula e inscripción</option>
+                      <option>Pagos y tesorería</option>
+                      <option>Visado y consultas técnicas</option>
+                      <option>Subcomisiones</option>
+                      <option>Otra consulta</option>
+                    </select>
+                  </div>
+                </div>
+                {field('asunto', 'Asunto', 'text', 'Consulta sobre matrícula…')}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 120 }}>
+                  <label htmlFor="mensaje" style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#4a6062', marginBottom: 6 }}>Mensaje</label>
+                  <textarea id="mensaje" placeholder="Tu consulta…" value={form.mensaje}
+                    onChange={e => setForm({ ...form, mensaje: e.target.value })}
+                    style={{
+                      width: '100%', flex: 1, minHeight: 110, padding: '10px 14px', borderRadius: 6, resize: 'vertical', fontSize: 14, outline: 'none',
+                      border: errors.mensaje ? '1.5px solid #c0392b' : '1.5px solid #dbe6e3', fontFamily: 'inherit',
+                    }}
+                    onFocus={e => e.target.style.borderColor = '#00a48a'}
+                    onBlur={e => e.target.style.borderColor = errors.mensaje ? '#c0392b' : '#dbe6e3'}/>
+                  {errors.mensaje && <div style={{ color: '#c0392b', fontSize: 12, marginTop: 4 }}>{errors.mensaje}</div>}
+                </div>
+                <button type="submit" style={{
+                  flexShrink: 0, background: '#14484a', color: 'white', padding: '13px', borderRadius: 6,
+                  fontWeight: 700, fontSize: 15, transition: 'background .2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = '#1a5f5c'}
+                onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
+                  Enviar mensaje
+                </button>
+              </form>
+            )}
+
+          </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 32, alignItems: 'flex-start' }} className="partidos-grid">
-          {/* Map visual */}
-          <div style={{
-            background: 'white', borderRadius: 12, padding: '32px 28px',
-            border: '1px solid #e8f5f1', boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
-            position: 'sticky', top: 88,
-          }}>
-            <div style={{ fontSize: 11.5, fontWeight: 800, color: '#9aa8a9', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 14, textAlign: 'center' }}>
-              Mapa del Distrito VII
-            </div>
-            <img src="uploads/mapa-distrito-vii.png" alt="Mapa de los partidos que comprende el Distrito VII, con San Justo (La Matanza) destacado" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8, border: '1px solid #e8f5f1' }}/>
-            <div style={{ marginTop: 10, fontSize: 11.5, color: '#9aa8a9', fontStyle: 'italic', textAlign: 'center' }}>Distribución aproximada · No a escala</div>
-
-            <div style={{ marginTop: 18, padding: '14px 16px', background: '#e8f5f1', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#00a48a', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Icon name="star" size={16} color="white"/>
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#9aa8a9', textTransform: 'uppercase', letterSpacing: 0.5 }}>Sede principal</div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#14484a' }}>San Justo · La Matanza</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Partidos list */}
-          <div>
-            <div style={{ background: 'white', borderRadius: 12, padding: '24px', border: '1px solid #e8f5f1' }}>
-              <div style={{ position: 'relative', marginBottom: 16 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa8a9" strokeWidth="2" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }}>
-                  <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-                </svg>
-                <input
-                  type="text" placeholder="Buscar partido..."
-                  value={search} onChange={e => setSearch(e.target.value)}
-                  style={{
-                    width: '100%', padding: '10px 14px 10px 38px', borderRadius: 6,
-                    border: '1.5px solid #dbe6e3', fontSize: 13.5, outline: 'none',
-                    fontFamily: 'inherit', background: '#f7faf9',
-                  }}
-                  onFocus={e=>e.target.style.borderColor='#00a48a'}
-                  onBlur={e=>e.target.style.borderColor='#dbe6e3'}
-                />
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 }}>
-                {filtered.map((p, i) => (
-                  <div key={p} style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '9px 12px', background: '#f7faf9',
-                    borderRadius: 6, border: '1px solid transparent',
-                    transition: 'all 0.15s', cursor: 'default',
-                    fontSize: 13.5, color: '#4a6062',
-                  }}
-                  onMouseEnter={e=>{e.currentTarget.style.background='#e8f5f1'; e.currentTarget.style.borderColor='#00a48a'; e.currentTarget.style.color='#14484a'}}
-                  onMouseLeave={e=>{e.currentTarget.style.background='#f7faf9'; e.currentTarget.style.borderColor='transparent'; e.currentTarget.style.color='#4a6062'}}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#00a48a', flexShrink: 0 }}/>
-                    <span style={{ fontWeight: 600 }}>{p}</span>
+        <div style={{ marginTop: 34, paddingTop: 28, borderTop: '1px solid #c0e2ca' }}>
+          <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 20, fontWeight: 900, color: '#14484a', marginBottom: 16 }}>Sedes y delegaciones</h3>
+          <div className="deleg-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 16 }}>
+            {[...sedesLista, ...delegaciones].map(d => {
+              const dest = !!d.destacada;
+              const ink = dest ? 'rgba(255,255,255,0.88)' : '#4a6062';
+              const ico = dest ? '#c0e2ca' : '#00a48a';
+              return (
+                <div key={d.nombre} style={{
+                  background: dest ? '#14484a' : 'white', border: dest ? 'none' : '1px solid #e8f5f1',
+                  borderRadius: 12, padding: '20px 22px 22px',
+                  boxShadow: dest ? '0 10px 28px rgba(20,72,74,0.18)' : 'none',
+                }}>
+                  {dest && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: '#c0e2ca', marginBottom: 4 }}>{d.tag}</div>}
+                  <h4 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 17, fontWeight: 700, color: dest ? 'white' : '#14484a', marginBottom: 12 }}>{d.nombre}</h4>
+                  <div style={{ display: 'grid', gap: 8, fontSize: 13.5, color: ink }}>
+                    <div style={{ display: 'flex', gap: 8 }}><Icon name="location" size={14} color={ico}/> <span>{d.dir}</span></div>
+                    <div style={{ display: 'flex', gap: 8 }}><Icon name="phone" size={14} color={ico}/> <span>{d.tel}</span></div>
+                    {d.mail && <div style={{ display: 'flex', gap: 8 }}><Icon name="mail" size={14} color={ico}/> <a href={'mailto:' + d.mail} style={{ color: 'inherit', borderBottom: '1px dotted rgba(255,255,255,0.4)' }}>{d.mail}</a></div>}
+                    <div style={{ display: 'flex', gap: 8 }}><Icon name="clock" size={14} color={ico}/> <span>{d.hor}</span></div>
                   </div>
-                ))}
-              </div>
-              {filtered.length === 0 && (
-                <div style={{ padding: 20, textAlign: 'center', color: '#9aa8a9', fontSize: 14 }}>
-                  Sin coincidencias para "{search}"
                 </div>
-              )}
-              <div style={{ marginTop: 16, fontSize: 12.5, color: '#9aa8a9', textAlign: 'right' }}>
-                Mostrando {filtered.length} de {partidos.length} partidos
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>
     </section>
   );
 };
-
-/* ─── SEDES ─── */
-const sedes = [
-  {
-    nombre: 'Sede San Justo',
-    tag: 'Sede Central',
-    destacada: true,
-    direccion: 'Almafuerte N° 2868, San Justo (1754) – La Matanza – Bs As',
-    telefono: '(011) 3535-0751',
-    email: 'info@cipba.org',
-    horario: 'Lunes a viernes de 9:00 a 16:00 hs',
-    contactos: [
-      { rol: 'Administración', nombre: 'Rolando Menna', tel: '(011) 15-5857-0060', email: 'administracion@cipba.org' },
-      { rol: 'Administración', nombre: 'Griselda Bezerra', tel: '(011) 15-2713-4055', email: 'griseldab@cipba.org' },
-      { rol: 'Administración', nombre: 'Mónica Rodríguez', tel: '(011) 15-2713-3321', email: 'monicar@cipba.org' },
-      { rol: 'Secretaría', nombre: 'Sabrina Simone', tel: '(011) 15-2713-3330', email: 'secretaria@cipba.org' },
-      { rol: 'Tesorería', nombre: 'Romina N. y Romina S.', tel: '(011) 15-2713-3831', email: 'tesoreria@cipba.org' },
-      { rol: 'Técnica', nombre: 'Ing. Marcelo Romano', tel: '(011) 15-3829-3041', email: 'marceloromano@cipba.org' },
-      { rol: 'Gerencia Técnica', nombre: 'Ing. Omar Córdoba', tel: '(011) 3535-0751 int 5 o 7', email: 'gerencia-tecnica@cipba.org' },
-    ],
-  },
-  {
-    nombre: 'Parque Industrial DECA',
-    tag: 'Delegación Haedo',
-    direccion: 'Valentín Gómez N° 577 1° of. 1, Haedo',
-    telefono: '(011) 5433-5344',
-    horario: 'Lunes a viernes de 9:00 a 15:00 hs',
-  },
-  {
-    nombre: 'Vicente López',
-    tag: 'Delegación Olivos',
-    direccion: 'Ricardo Gutiérrez N° 1834 (CP 1636), Olivos',
-    telefono: '(011) 7398-2119',
-    horario: 'Sólo correspondencia',
-  },
-  {
-    nombre: 'General Rodríguez',
-    tag: 'Delegación',
-    direccion: 'Av. España 493 – Gral. Rodríguez',
-    telefono: '(011) 2563-1616',
-    visador: 'Ing. Civil Darío Kubar (Mat. 51785)',
-    email: 'cipba7gr@gmail.com',
-    horario: 'Lunes a viernes de 9:00 a 13:00 hs. Visador en el mismo horario.',
-  },
-];
-
-const SedeContacto = ({ c }) => (
-  <div style={{
-    padding: '12px 14px', borderRadius: 8, background: 'rgba(255,255,255,0.06)',
-    border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: 4,
-  }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-      <div style={{ fontSize: 13.5, fontWeight: 800, color: 'white' }}>{c.nombre}</div>
-      <span style={{ fontSize: 10.5, fontWeight: 700, color: '#c0e2ca', background: 'rgba(0,164,138,0.3)', padding: '2px 8px', borderRadius: 3, letterSpacing: 0.5, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{c.rol}</span>
-    </div>
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 14px', fontSize: 12.5, color: 'rgba(255,255,255,0.7)' }}>
-      <a href={`tel:${c.tel}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Icon name="phone" size={11} color="rgba(255,255,255,0.5)"/> {c.tel}</a>
-      <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Icon name="mail" size={11} color="rgba(255,255,255,0.5)"/> {c.email}</a>
-    </div>
-  </div>
-);
-
-const SedeCard = ({ s }) => {
-  const isMain = s.destacada;
-  const bg = isMain ? 'linear-gradient(135deg, #14484a 0%, #1a5f5c 100%)' : 'white';
-  const textColor = isMain ? 'white' : '#373d3e';
-  const mutedColor = isMain ? 'rgba(255,255,255,0.75)' : '#607a7c';
-  const labelColor = isMain ? 'rgba(255,255,255,0.5)' : '#9aa8a9';
-
-  return (
-    <div style={{
-      background: bg, borderRadius: 14, padding: isMain ? '32px' : '24px 26px',
-      border: isMain ? 'none' : '1px solid #e8f5f1',
-      boxShadow: isMain ? '0 12px 40px rgba(20,72,74,0.18)' : '0 2px 12px rgba(0,0,0,0.05)',
-      gridColumn: isMain ? '1 / -1' : 'auto', position: 'relative', overflow: 'hidden',
-    }}>
-      {isMain && (
-        <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,164,138,0.25) 0%, transparent 70%)' }}/>
-      )}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16, position: 'relative', gap: 14, flexWrap: 'wrap' }}>
-        <div>
-          <div style={{ fontSize: 11.5, fontWeight: 800, color: isMain ? '#c0e2ca' : '#00a48a', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 6 }}>
-            {s.tag}
-          </div>
-          <h3 style={{ fontSize: isMain ? 28 : 19, fontWeight: 900, color: textColor, fontFamily: "'Roboto Condensed', sans-serif", lineHeight: 1.1 }}>{s.nombre}</h3>
-        </div>
-        {isMain && (
-          <div style={{ background: '#00a48a', color: 'white', padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 800, letterSpacing: 0.8, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <Icon name="star" size={11} color="white"/> Casa Central
-          </div>
-        )}
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: isMain ? '1fr 1fr' : '1fr', gap: isMain ? 28 : 0 }} className={isMain ? 'sede-main' : ''}>
-        {/* Left: info */}
-        <div>
-          {[
-            { icon: 'location', label: 'Dirección', value: s.direccion },
-            s.telefono && { icon: 'phone', label: 'Teléfono', value: s.telefono },
-            s.email && { icon: 'mail', label: 'Correo electrónico', value: s.email, isEmail: true },
-            s.visador && { icon: 'award', label: 'Visador', value: s.visador },
-            { icon: 'clock', label: 'Horario de atención', value: s.horario },
-          ].filter(Boolean).map((row, i) => (
-            <div key={i} style={{ display: 'flex', gap: 12, paddingBottom: 12, marginBottom: 12, borderBottom: i === 4 || (!isMain && i === 3) ? 'none' : `1px ${isMain ? 'solid rgba(255,255,255,0.1)' : 'dashed #e8f5f1'}` }}>
-              <div style={{ width: 28, height: 28, borderRadius: 6, background: isMain ? 'rgba(255,255,255,0.1)' : '#e8f5f1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Icon name={row.icon} size={14} color={isMain ? '#c0e2ca' : '#00a48a'}/>
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 700, color: labelColor, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 3 }}>{row.label}</div>
-                <div style={{ fontSize: 14, color: textColor, lineHeight: 1.45, fontWeight: row.icon === 'location' ? 600 : 400 }}>
-                  {row.isEmail ? <a href={`mailto:${row.value}`} style={{ color: textColor, borderBottom: '1px dotted ' + mutedColor }}>{row.value}</a> : row.value}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Right: contacts (only for main sede) */}
-        {isMain && (
-          <div>
-            <div style={{ fontSize: 11.5, fontWeight: 800, color: '#c0e2ca', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Icon name="users" size={13} color="#c0e2ca"/> Áreas y contactos directos
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 420, overflowY: 'auto', paddingRight: 4 }}>
-              {s.contactos.map((c, i) => <SedeContacto key={i} c={c}/>)}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const Sedes = () => (
-  <section id="sedes" style={{ background: 'white', padding: '64px 24px' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      <div style={{ marginBottom: 36, textAlign: 'center' }}>
-        <div style={{ color: '#00a48a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-          <Icon name="location" size={14} color="#00a48a"/> Dónde encontrarnos
-        </div>
-        <h2 style={{ fontSize: 'clamp(24px, 3.4vw, 34px)', fontWeight: 900, color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", marginBottom: 10 }}>Sedes y delegaciones</h2>
-        <p style={{ color: '#607a7c', fontSize: 15, lineHeight: 1.6, maxWidth: 580, margin: '0 auto' }}>
-          Sede central en San Justo y tres delegaciones distribuidas en el Distrito VII para una atención cercana a los matriculados.
-        </p>
-      </div>
-
-      <div className="sedes-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 18 }}>
-        {sedes.map((s, i) => <SedeCard key={i} s={s}/>)}
-      </div>
-    </div>
-  </section>
-);
-
-/* ─── CTA FINAL ─── */
-const CTAFinal = () => (
-  <section style={{ background: 'linear-gradient(135deg, #00a48a 0%, #008c75 100%)', padding: '48px 24px' }}>
-    <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center', color: 'white' }}>
-      <h3 style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontWeight: 900, fontFamily: "'Roboto Condensed', sans-serif", marginBottom: 10 }}>
-        ¿Necesitás contactarnos?
-      </h3>
-      <p style={{ fontSize: 15.5, color: 'rgba(255,255,255,0.85)', marginBottom: 24, lineHeight: 1.6, maxWidth: 540, margin: '0 auto 24px' }}>
-        Nuestro equipo de áreas administrativa y técnica está a disposición para asesorarte en trámites, visados y consultas profesionales.
-      </p>
-      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <a href="index.html#contacto" style={{
-          background: 'white', color: '#008c75', padding: '12px 24px',
-          borderRadius: 6, fontWeight: 800, fontSize: 14.5,
-          display: 'flex', alignItems: 'center', gap: 8,
-          transition: 'transform 0.2s',
-        }}
-        onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'}
-        onMouseLeave={e=>e.currentTarget.style.transform='none'}>
-          Formulario de contacto <Icon name="chevronRight" size={14} color="#008c75"/>
-        </a>
-        <a href="https://wa.me/541138293041" target="_blank" style={{
-          background: 'rgba(255,255,255,0.15)', color: 'white', padding: '12px 24px',
-          borderRadius: 6, fontWeight: 700, fontSize: 14.5, border: '1px solid rgba(255,255,255,0.4)',
-          display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s',
-        }}
-        onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.25)'}
-        onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,0.15)'}>
-          <Icon name="whatsapp" size={16} color="white"/> WhatsApp
-        </a>
-      </div>
-    </div>
-  </section>
-);
 
 /* ─── REDES ─── */
 const redes = [
@@ -755,13 +555,12 @@ const App = () => {
           .mobile-burger { display: flex !important; }
         }
         @media (max-width: 900px) {
-          .partidos-grid { grid-template-columns: 1fr !important; }
-          .partidos-grid > div:first-child { position: static !important; }
-          .sede-main { grid-template-columns: 1fr !important; }
-          .sedes-grid { grid-template-columns: 1fr !important; }
+          .cont-grid { grid-template-columns: 1fr !important; }
+          .deleg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
         }
-        @media (max-width: 700px) {
-          .autoridades-grid > div[style*="span 2"] { grid-column: auto !important; }
+        @media (max-width: 560px) {
+          .cont-row { grid-template-columns: 1fr !important; }
+          .deleg-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 1000px) {
           .foot-grid { grid-template-columns: 1fr 1fr !important; }
@@ -776,10 +575,7 @@ const App = () => {
       <TopBar/>
       <Navbar scrolled={scrolled}/>
       <PageHero/>
-      <Autoridades/>
-      <Partidos/>
-      <Sedes/>
-      <CTAFinal/>
+      <Contacto/>
       <Footer/>
     </>
   );

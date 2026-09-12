@@ -29,6 +29,7 @@ const { useState, useEffect } = React;
 const Icon = ({ name, size = 20, color = "currentColor" }) => {
   const icons = {
     menu: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+    copy: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>,
     close: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
     phone: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>,
     mail: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
@@ -44,6 +45,9 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
     file: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
     check: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>,
     search: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>,
+    instagram: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill={color} stroke="none"/></svg>,
+    facebook: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>,
+    linkedin: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4V9h4v1.5A6 6 0 0116 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>,
     map: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>,
     scale: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M12 3v18M5 7l-3 8a4 4 0 008 0l-3-8M19 7l-3 8a4 4 0 008 0l-3-8M5 7h6M13 7h6M5 21h14"/></svg>,
   };
@@ -80,8 +84,8 @@ const TopBar = () => (
 
 /* ─── NAVBAR ─── */
 const navLinks = [
-  { label: 'Inicio', href: 'index2.html' },
-  { label: 'Trámites', href: 'index2.html#tramites', groups: [
+  { label: 'Inicio', href: 'index.html' },
+  { label: 'Trámites', href: 'index.html#tramites', groups: [
     { title: 'Matrícula', items: [
       { label: 'Inscripción', href: '#' },
       { label: 'Rehabilitación', href: '#' },
@@ -95,7 +99,7 @@ const navLinks = [
       { label: 'Otros trámites', href: '#', ext: true },
     ] },
   ] },
-  { label: 'Normativa', href: 'index2.html#normativa', groups: [
+  { label: 'Normativa', href: 'index.html#normativa', groups: [
     { title: 'Marco legal', items: [
       { label: 'Ley Colegial 10.416', href: '#' },
       { label: 'Ley Previsional 12.490', href: '#' },
@@ -114,14 +118,14 @@ const navLinks = [
     { items: [
       { label: 'Autoridades', href: 'institucional.html' },
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
-      { label: 'Partidos del Distrito', href: 'index2.html#institucional' },
-      { label: 'Sedes y delegaciones', href: 'index2.html#institucional' },
+      { label: 'Partidos del Distrito', href: 'index.html#institucional' },
+      { label: 'Sedes y delegaciones', href: 'index.html#institucional' },
     ] },
   ] },
-  { label: 'Contacto', href: 'index2.html#contacto' },
+  { label: 'Contacto', href: 'index.html#contacto' },
 ];
 
-const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index2.html') : '');
+const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index.html') : '');
 const isActive = (href) => !!href && !href.startsWith('#') && href.split('#')[0] === PAGE;
 
 const Navbar = ({ scrolled }) => {
@@ -139,7 +143,7 @@ const Navbar = ({ scrolled }) => {
       borderBottom: '3px solid #00a48a',
     }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 66, gap: 16 }}>
-        <a href="index2.html" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        <a href="index.html" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           <img src="uploads/logo-cipba-navbar.png" alt="CIPBA" style={{ height: 34, width: 'auto' }}/>
           <span style={{ marginLeft: 10, paddingLeft: 10, borderLeft: '1px solid #c0e2ca', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 16, fontWeight: 900, color: '#14484a', lineHeight: 1, whiteSpace: 'nowrap' }}>DISTRITO VII</span>
         </a>
@@ -190,7 +194,7 @@ const Navbar = ({ scrolled }) => {
                   onMouseEnter={e => e.currentTarget.style.background = '#e8f5f1'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <Icon name="search" size={17} color="#14484a"/>
                 </button>}
-            <a href="index2.html#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
+            <a href="index.html#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.background = '#0d3234'} onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
               Matricularse <Icon name="externalLink" size={12} color="white"/>
             </a>
@@ -219,7 +223,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="index2.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="index.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -234,7 +238,7 @@ const AnnouncementBar = () => (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
       <Icon name="scale" size={14} color="#14484a"/>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      <a href="index2.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
+      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
@@ -318,13 +322,13 @@ const modalidades = [
   {
     icon: 'building', tag: 'Modalidad 1',
     titulo: 'Transferencia bancaria',
-    desc: 'Realizá el pago desde el home banking de tu banco a la cuenta del Colegio. Solicitá los datos bancarios actualizados antes de transferir.',
+    desc: 'Realizá el pago desde el home banking de tu banco a la cuenta del Colegio. Verifica los datos bancarios actualizados en el link de abajo, antes de transferir.',
     pasos: [
       'Pedí los datos de la cuenta bancaria a la administración',
       'Transferí el importe correspondiente a tu categoría',
-      'Enviá el comprobante para que se acredite a tu matrícula',
+      'Envia el comprobante a tesoreria@cipba.org, indicando: Nombre, Apellido, Matricula y Concepto',
     ],
-    cta: 'Solicitar datos bancarios', ctaHref: 'mailto:info@cipba.org?subject=Datos%20bancarios%20para%20transferencia', ctaIcon: 'mail',
+    cta: 'Ver datos bancarios', modal: 'banco', ctaIcon: 'building',
   },
   {
     icon: 'calendar', tag: 'Modalidad 2',
@@ -332,7 +336,7 @@ const modalidades = [
     desc: 'Adherite una sola vez y no te preocupes más: el importe se debita automáticamente de tu tarjeta o cuenta en cada vencimiento.',
     pasos: [
       'Completá el formulario de adhesión a débito automático',
-      'Envialo a la administración solicitando confirmación de recepción',
+      'Envialo solicitando confirmación de recepción a carogos@colegioingenieros.org.ar ',
       'A partir del próximo vencimiento, el débito es automático',
     ],
     cta: 'Descargar formulario de adhesión', ctaHref: '#', ctaIcon: 'file',
@@ -346,7 +350,7 @@ const modalidades = [
       'Buscá "Colegio de Ingenieros de Bs As – Matrícula"',
       'Ingresá tu código de pago electrónico y confirmá',
     ],
-    cta: 'Obtener código de pago', ctaHref: '#', ctaIcon: 'externalLink',
+    cta: 'Obtener código de pago', modal: 'link', ctaIcon: 'externalLink',
   },
   {
     icon: 'dollar', tag: 'Modalidad 4',
@@ -357,12 +361,229 @@ const modalidades = [
       'Buscá el servicio "CIPBA – Matríc."',
       'Ingresá tu código de pago electrónico y confirmá',
     ],
-    cta: 'Ver instructivo completo', ctaHref: '#', ctaIcon: 'file',
+    cta: 'Ver instructivo completo', modal: 'pmc', ctaIcon: 'file',
   },
 ];
 
+/* ─── DATOS BANCARIOS ─── */
+const datosBancarios = [
+  { label: 'Cta. Cte. N°', value: '20190/8' },
+  { label: 'Sucursal', value: '5120 (San Justo)' },
+  { label: 'Titular', value: 'Colegio de Ingenieros' },
+  { label: 'C.B.U.', value: '01400427 – 01512002019081', copy: '0140042701512002019081' },
+  { label: 'Alias', value: 'BASTO.RAYO.MEDICO', copy: 'BASTO.RAYO.MEDICO' },
+  { label: 'C.U.I.T.', value: '30-62383417-0' },
+];
+
+const CopyBtn = ({ text }) => {
+  const [ok, setOk] = useState(false);
+  const copiar = () => {
+    const done = () => { setOk(true); setTimeout(() => setOk(false), 1600); };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(done).catch(done);
+    else done();
+  };
+  return (
+    <button onClick={copiar} aria-label={ok ? 'Copiado' : 'Copiar dato'} title={ok ? '¡Copiado!' : 'Copiar'} style={{
+      display: 'inline-flex', alignItems: 'center', gap: 5, background: ok ? '#e8f5f1' : 'white',
+      border: `1px solid ${ok ? '#00a48a' : '#c0e2ca'}`, borderRadius: 6, padding: '5px 9px',
+      fontSize: 11.5, fontWeight: 700, color: ok ? '#00705e' : '#1a5f5c', transition: 'all .2s', flexShrink: 0,
+    }}>
+      <Icon name={ok ? 'check' : 'copy'} size={13} color={ok ? '#00705e' : '#1a5f5c'}/> {ok ? 'Copiado' : 'Copiar'}
+    </button>
+  );
+};
+
+const DatosBancariosModal = ({ onClose }) => {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  return (
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, background: 'rgba(13,50,52,0.55)', zIndex: 2000,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20,
+    }}>
+      <div onClick={e => e.stopPropagation()} role="dialog" aria-label="Datos bancarios" style={{
+        background: 'white', borderRadius: 14, width: '100%', maxWidth: 520, maxHeight: '86vh',
+        boxShadow: '0 24px 60px rgba(13,50,52,0.35)', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+      }}>
+        <div style={{ background: '#14484a', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexShrink: 0 }}>
+          <div>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase', color: '#c0e2ca', marginBottom: 3 }}>Transferencia bancaria</div>
+            <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 21, fontWeight: 900, color: 'white' }}>Datos de la cuenta</h3>
+          </div>
+          <button onClick={onClose} aria-label="Cerrar" style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 8, width: 34, height: 34, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+            <Icon name="close" size={17} color="white"/>
+          </button>
+        </div>
+        <div style={{ padding: '6px 22px 20px', flex: 1, minHeight: 0, overflowY: 'auto' }}>
+          {datosBancarios.map((d, i) => (
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14,
+              padding: '13px 0', borderBottom: i < datosBancarios.length - 1 ? '1px dashed #e8f5f1' : 'none',
+            }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: '#9aa8a9', marginBottom: 3 }}>{d.label}</div>
+                <div style={{ fontSize: 15, fontWeight: d.copy ? 700 : 400, color: '#14484a', lineHeight: 1.4, wordBreak: 'break-word' }}>{d.value}</div>
+              </div>
+              {d.copy && <CopyBtn text={d.copy}/>}
+            </div>
+          ))}
+          <p style={{ fontSize: 12.5, color: '#607a7c', lineHeight: 1.6, marginTop: 14, textWrap: 'pretty' }}>
+            Enviá el comprobante a <a href="mailto:tesoreria@cipba.org" style={{ color: '#00705e', fontWeight: 700 }}>tesoreria@cipba.org</a> indicando nombre, apellido, matrícula y concepto.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const IframeModal = ({ onClose, eyebrow, titulo, url }) => {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  return (
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, background: 'rgba(13,50,52,0.55)', zIndex: 2000,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20,
+    }}>
+      <div onClick={e => e.stopPropagation()} role="dialog" aria-label={titulo} style={{
+        background: 'white', borderRadius: 14, width: '100%', maxWidth: 560, maxHeight: '86vh',
+        boxShadow: '0 24px 60px rgba(13,50,52,0.35)', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+      }}>
+        <div style={{ background: '#14484a', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexShrink: 0 }}>
+          <div>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase', color: '#c0e2ca', marginBottom: 3 }}>{eyebrow}</div>
+            <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 21, fontWeight: 900, color: 'white' }}>{titulo}</h3>
+          </div>
+          <button onClick={onClose} aria-label="Cerrar" style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 8, width: 34, height: 34, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+            <Icon name="close" size={17} color="white"/>
+          </button>
+        </div>
+        <div style={{ padding: '14px 22px 0', flexShrink: 0 }}>
+          <div style={{ background: '#fff8e6', border: '1px solid #f0d79a', borderRadius: 8, padding: '11px 13px', fontSize: 12.5, color: '#6b5417', lineHeight: 1.6, textWrap: 'pretty' }}>
+            La información del Consejo Superior se sirve sin conexión segura (http). Si el recuadro aparece vacío, tu navegador la bloqueó: abrila en una pestaña nueva con el link de abajo.
+          </div>
+        </div>
+        <iframe src={url} title={titulo} style={{ width: '100%', flex: '1 1 auto', minHeight: 0, height: '38vh', border: '1px solid #e8f5f1', borderLeft: 'none', borderRight: 'none', display: 'block', marginTop: 14 }}/>
+        <div style={{ borderTop: '1px solid #e8f5f1', padding: '12px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', flexShrink: 0 }}>
+          <span style={{ fontSize: 12.5, color: '#607a7c' }}>Consulta provista por el Consejo Superior.</span>
+          <a href={url} target="_blank" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700, color: '#00705e' }}>
+            Abrir en una pestaña nueva <Icon name="externalLink" size={13} color="#00705e"/>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const pmcDatos = [
+  { label: 'Nombre del servicio en cajeros', value: 'CIPBA – Matric' },
+  { label: 'Nombre del servicio en internet', value: 'CIPBA – Matric' },
+  { label: 'Nombre en PMC', value: 'CIPBA – Matric' },
+  { label: 'Concepto utilizado como ID. del cliente', value: 'Cod Electronico' },
+  { label: 'Longitud de la clave', value: '8' },
+];
+
+const pmcPasos = [
+  { titulo: 'Por internet', pasos: [
+    'Ingresar en www.pagomiscuentas.com o al homebanking de su banco',
+    'Seleccionar la opción "Pago de servicios"',
+    'Elegir rubro CLUBES Y ASOCIACIONES',
+    'Seleccionar el nombre',
+    'Ingresar ID',
+    'Seleccionar la cuenta a debitar',
+    'Confirmar datos del pago',
+    'Imprimir o guardar el comprobante',
+  ] },
+  { titulo: 'En cajeros automáticos', pasos: [
+    'Ingresar clave',
+    'Elegir opción "Pagomiscuentas"',
+    'Elegir rubro ASOCIACIONES Y CLUBES',
+    'Seleccionar el nombre',
+    'Ingresar ID',
+    'Seleccionar la cuenta a debitar',
+    'Confirmar datos del pago',
+    'Retirar el comprobante',
+  ] },
+];
+
+const PagomiscuentasModal = ({ onClose }) => {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  return (
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, background: 'rgba(13,50,52,0.55)', zIndex: 2000,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20,
+    }}>
+      <div onClick={e => e.stopPropagation()} role="dialog" aria-label="Instructivo Pagomiscuentas" style={{
+        background: 'white', borderRadius: 14, width: '100%', maxWidth: 640, maxHeight: '86vh',
+        boxShadow: '0 24px 60px rgba(13,50,52,0.35)', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+      }}>
+        <div style={{ background: '#14484a', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexShrink: 0 }}>
+          <div>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase', color: '#c0e2ca', marginBottom: 3 }}>Pagomiscuentas</div>
+            <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 21, fontWeight: 900, color: 'white' }}>Instructivo de pago</h3>
+          </div>
+          <button onClick={onClose} aria-label="Cerrar" style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 8, width: 34, height: 34, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+            <Icon name="close" size={17} color="white"/>
+          </button>
+        </div>
+        <div style={{ padding: '18px 22px 22px', flex: 1, minHeight: 0, overflowY: 'auto' }}>
+          <p style={{ fontSize: 13.5, color: '#4a6062', lineHeight: 1.65, marginBottom: 18, textWrap: 'pretty' }}>
+            Desde junio de 2019 se puede pagar la matrícula a través de Pagomiscuentas.
+          </p>
+
+          <div style={{ border: '1px solid #e8f5f1', borderRadius: 10, overflow: 'hidden', marginBottom: 20 }}>
+            {pmcDatos.map((d, i) => (
+              <div key={i} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 14,
+                padding: '10px 14px', background: i % 2 ? '#f7faf9' : 'white',
+                borderBottom: i < pmcDatos.length - 1 ? '1px solid #e8f5f1' : 'none',
+              }}>
+                <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase', color: '#607a7c' }}>{d.label}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: '#14484a', whiteSpace: 'nowrap' }}>{d.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="pmc-cols" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 18 }}>
+            {pmcPasos.map(col => (
+              <div key={col.titulo}>
+                <div style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 15, fontWeight: 700, color: '#14484a', paddingBottom: 8, marginBottom: 10, borderBottom: '2px solid #00a48a' }}>{col.titulo}</div>
+                <ol style={{ display: 'grid', gap: 7, paddingLeft: 0, listStyle: 'none', counterReset: 'p' }}>
+                  {col.pasos.map((p, i) => (
+                    <li key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                      <span style={{ flexShrink: 0, width: 18, height: 18, borderRadius: '50%', background: '#e8f5f1', color: '#1a5f5c', fontSize: 10.5, fontWeight: 800, display: 'grid', placeItems: 'center', marginTop: 1 }}>{i + 1}</span>
+                      <span style={{ fontSize: 12.5, color: '#4a6062', lineHeight: 1.5 }}>{p}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid #e8f5f1', padding: '12px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', flexShrink: 0 }}>
+          <span style={{ fontSize: 12.5, color: '#607a7c' }}>Información del Consejo Superior.</span>
+          <a href="http://www.colegioingenieros.org.ar/wp-content/uploads/2019/06/Instructivo-Pago-mis-Cuentas.pdf" target="_blank" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700, color: '#00705e' }}>
+            Descargar formulario <Icon name="file" size={13} color="#00705e"/>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ─── MODALIDADES ─── */
-const Modalidades = () => (
+const Modalidades = () => {
+  const [modal, setModal] = useState(null);
+  return (
   <section id="modalidades" style={{ background: '#f7faf9', padding: '16px 24px 72px' }}>
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
       <div style={{ marginBottom: 32, textAlign: 'center' }}>
@@ -400,21 +621,27 @@ const Modalidades = () => (
                 </div>
               ))}
             </div>
-            <a href={m.ctaHref} target={m.ctaHref?.startsWith('http') ? '_blank' : undefined} style={{
-              marginTop: 'auto', background: '#14484a', color: 'white', padding: '10px 16px',
-              borderRadius: 6, fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center',
-              justifyContent: 'center', gap: 7, transition: 'background 0.2s',
-            }}
-            onMouseEnter={e=>e.currentTarget.style.background='#1a5f5c'}
-            onMouseLeave={e=>e.currentTarget.style.background='#14484a'}>
-              <Icon name={m.ctaIcon} size={14} color="white"/> {m.cta}
-            </a>
+            {React.createElement(m.modal ? 'button' : 'a', {
+              ...(m.modal ? { onClick: () => setModal(m.modal), type: 'button' } : { href: m.ctaHref, target: m.ctaHref?.startsWith('http') ? '_blank' : undefined }),
+              style: {
+                marginTop: 'auto', background: '#14484a', color: 'white', padding: '10px 16px',
+                borderRadius: 6, fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center',
+                justifyContent: 'center', gap: 7, transition: 'background 0.2s', width: '100%',
+                fontFamily: 'inherit',
+              },
+              onMouseEnter: e => e.currentTarget.style.background = '#1a5f5c',
+              onMouseLeave: e => e.currentTarget.style.background = '#14484a',
+            }, <Icon name={m.ctaIcon} size={14} color="white"/>, ' ', m.cta)}
           </div>
         ))}
       </div>
     </div>
+    {modal === 'banco' && <DatosBancariosModal onClose={() => setModal(null)}/>}
+    {modal === 'link' && <IframeModal onClose={() => setModal(null)} eyebrow="Red Link · Pago electrónico" titulo="Código de pago electrónico" url="http://www.colegioingenieros.org.ar/link/"/>}
+    {modal === 'pmc' && <PagomiscuentasModal onClose={() => setModal(null)}/>}
   </section>
-);
+  );
+};
 
 /* ─── CTA FINAL ─── */
 const CTAFinal = () => (
@@ -450,42 +677,69 @@ const CTAFinal = () => (
   </section>
 );
 
+/* ─── REDES ─── */
+const redes = [
+  { icon: 'instagram', label: 'Instagram', href: '#' },
+  { icon: 'facebook', label: 'Facebook', href: '#' },
+  { icon: 'linkedin', label: 'LinkedIn', href: '#' },
+  { icon: 'whatsapp', label: 'WhatsApp', href: '#' },
+];
+
+const SocialIcons = ({ size = 17 }) => {
+  const [h, setH] = useState(null);
+  return (
+    <div style={{ display: 'flex', gap: 10 }}>
+      {redes.map((r, i) => (
+        <a key={r.label} href={r.href} target="_blank" aria-label={r.label} title={r.label}
+          onMouseEnter={() => setH(i)} onMouseLeave={() => setH(null)} style={{
+          width: 40, height: 40, borderRadius: 10, display: 'grid', placeItems: 'center', transition: 'all .2s',
+          border: `1px solid ${h === i ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.24)'}`,
+          background: h === i ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.06)',
+        }}>
+          <Icon name={r.icon} size={size} color="white"/>
+        </a>
+      ))}
+    </div>
+  );
+};
+
 /* ─── FOOTER ─── */
+const footerCols = [
+  { title: 'Trámites', items: ['Inscripción y bajas', 'Medios de pago', 'Certificados CAIE', 'Visado online', 'SIGMA'] },
+  { title: 'Normativa', items: ['Ley 10.416', 'Código de Ética', 'Resoluciones', 'Honorarios mínimos', 'Vademécum'] },
+  { title: 'Institucional', items: ['Autoridades', 'Subcomisiones', 'Partidos del Distrito', 'Sedes y delegaciones', 'Memoria y balance'] },
+  { title: 'Links de interés', items: ['Autoridad del Agua (ADA)', 'Agencia de Recaudación (ARBA)', 'Caja de Previsión Social', 'Colegio de Escribanos PBA', 'Ministerio de Ambiente'] },
+];
+
 const Footer = () => (
-  <footer style={{ background: '#0d3234', color: 'rgba(255,255,255,0.7)', padding: '48px 24px 24px' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 2fr 1fr 1fr 1fr', gap: 40, marginBottom: 40 }} className="footer-grid">
+  <footer style={{ background: '#14484a', color: 'rgba(255,255,255,0.78)' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 34px' }}>
+      <div className="foot-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr repeat(4, minmax(0, 1fr))', gap: 30 }}>
         <div>
           <img src="uploads/Logo-blanco.png" alt="CIPBA Distrito VII" style={{ width: 200, maxWidth: '100%', height: 'auto', marginBottom: 16 }}/>
           <p style={{ fontSize: 13, lineHeight: 1.7, color: 'rgba(255,255,255,0.72)', maxWidth: 320, textWrap: 'pretty' }}>Entidad pública no estatal creada por Ley 10.416. Ejercicio profesional habilitado en 23 partidos de la zona oeste y norte del Gran Buenos Aires.</p>
+          <div style={{ marginTop: 20 }}><SocialIcons/></div>
         </div>
-        <div>
-          <div style={{ marginBottom: 16 }}>
-            <img src="uploads/logo-cipba-vii.png" alt="CIPBA Distrito VII" style={{ height: 52, width: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }}/>
-          </div>
-          <p style={{ fontSize: 13.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', maxWidth: 280, textWrap: 'pretty' }}>
-            Entidad pública no estatal creada por Ley 10.416. Ejercicio profesional habilitado en 23 partidos de la zona oeste y norte del Gran Buenos Aires.
-          </p>
-        </div>
-        {[
-          { title: 'Trámites', items: ['Nueva Matrícula', 'Pagar Matrícula', 'Visado Online', 'Honorarios', 'Certificados'] },
-          { title: 'Institucional', items: ['Autoridades', 'Subcomisiones', 'Normativa', 'Delegaciones', 'CAAITBA'] },
-          { title: 'Servicios', items: ['Capacitación', 'Seguro Profesional', 'Beneficios', 'Bolsa de Trabajo', 'Contacto'] },
-        ].map(col => (
+        {footerCols.map(col => (
           <div key={col.title}>
-            <div style={{ color: 'white', fontWeight: 800, fontSize: 14, marginBottom: 16 }}>{col.title}</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-              {col.items.map(item => (
-                <a key={item} href={item === 'Pagar Matrícula' ? 'pago-matricula.html' : '#'} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.55)', transition: 'color 0.2s' }}
-                  onMouseEnter={e=>e.target.style.color='#00a48a'} onMouseLeave={e=>e.target.style.color='rgba(255,255,255,0.55)'}>{item}</a>
+            <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'white', marginBottom: 15 }}>{col.title}</h3>
+            <div style={{ display: 'grid', gap: 9 }}>
+              {col.items.map(it => (
+                <a key={it} href="#" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#00a48a'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.72)'}>{it}</a>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>© 2026 CIPBA Distrito VII. Todos los derechos reservados.</div>
-        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>Almafuerte 2868, San Justo · (011) 3535-0751 · info@cipba.org</div>
+    </div>
+    <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, fontSize: 12.5, color: 'rgba(255,255,255,0.6)' }}>
+        <span>© 2026 Colegio de Ingenieros de la Provincia de Buenos Aires — Distrito VII</span>
+        <span style={{ display: 'flex', gap: 16 }}>
+          <a href="#" style={{ color: 'inherit' }}>Ley 10.416</a>
+          <a href="#" style={{ color: 'inherit' }}>Política de privacidad</a>
+        </span>
       </div>
     </div>
   </footer>
@@ -511,12 +765,15 @@ const App = () => {
           .lanzador-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 1000px) {
-          .footer-grid { grid-template-columns: 1fr 1fr !important; }
-          .footer-grid > div:first-child { grid-column: span 2; }
+          .foot-grid { grid-template-columns: 1fr 1fr !important; }
+          .foot-grid > div:first-child { grid-column: span 2; }
+        }
+        @media (max-width: 560px) {
+          .pmc-cols { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 640px) {
-          .footer-grid { grid-template-columns: 1fr !important; }
-          .footer-grid > div:first-child { grid-column: auto; }
+          .foot-grid { grid-template-columns: 1fr !important; }
+          .foot-grid > div:first-child { grid-column: auto; }
         }
       `}</style>
       <HeaderStyles/>
