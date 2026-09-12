@@ -1,0 +1,427 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/cards/**",
+              "components/core/**",
+              "components/data/**",
+              "components/navigation/**",
+              "ui_kits/sitio-web/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Lato|Roboto Condensed))/i]",
+        "message": "Font not provided by the design system. Available: Lato, Roboto Condensed."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AuthorityCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|role|title|featured|key|ref|className|style|children)$/]",
+        "message": "<AuthorityCard> doesn't accept that prop. Declared props: name, role, title, featured."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|category|tone|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: children, category, tone."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='category'] > Literal[value!=/^(?:Institucional|Capacitación|Normativa|Visado|Honorarios|Matrícula|Comisiones)$/]",
+        "message": "<Badge> category must be one of 'Institucional' | 'Capacitación' | 'Normativa' | 'Visado' | 'Honorarios' | 'Matrícula' | 'Comisiones'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='tone'] > Literal[value!=/^(?:solid|tint)$/]",
+        "message": "<Badge> tone must be one of 'solid' | 'tint'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Breadcrumb'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|key|ref|className|style|children)$/]",
+        "message": "<Breadcrumb> doesn't accept that prop. Declared props: items."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|size|icon|disabled|onClick|href|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: children, variant, size, icon, disabled, onClick, href."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|primaryDark|outline|outlineDark|whatsapp)$/]",
+        "message": "<Button> variant must be one of 'primary' | 'primaryDark' | 'outline' | 'outlineDark' | 'whatsapp'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|hoverable|padding|style|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: children, hoverable, padding, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CourseRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|date|modality|vacantes|key|ref|className|style|children)$/]",
+        "message": "<CourseRow> doesn't accept that prop. Declared props: title, date, modality, vacantes."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CourseRow'] > JSXAttribute[name.name='modality'] > Literal[value!=/^(?:Virtual|Presencial)$/]",
+        "message": "<CourseRow> modality must be one of 'Virtual' | 'Presencial'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DocumentRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:category|number|title|date|pages|size|key|ref|className|style|children)$/]",
+        "message": "<DocumentRow> doesn't accept that prop. Declared props: category, number, title, date, pages, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DocumentRow'] > JSXAttribute[name.name='category'] > Literal[value!=/^(?:Institucional|Capacitación|Normativa|Visado|Honorarios|Matrícula)$/]",
+        "message": "<DocumentRow> category must be one of 'Institucional' | 'Capacitación' | 'Normativa' | 'Visado' | 'Honorarios' | 'Matrícula'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Footer'] > JSXAttribute > JSXIdentifier[name!=/^(?:logo|key|ref|className|style|children)$/]",
+        "message": "<Footer> doesn't accept that prop. Declared props: logo."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icon'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|size|color|strokeWidth|key|ref|className|style|children)$/]",
+        "message": "<Icon> doesn't accept that prop. Declared props: name, size, color, strokeWidth."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='IconBadge'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|color|size|key|ref|className|style|children)$/]",
+        "message": "<IconBadge> doesn't accept that prop. Declared props: icon, color, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavbarLink'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|href|sub|key|ref|className|style|children)$/]",
+        "message": "<NavbarLink> doesn't accept that prop. Declared props: label, href, sub."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NewsCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:category|date|title|description|highlight|key|ref|className|style|children)$/]",
+        "message": "<NewsCard> doesn't accept that prop. Declared props: category, date, title, description, highlight."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NewsCard'] > JSXAttribute[name.name='category'] > Literal[value!=/^(?:Institucional|Capacitación|Normativa|Visado)$/]",
+        "message": "<NewsCard> category must be one of 'Institucional' | 'Capacitación' | 'Normativa' | 'Visado'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PartidoChip'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|active|key|ref|className|style|children)$/]",
+        "message": "<PartidoChip> doesn't accept that prop. Declared props: name, active."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='QuickAccessCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|color|label|description|href|key|ref|className|style|children)$/]",
+        "message": "<QuickAccessCard> doesn't accept that prop. Declared props: icon, color, label, description, href."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SectionHeader'] > JSXAttribute > JSXIdentifier[name!=/^(?:eyebrow|title|description|align|dark|key|ref|className|style|children)$/]",
+        "message": "<SectionHeader> doesn't accept that prop. Declared props: eyebrow, title, description, align, dark."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SectionHeader'] > JSXAttribute[name.name='align'] > Literal[value!=/^(?:left|center)$/]",
+        "message": "<SectionHeader> align must be one of 'left' | 'center'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SedeCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|tag|featured|rows|contacts|key|ref|className|style|children)$/]",
+        "message": "<SedeCard> doesn't accept that prop. Declared props: name, tag, featured, rows, contacts."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StatCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:number|label|bordered|key|ref|className|style|children)$/]",
+        "message": "<StatCard> doesn't accept that prop. Declared props: number, label, bordered."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SubcomisionCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:tag|name|referentes|key|ref|className|style|children)$/]",
+        "message": "<SubcomisionCard> doesn't accept that prop. Declared props: tag, name, referentes."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TopBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:phone|email|hours|key|ref|className|style|children)$/]",
+        "message": "<TopBar> doesn't accept that prop. Declared props: phone, email, hours."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "AuthorityCard": {
+        "replaces": []
+      },
+      "Badge": {
+        "replaces": []
+      },
+      "Breadcrumb": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "CourseRow": {
+        "replaces": []
+      },
+      "DocumentRow": {
+        "replaces": []
+      },
+      "Footer": {
+        "replaces": []
+      },
+      "Icon": {
+        "replaces": []
+      },
+      "IconBadge": {
+        "replaces": []
+      },
+      "NavbarLink": {
+        "replaces": []
+      },
+      "NewsCard": {
+        "replaces": []
+      },
+      "PartidoChip": {
+        "replaces": []
+      },
+      "QuickAccessCard": {
+        "replaces": []
+      },
+      "SectionHeader": {
+        "replaces": []
+      },
+      "SedeCard": {
+        "replaces": []
+      },
+      "StatCard": {
+        "replaces": []
+      },
+      "SubcomisionCard": {
+        "replaces": []
+      },
+      "TopBar": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--blue-100",
+      "--blue-600",
+      "--blue-700",
+      "--blue-900",
+      "--blue-950",
+      "--border-card",
+      "--border-input",
+      "--brand-accent",
+      "--brand-accent-hover",
+      "--brand-link",
+      "--brand-primary",
+      "--brand-primary-hover",
+      "--cat-capacitacion",
+      "--cat-comisiones",
+      "--cat-honorarios",
+      "--cat-institucional",
+      "--cat-matricula",
+      "--cat-normativa",
+      "--cat-visado",
+      "--duration-base",
+      "--duration-fast",
+      "--duration-slow",
+      "--ease-standard",
+      "--error",
+      "--focus-ring",
+      "--font-body",
+      "--font-display",
+      "--gap-grid-lg",
+      "--gap-grid-sm",
+      "--gray-100",
+      "--gray-400",
+      "--gray-50",
+      "--gray-600",
+      "--gray-900",
+      "--green-100",
+      "--green-200",
+      "--green-500",
+      "--green-600",
+      "--green-700",
+      "--green-800",
+      "--ink-900",
+      "--leading-base",
+      "--leading-relaxed",
+      "--leading-snug",
+      "--leading-tight",
+      "--max-width",
+      "--purple-100",
+      "--purple-500",
+      "--purple-800",
+      "--radius-badge",
+      "--radius-btn",
+      "--radius-card",
+      "--radius-card-lg",
+      "--radius-icon",
+      "--red-800",
+      "--section-padding-lg",
+      "--section-padding-y",
+      "--shadow-card",
+      "--shadow-hero-card",
+      "--shadow-hover",
+      "--shadow-nav",
+      "--space-1",
+      "--space-10",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-8",
+      "--surface-alt",
+      "--surface-card",
+      "--surface-dark",
+      "--surface-darker",
+      "--surface-page",
+      "--surface-sunken",
+      "--surface-tint",
+      "--teal-gray-500",
+      "--text-base",
+      "--text-hero",
+      "--text-lg",
+      "--text-md",
+      "--text-muted",
+      "--text-on-dark",
+      "--text-on-dark-muted",
+      "--text-primary",
+      "--text-secondary",
+      "--text-sm",
+      "--text-xl",
+      "--text-xs",
+      "--weight-black",
+      "--weight-bold",
+      "--weight-light",
+      "--weight-regular",
+      "--weight-xbold",
+      "--whatsapp",
+      "--whatsapp-hover",
+      "--white"
+    ],
+    "tokenKinds": {
+      "--green-100": "color",
+      "--green-200": "color",
+      "--green-500": "color",
+      "--green-700": "color",
+      "--ink-900": "color",
+      "--teal-gray-500": "color",
+      "--purple-500": "color",
+      "--purple-100": "color",
+      "--white": "color",
+      "--gray-900": "color",
+      "--gray-600": "color",
+      "--gray-400": "color",
+      "--gray-100": "color",
+      "--gray-50": "color",
+      "--blue-950": "color",
+      "--blue-900": "color",
+      "--blue-700": "color",
+      "--blue-600": "color",
+      "--blue-100": "color",
+      "--green-600": "color",
+      "--green-800": "color",
+      "--red-800": "color",
+      "--purple-800": "color",
+      "--surface-page": "color",
+      "--surface-tint": "color",
+      "--surface-sunken": "color",
+      "--surface-alt": "color",
+      "--surface-card": "color",
+      "--surface-dark": "color",
+      "--surface-darker": "color",
+      "--border-card": "color",
+      "--border-input": "color",
+      "--text-primary": "font",
+      "--text-secondary": "font",
+      "--text-muted": "font",
+      "--text-on-dark": "font",
+      "--text-on-dark-muted": "font",
+      "--brand-primary": "color",
+      "--brand-primary-hover": "color",
+      "--brand-link": "color",
+      "--brand-accent": "color",
+      "--brand-accent-hover": "color",
+      "--focus-ring": "color",
+      "--error": "color",
+      "--whatsapp": "color",
+      "--whatsapp-hover": "color",
+      "--cat-institucional": "color",
+      "--cat-capacitacion": "color",
+      "--cat-normativa": "color",
+      "--cat-visado": "color",
+      "--cat-honorarios": "color",
+      "--cat-matricula": "color",
+      "--cat-comisiones": "color",
+      "--font-body": "font",
+      "--font-display": "font",
+      "--text-xs": "font",
+      "--text-sm": "font",
+      "--text-base": "font",
+      "--text-md": "font",
+      "--text-lg": "font",
+      "--text-xl": "font",
+      "--text-hero": "font",
+      "--weight-light": "font",
+      "--weight-regular": "font",
+      "--weight-bold": "font",
+      "--weight-xbold": "font",
+      "--weight-black": "font",
+      "--leading-tight": "font",
+      "--leading-snug": "font",
+      "--leading-base": "font",
+      "--leading-relaxed": "font",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-8": "spacing",
+      "--space-10": "spacing",
+      "--section-padding-y": "spacing",
+      "--section-padding-lg": "spacing",
+      "--max-width": "spacing",
+      "--gap-grid-sm": "spacing",
+      "--gap-grid-lg": "spacing",
+      "--radius-btn": "radius",
+      "--radius-card": "radius",
+      "--radius-card-lg": "radius",
+      "--radius-badge": "radius",
+      "--radius-icon": "radius",
+      "--shadow-card": "shadow",
+      "--shadow-hover": "shadow",
+      "--shadow-nav": "shadow",
+      "--shadow-hero-card": "shadow",
+      "--ease-standard": "other",
+      "--duration-fast": "other",
+      "--duration-base": "other",
+      "--duration-slow": "other"
+    },
+    "fontFamilies": [
+      "Lato",
+      "Roboto Condensed"
+    ]
+  }
+}

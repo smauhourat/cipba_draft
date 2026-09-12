@@ -1,0 +1,69 @@
+:root{
+/* base palette — verde primario */
+--green-100:#e8f5f1;
+--green-200:#c0e2ca;
+--green-500:#00a48a;
+--green-700:#14484a;
+
+/* neutro y acento */
+--ink-900:#373d3e;
+--teal-gray-500:#607a7c;
+--purple-500:#484586;
+--purple-100:#e7e6f3;
+--white:#ffffff;
+
+/* neutrales derivados */
+--gray-900:var(--ink-900);
+--gray-600:var(--teal-gray-500);
+--gray-400:#9aa8a9;
+--gray-100:#eef2f1;
+--gray-50:#f7faf9;
+
+/* legacy aliases (mapeados a la paleta verde) */
+--blue-950:#0d3234;
+--blue-900:var(--green-700);
+--blue-700:#1a5f5c;
+--blue-600:var(--green-500);
+--blue-100:var(--green-100);
+--green-600:var(--green-500);
+--green-800:var(--green-700);
+--red-800:#8a3a2a;
+--purple-800:var(--purple-500);
+
+/* semantic surfaces */
+--surface-page:var(--white);
+--surface-tint:var(--green-100);
+--surface-sunken:var(--green-200);
+--surface-alt:var(--green-100);
+--surface-card:var(--white);
+--surface-dark:var(--green-700);
+--surface-darker:#0d3234;
+--border-card:var(--green-100);
+--border-input:#dbe6e3;
+
+--text-primary:var(--ink-900);
+--text-secondary:var(--teal-gray-500);
+--text-muted:var(--gray-400);
+--text-on-dark:rgba(255,255,255,.9);
+--text-on-dark-muted:rgba(255,255,255,.68);
+
+--brand-primary:var(--green-700);
+--brand-primary-hover:#1a5f5c;
+--brand-link:var(--green-500);
+--brand-accent:var(--green-500);
+--brand-accent-hover:#008c75;
+
+--focus-ring:var(--green-500);
+--error:#c0392b;
+--whatsapp:#25d366;
+--whatsapp-hover:#1da851;
+
+/* category / taxonomy colors (Normativa, Noticias) */
+--cat-institucional:var(--green-700);
+--cat-capacitacion:var(--green-500);
+--cat-normativa:var(--red-800);
+--cat-visado:var(--teal-gray-500);
+--cat-honorarios:var(--red-800);
+--cat-matricula:var(--green-500);
+--cat-comisiones:var(--purple-500);
+}

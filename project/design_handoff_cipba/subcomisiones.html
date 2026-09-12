@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Subcomisiones | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f8f9fc; color: #1a2540; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+  input { font-family: inherit; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f0f2f7; }
+  ::-webkit-scrollbar-thumb { background: #1a4a8a; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+/* ─── ICONS ─── */
+const Icon = ({ name, size = 20, color = "currentColor" }) => {
+  const icons = {
+    menu: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+    close: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    phone: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>,
+    mail: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+    clock: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+    chevronRight: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>,
+    chevronDown: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>,
+    externalLink: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+    home: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+    users: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
+    search: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+    whatsapp: <svg width={size} height={size} viewBox="0 0 24 24" fill={color}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>,
+    layers: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+  };
+  return icons[name] || null;
+};
+
+/* ─── TOP BAR ─── */
+const TopBar = () => (
+  <div style={{ background: '#0d2d5e', color: 'rgba(255,255,255,0.85)', fontSize: 13, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '7px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Icon name="phone" size={13}/> (011) 3535-0751</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Icon name="mail" size={13}/> info@cipba.org</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Icon name="clock" size={13}/> Lun–Vie 9 a 16 hs</span>
+      </div>
+      <div style={{ display: 'flex', gap: 12 }}>
+        <a href="#" style={{ opacity: 0.7 }}><Icon name="whatsapp" size={15} color="white"/></a>
+      </div>
+    </div>
+  </div>
+);
+
+/* ─── NAVBAR ─── */
+const navLinks = [
+  { label: 'Inicio', href: 'index.html' },
+  { label: 'Matrícula', href: 'index.html#tramites', sub: ['Nueva Matrícula', 'Reinscripción', 'Baja Temporal', 'Certificados', { label: 'Pago de Matrícula', href: 'pago-matricula.html' }] },
+  { label: 'Visado', href: 'index.html#visado', sub: ['Visado Online', 'Tasas y Aranceles', 'Honorarios Mínimos', 'Visadores'] },
+  { label: 'Capacitación', href: 'index.html#capacitacion' },
+  { label: 'Normativa', href: 'index.html#normativa' },
+  { label: 'Institucional', href: 'institucional.html', active: true,
+    sub: [
+      { label: 'Autoridades', href: 'institucional.html#autoridades' },
+      { label: 'Partidos', href: 'institucional.html#partidos' },
+      { label: 'Sedes', href: 'institucional.html#sedes' },
+      { label: 'Subcomisiones', href: 'subcomisiones.html', current: true },
+    ]
+  },
+  { label: 'Noticias', href: 'index.html#noticias' },
+  { label: 'Contacto', href: 'index.html#contacto' },
+];
+
+const Navbar = ({ scrolled }) => {
+  const [open, setOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
+  return (
+    <nav style={{
+      position: 'sticky', top: 0, zIndex: 100,
+      background: scrolled ? 'rgba(13,45,94,0.98)' : '#1a4a8a',
+      backdropFilter: 'blur(8px)',
+      boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.25)' : 'none',
+      transition: 'all 0.3s ease', borderBottom: '3px solid #2a9e2a',
+    }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
+        <a href="index.html" style={{ display: 'flex', alignItems: 'center' }}>
+          <img src="uploads/logo-cipba-vii.png" alt="CIPBA Distrito VII" style={{ height: 46, width: 'auto', filter: 'brightness(0) invert(1)' }}/>
+        </a>
+        <div style={{ display: 'flex', gap: 2, alignItems: 'center' }} className="desktop-nav">
+          {navLinks.map(link => (
+            <div key={link.label} style={{ position: 'relative' }}
+              onMouseEnter={() => setActiveMenu(link.label)}
+              onMouseLeave={() => setActiveMenu(null)}>
+              <a href={link.href} style={{
+                color: link.active ? 'white' : 'rgba(255,255,255,0.88)',
+                fontSize: 13.5, fontWeight: link.active ? 800 : 600,
+                padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 3,
+                borderRadius: 4, transition: 'all 0.2s',
+                background: link.active ? 'rgba(42,158,42,0.25)' : (activeMenu === link.label ? 'rgba(255,255,255,0.12)' : 'transparent'),
+                letterSpacing: 0.3,
+                borderBottom: link.active ? '2px solid #2a9e2a' : '2px solid transparent',
+              }}>
+                {link.label}
+                {link.sub && <Icon name="chevronDown" size={13} color="rgba(255,255,255,0.6)"/>}
+              </a>
+              {link.sub && activeMenu === link.label && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, minWidth: 210,
+                  background: 'white', boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+                  borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.08)',
+                  borderTop: '3px solid #2a9e2a',
+                }}>
+                  {link.sub.map(s => {
+                    const subLabel = typeof s === 'string' ? s : s.label;
+                    const subHref = typeof s === 'string' ? '#' : s.href;
+                    const isCurrent = typeof s !== 'string' && s.current;
+                    return (
+                      <a key={subLabel} href={subHref} style={{
+                        display: 'block', padding: '10px 16px', fontSize: 13.5,
+                        color: isCurrent ? '#0d2d5e' : '#1a2540',
+                        fontWeight: isCurrent ? 800 : 400,
+                        background: isCurrent ? '#e8f5ee' : 'transparent',
+                        borderLeft: isCurrent ? '3px solid #2a9e2a' : '3px solid transparent',
+                        borderBottom: '1px solid #f0f2f7',
+                      }}
+                      onMouseEnter={e => { if(!isCurrent) e.currentTarget.style.background = '#e8f1fc'; }}
+                      onMouseLeave={e => { if(!isCurrent) e.currentTarget.style.background = 'transparent'; }}>
+                        {subLabel}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
+          <a href="https://colegioingenieros.org.ar/visado" target="_blank" style={{
+            background: '#2a9e2a', color: 'white', fontSize: 13, fontWeight: 700,
+            padding: '8px 16px', borderRadius: 5, marginLeft: 8,
+            display: 'flex', alignItems: 'center', gap: 5,
+          }}>Visado Online <Icon name="externalLink" size={13} color="white"/></a>
+        </div>
+        <button onClick={() => setOpen(!open)} style={{ background: 'none', color: 'white', display: 'none' }} className="mobile-burger">
+          <Icon name={open ? 'close' : 'menu'} size={26}/>
+        </button>
+      </div>
+      {open && (
+        <div style={{ background: '#0d2d5e', borderTop: '1px solid rgba(255,255,255,0.1)', padding: '8px 0 16px' }}>
+          {navLinks.map(link => (
+            <a key={link.label} href={link.href} style={{
+              display: 'block', padding: '11px 24px', color: 'rgba(255,255,255,0.88)',
+              fontSize: 15, borderBottom: '1px solid rgba(255,255,255,0.06)',
+              background: link.active ? 'rgba(42,158,42,0.2)' : 'transparent',
+            }}>{link.label}</a>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+};
+
+/* ─── PAGE HERO ─── */
+const PageHero = ({ count }) => (
+  <section style={{ background: 'linear-gradient(135deg, #0d2d5e 0%, #1a4a8a 60%, #2563b0 100%)', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', inset: 0, opacity: 0.06, backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}/>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 56px', position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 22, fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>
+        <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5, transition: 'color 0.2s' }}
+          onMouseEnter={e=>e.currentTarget.style.color='#d4f0d4'} onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.65)'}>
+          <Icon name="home" size={13}/> Inicio
+        </a>
+        <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
+        <a href="institucional.html" style={{ transition: 'color 0.2s' }}
+          onMouseEnter={e=>e.currentTarget.style.color='#d4f0d4'} onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.65)'}>Institucional</a>
+        <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
+        <span style={{ color: 'white', fontWeight: 700 }}>Subcomisiones</span>
+      </div>
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(42,158,42,0.22)', border: '1px solid rgba(42,158,42,0.4)', borderRadius: 20, padding: '5px 14px', marginBottom: 16 }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#2a9e2a' }}/>
+        <span style={{ color: '#d4f0d4', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>Participación profesional</span>
+      </div>
+      <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18, fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: -0.5 }}>
+        Subcomisiones
+      </h1>
+      <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 17, lineHeight: 1.6, maxWidth: 760, marginBottom: 24, textWrap: 'pretty' }}>
+        Espacios técnicos de trabajo organizados por especialidad. Funcionan como ámbito de consulta, formación entre pares y elaboración de criterios para la práctica profesional en el distrito. Si querés sumarte, contactá directamente al referente.
+      </p>
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)',
+          color: 'white', fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 6,
+        }}>
+          <Icon name="layers" size={14} color="white"/>
+          <span style={{ fontFamily: "'Roboto Condensed', sans-serif", fontWeight: 700, color: '#d4f0d4' }}>{count}</span>
+          subcomisiones activas
+        </div>
+        <a href="#listado" style={{
+          background: '#2a9e2a', color: 'white', fontSize: 13, fontWeight: 700, padding: '8px 16px',
+          borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 6, transition: 'background 0.2s',
+        }}
+        onMouseEnter={e=>e.currentTarget.style.background='#1f7a1f'}
+        onMouseLeave={e=>e.currentTarget.style.background='#2a9e2a'}>
+          Ver listado <Icon name="chevronRight" size={13} color="white"/>
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+/* ─── DATA ─── */
+const subcomisiones = [
+  { tag: 'HyS', nombre: 'Higiene y Seguridad en el trabajo', referentes: [
+    { nombre: 'Maria Claudia FILIPUZZI', mat: '53.929', tel: '15-5181-9336', telLink: '+5491151819336', email: 'cfilipuzzi@hotmail.com' },
+  ]},
+  { tag: 'Mec', nombre: 'Ingeniería Mecánica', referentes: [
+    { nombre: 'Javier Victor Manuel TORRES', mat: '55.905', tel: '15-5024-8414', telLink: '+5491150248414', email: 'jt.ingenieriayservicios@gmail.com' },
+  ]},
+  { tag: 'PAJ', nombre: 'Peritos Auxiliares de la Justicia', referentes: [
+    { nombre: 'Juan José URANGA', mat: '55.133', tel: '15-6711-8199', telLink: '+5491167118199', email: 'juanjoseuranga@gmail.com' },
+  ]},
+  { tag: 'Elec', nombre: 'Ingeniería Eléctrica', referentes: [
+    { nombre: 'Edgardo LEIBER', mat: '54.032', tel: '15-4498-4624', telLink: '+5491144984624', email: 'edgardoleiber@hotmail.com' },
+    { nombre: 'Juan Pablo MAZZA', mat: '49.294', tel: '15-6123-7995', telLink: '+5491161237995', email: 'epaim@epaim.com.ar' },
+  ]},
+  { tag: 'Agr', nombre: 'Agrimensura', referentes: [
+    { nombre: 'Jenaro Antonio STINGA', mat: '31.544', tel: '15-3104-3010', telLink: '+5491131043010', email: 'jastinga@gmail.com' },
+    { nombre: 'Ismael Alberto CONTE', mat: '39.198', tel: '02324-15-58-2633', telLink: '+542324155826​33', email: 'alberto@estudiodc.net' },
+  ]},
+  { tag: 'Alim', nombre: 'Ingeniería en Alimentos', referentes: [
+    { nombre: 'Gabriel Esteban BUSNARDO', mat: '55.336', tel: '15-4938-9842', telLink: '+5491149389842', email: 'gbusnardo1970@gmail.com' },
+    { nombre: 'Yanina Valeria CENTURION', mat: '56.004', tel: '15-5379-3030', telLink: '+5491153793030', email: 'yvcenturion@gmail.com' },
+  ]},
+  { tag: 'Civ', nombre: 'Ingeniería Civil', referentes: [
+    { nombre: 'Perla Beatriz ARMAGNAC', mat: '53.929', tel: '15-3428-4268', telLink: '+5491134284268', email: 'parmagnac@gmaingenieria.com.ar' },
+  ]},
+  { tag: 'Amb', nombre: 'Ingeniería Ambiental', referentes: [
+    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '15-5644-0200', telLink: '+5491156440200', email: 'lca1srl.cal@gmail.com' },
+    { nombre: 'Roberto Emilio BASSO', mat: '32.285', tel: '15-6208-0586', telLink: '+5491162080586', email: 'roberto@ingenieriabasso.com.ar' },
+  ]},
+  { tag: 'OPDS', nombre: 'Profesionales ante Ministerio de Ambiente (OPDS)', referentes: [
+    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '15-5644-0200', telLink: '+5491156440200', email: 'lca1srl.cal@gmail.com' },
+    { nombre: 'Jose Luis GUEVARA', mat: '34.956', tel: '15-4532-6499', telLink: '+5491145326499', email: 'ingguevara@gmail.com' },
+  ]},
+  { tag: 'JP', nombre: 'Jóvenes Profesionales de CAAITBA', referentes: [
+    { nombre: 'Dario Miguel KUBAR', mat: '51.785', tel: '15-5644-0200', telLink: '+5491156440200', email: 'dariokubar@hotmail.com.ar' },
+  ]},
+];
+
+const getInitials = (nombre) => {
+  const parts = nombre.trim().split(/\s+/);
+  const apellido = parts[parts.length - 1];
+  const first = parts[0];
+  return (first[0] + apellido[0]).toUpperCase();
+};
+
+/* ─── LISTADO ─── */
+const Listado = () => {
+  const [q, setQ] = useState('');
+  const query = q.trim().toLowerCase();
+  const filtered = useMemo(() => {
+    if (!query) return subcomisiones;
+    return subcomisiones.filter(s =>
+      s.nombre.toLowerCase().includes(query) ||
+      s.tag.toLowerCase().includes(query) ||
+      s.referentes.some(r => r.nombre.toLowerCase().includes(query) || r.email.toLowerCase().includes(query))
+    );
+  }, [query]);
+
+  const totalRef = subcomisiones.reduce((acc, s) => acc + s.referentes.length, 0);
+
+  return (
+    <section id="listado" style={{ background: '#f8f9fc', padding: '56px 24px 72px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        {/* Toolbar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 20, marginBottom: 28, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Listado completo</div>
+            <h2 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif", marginBottom: 6 }}>
+              {subcomisiones.length} subcomisiones · {totalRef} referentes
+            </h2>
+            <p style={{ fontSize: 14, color: '#3d4b63', maxWidth: 540 }}>
+              Buscá por especialidad o por apellido del referente. Los datos de contacto son los oficiales informados al colegio.
+            </p>
+          </div>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            background: 'white', border: '1.5px solid #e0e6f0', borderRadius: 8,
+            padding: '10px 14px', minWidth: 280, transition: 'border-color 0.2s',
+          }}
+          onFocus={e=>e.currentTarget.style.borderColor='#2563b0'}>
+            <Icon name="search" size={16} color="#9aa5b8"/>
+            <input
+              type="text"
+              value={q}
+              onChange={e => setQ(e.target.value)}
+              placeholder="Buscar por especialidad o apellido…"
+              style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, color: '#1a2540', background: 'transparent' }}
+            />
+            {q && (
+              <button onClick={() => setQ('')} style={{ background: 'transparent', color: '#9aa5b8', display: 'flex', padding: 2 }}>
+                <Icon name="close" size={14} color="#9aa5b8"/>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Result count when searching */}
+        {query && (
+          <div style={{ fontSize: 13, color: '#3d4b63', marginBottom: 16 }}>
+            {filtered.length === 0 ? 'Sin resultados' : `${filtered.length} resultado${filtered.length === 1 ? '' : 's'} para "${q}"`}
+          </div>
+        )}
+
+        {/* Grid de subcomisiones */}
+        {filtered.length > 0 ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }} className="subc-grid">
+            {filtered.map((s, i) => (
+              <SubcomisionCard key={i} sub={s}/>
+            ))}
+          </div>
+        ) : (
+          <div style={{
+            background: 'white', border: '1px dashed #d0d8e8', borderRadius: 12,
+            padding: '48px 24px', textAlign: 'center', color: '#3d4b63',
+          }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: '#0d2d5e', marginBottom: 6 }}>No encontramos resultados</div>
+            <div style={{ fontSize: 13.5 }}>Probá con otro término, por ejemplo: "civil", "agrimensura" o un apellido.</div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+/* ─── CARD ─── */
+const SubcomisionCard = ({ sub }) => (
+  <div style={{
+    background: 'white', border: '1px solid #e8f1fc', borderRadius: 12,
+    padding: 0, overflow: 'hidden', transition: 'all 0.25s',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column',
+  }}
+  onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow='0 12px 28px rgba(13,45,94,0.10)'; e.currentTarget.style.borderColor='#2a9e2a'; }}
+  onMouseLeave={e=>{ e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'; e.currentTarget.style.borderColor='#e8f1fc'; }}>
+    {/* Header */}
+    <div style={{
+      padding: '18px 22px 16px', display: 'flex', gap: 12, alignItems: 'flex-start',
+      borderBottom: '1px solid #f0f2f7',
+      background: 'linear-gradient(135deg, #f8fbff 0%, #ffffff 100%)',
+    }}>
+      <div style={{
+        flexShrink: 0, width: 44, height: 44, borderRadius: 8,
+        background: '#e8f1fc', color: '#1a4a8a',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontFamily: "'Roboto Condensed', sans-serif", fontWeight: 700,
+        fontSize: sub.tag.length > 3 ? 11 : 13, letterSpacing: 0.5,
+      }}>{sub.tag}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ color: '#2a9e2a', fontSize: 10.5, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 4 }}>Subcomisión</div>
+        <div style={{
+          fontSize: 16, fontWeight: 800, color: '#0d2d5e',
+          fontFamily: "'Roboto Condensed', sans-serif", lineHeight: 1.25, textWrap: 'balance',
+        }}>{sub.nombre}</div>
+      </div>
+    </div>
+
+    {/* Referentes */}
+    <div style={{ padding: '6px 22px 20px', flex: 1, display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {sub.referentes.map((r, idx) => (
+        <div key={idx} style={{
+          padding: '14px 0',
+          borderBottom: idx < sub.referentes.length - 1 ? '1px dashed #e8f1fc' : 'none',
+          display: 'flex', gap: 12, alignItems: 'flex-start',
+        }}>
+          <div style={{
+            flexShrink: 0, width: 38, height: 38, borderRadius: '50%',
+            background: 'linear-gradient(135deg, #e8f1fc 0%, #c8d8f0 100%)',
+            color: '#1a4a8a', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: "'Roboto Condensed', sans-serif", fontWeight: 700, fontSize: 13, letterSpacing: 0.3,
+            border: '1px solid #d4e1f2',
+          }}>{getInitials(r.nombre)}</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 13.5, fontWeight: 800, color: '#1a2540', marginBottom: 2 }}>
+              Ing. {r.nombre}
+            </div>
+            <div style={{
+              fontSize: 11.5, color: '#9aa5b8', fontFamily: "'Roboto Condensed', sans-serif",
+              letterSpacing: 0.5, marginBottom: 8,
+            }}>
+              MAT. {r.mat}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <a href={`tel:${r.telLink}`} style={{
+                fontSize: 13, color: '#3d4b63', display: 'flex', alignItems: 'center', gap: 7,
+                transition: 'color 0.2s', wordBreak: 'break-all',
+              }}
+              onMouseEnter={e=>e.currentTarget.style.color='#2563b0'}
+              onMouseLeave={e=>e.currentTarget.style.color='#3d4b63'}>
+                <Icon name="phone" size={12} color="#9aa5b8"/> {r.tel}
+              </a>
+              <a href={`mailto:${r.email}`} style={{
+                fontSize: 13, color: '#2563b0', display: 'flex', alignItems: 'center', gap: 7,
+                transition: 'color 0.2s', wordBreak: 'break-all',
+              }}
+              onMouseEnter={e=>e.currentTarget.style.color='#0d2d5e'}
+              onMouseLeave={e=>e.currentTarget.style.color='#2563b0'}>
+                <Icon name="mail" size={12} color="#9aa5b8"/> {r.email}
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+/* ─── CTA FINAL ─── */
+const CTAFinal = () => (
+  <section style={{ background: 'linear-gradient(135deg, #2a9e2a 0%, #1f7a1f 100%)', padding: '48px 24px' }}>
+    <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center', color: 'white' }}>
+      <h3 style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontWeight: 900, fontFamily: "'Roboto Condensed', sans-serif", marginBottom: 10 }}>
+        ¿Querés sumarte a una subcomisión?
+      </h3>
+      <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.92)', marginBottom: 22, maxWidth: 640, marginLeft: 'auto', marginRight: 'auto', textWrap: 'pretty' }}>
+        Las subcomisiones están abiertas a matriculados/as activos/as del distrito. Escribile al referente de tu especialidad o contactanos por los canales generales.
+      </p>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <a href="index.html#contacto" style={{
+          background: 'white', color: '#1f7a1f', padding: '12px 24px',
+          borderRadius: 6, fontWeight: 800, fontSize: 14.5,
+          display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.2s',
+        }}
+        onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'}
+        onMouseLeave={e=>e.currentTarget.style.transform='none'}>
+          Formulario de contacto <Icon name="chevronRight" size={14} color="#1f7a1f"/>
+        </a>
+        <a href="https://wa.me/541138293041" target="_blank" style={{
+          background: 'rgba(255,255,255,0.15)', color: 'white', padding: '12px 24px',
+          borderRadius: 6, fontWeight: 700, fontSize: 14.5, border: '1px solid rgba(255,255,255,0.4)',
+          display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s',
+        }}
+        onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.25)'}
+        onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,0.15)'}>
+          <Icon name="whatsapp" size={16} color="white"/> WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+/* ─── FOOTER ─── */
+const Footer = () => (
+  <footer style={{ background: '#060f1e', color: 'rgba(255,255,255,0.7)', padding: '48px 24px 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 40, marginBottom: 40 }} className="footer-grid">
+        <div>
+          <div style={{ marginBottom: 16 }}>
+            <img src="uploads/logo-cipba-vii.png" alt="CIPBA Distrito VII" style={{ height: 52, width: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }}/>
+          </div>
+          <p style={{ fontSize: 13.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', maxWidth: 280, textWrap: 'pretty' }}>
+            Entidad pública no estatal creada por Ley 10.416. Ejercicio profesional habilitado en 23 partidos de la zona oeste y norte del Gran Buenos Aires.
+          </p>
+        </div>
+        {[
+          { title: 'Trámites', items: ['Nueva Matrícula', 'Reinscripción', 'Visado Online', 'Honorarios', 'Certificados'] },
+          { title: 'Institucional', items: ['Autoridades', 'Subcomisiones', 'Normativa', 'Delegaciones', 'CAAITBA'] },
+          { title: 'Servicios', items: ['Capacitación', 'Seguro Profesional', 'Beneficios', 'Bolsa de Trabajo', 'Contacto'] },
+        ].map(col => (
+          <div key={col.title}>
+            <div style={{ color: 'white', fontWeight: 800, fontSize: 14, marginBottom: 16 }}>{col.title}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+              {col.items.map(item => (
+                <a key={item} href="#" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.55)', transition: 'color 0.2s' }}
+                  onMouseEnter={e=>e.target.style.color='#2a9e2a'} onMouseLeave={e=>e.target.style.color='rgba(255,255,255,0.55)'}>{item}</a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>© 2026 CIPBA Distrito VII. Todos los derechos reservados.</div>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>Almafuerte 2868, San Justo · (011) 3535-0751 · info@cipba.org</div>
+      </div>
+    </div>
+  </footer>
+);
+
+/* ─── APP ─── */
+const App = () => {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-burger { display: flex !important; }
+        }
+        @media (max-width: 640px) {
+          .subc-grid { grid-template-columns: 1fr !important; }
+          .footer-grid { grid-template-columns: 1fr 1fr !important; }
+          .footer-grid > div:first-child { grid-column: span 2; }
+        }
+      `}</style>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+      <PageHero count={subcomisiones.length}/>
+      <Listado/>
+      <CTAFinal/>
+      <Footer/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

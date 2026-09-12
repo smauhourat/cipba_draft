@@ -1,0 +1,23 @@
+:root{
+--font-body:'Lato',sans-serif;
+--font-display:'Roboto Condensed',sans-serif;
+
+--text-xs:11px;
+--text-sm:13px;
+--text-base:14px;
+--text-md:16px;
+--text-lg:20px;
+--text-xl:clamp(22px,3vw,30px);
+--text-hero:clamp(26px,4vw,44px);
+
+--weight-light:300;
+--weight-regular:400;
+--weight-bold:700;
+--weight-xbold:800;
+--weight-black:900;
+
+--leading-tight:1.15;
+--leading-snug:1.25;
+--leading-base:1.5;
+--leading-relaxed:1.65;
+}

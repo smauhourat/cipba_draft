@@ -1,0 +1,15 @@
+:root{
+--space-1:4px;
+--space-2:8px;
+--space-3:12px;
+--space-4:16px;
+--space-5:20px;
+--space-6:24px;
+--space-8:32px;
+--space-10:40px;
+--section-padding-y:52px 24px;
+--section-padding-lg:60px 24px;
+--max-width:1200px;
+--gap-grid-sm:16px;
+--gap-grid-lg:20px;
+}

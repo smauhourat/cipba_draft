@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CIPBA – Distrito VII | Colegio de Ingenieros PBA</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue-deep:   #0d2d5e;
+    --blue-mid:    #1a4a8a;
+    --blue-light:  #2563b0;
+    --blue-pale:   #e8f1fc;
+    --gold:        #2a9e2a;
+    --gold-light:  #d4f0d4;
+    --white:       #f8f9fc;
+    --gray-light:  #f0f2f7;
+    --gray-mid:    #9aa5b8;
+    --gray-text:   #3d4b63;
+    --text:        #1a2540;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--gray-light); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-mid); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "heroTitle": "Colegio de Ingenieros de la Provincia de Buenos Aires",
+  "heroSubtitle": "Distrito VII — Zona Oeste y Norte del Gran Buenos Aires",
+  "primaryColor": "#0d2d5e",
+  "accentColor": "#2a9e2a",
+  "showBanner": true
+}/*EDITMODE-END*/;
+
+/* ─── ICONS (inline SVG) ─── */
+const Icon = ({ name, size = 20, color = "currentColor" }) => {
+  const icons = {
+    menu: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+    close: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    phone: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>,
+    mail: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+    location: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+    clock: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+    chevronRight: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>,
+    chevronDown: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>,
+    externalLink: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+    building: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>,
+    file: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+    award: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>,
+    book: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
+    users: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
+    dollar: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>,
+    shield: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+    calendar: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+    whatsapp: <svg width={size} height={size} viewBox="0 0 24 24" fill={color}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>,
+    newspaper: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a4 4 0 01-4-4V6"/><path d="M2 6h4M8 7h8M8 11h8M8 15h5"/></svg>,
+  };
+  return icons[name] || null;
+};
+
+/* ─── TOP BAR ─── */
+const TopBar = () => (
+  <div style={{ background: '#0d2d5e', color: 'rgba(255,255,255,0.85)', fontSize: 13, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '7px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Icon name="phone" size={13}/> (011) 4651-0064 / 4482-2231
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Icon name="mail" size={13}/> info@cipba.org
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Icon name="clock" size={13}/> Lun–Vie 9 a 16 hs
+        </span>
+      </div>
+      <div style={{ display: 'flex', gap: 12 }}>
+        <a href="#" style={{ opacity: 0.7, transition: 'opacity .2s' }} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.7}>
+          <Icon name="whatsapp" size={15} color="white"/>
+        </a>
+        <a href="https://colegioingenieros.org.ar" target="_blank" style={{ fontSize: 12, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 4, transition: 'opacity .2s' }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.7}>
+          Consejo Superior <Icon name="externalLink" size={11} color="white"/>
+        </a>
+      </div>
+    </div>
+  </div>
+);
+
+/* ─── NAVBAR ─── */
+const navLinks = [
+  { label: 'Inicio', href: '#inicio' },
+  { label: 'Matrícula', href: '#tramites', sub: ['Nueva Matrícula', 'Reinscripción', 'Baja Temporal', 'Certificados', { label: 'Pago de Matrícula', href: 'pago-matricula.html' }] },
+  { label: 'Visado', href: '#visado', sub: ['Visado Online', 'Tasas y Aranceles', 'Honorarios Mínimos', 'Visadores'] },
+  { label: 'Capacitación', href: '#capacitacion' },
+  { label: 'Normativa', href: '#normativa' },
+  { label: 'Institucional', href: 'institucional.html', sub: ['Autoridades', 'Partidos comprendidos', 'Sedes'] },
+  { label: 'Noticias', href: '#noticias' },
+  { label: 'Contacto', href: '#contacto' },
+];
+
+const Navbar = ({ scrolled }) => {
+  const [open, setOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
+
+  return (
+    <nav style={{
+      position: 'sticky', top: 0, zIndex: 100,
+      background: scrolled ? 'rgba(13,45,94,0.98)' : '#1a4a8a',
+      backdropFilter: 'blur(8px)',
+      boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.25)' : 'none',
+      transition: 'all 0.3s ease',
+      borderBottom: '3px solid #2a9e2a',
+    }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
+        {/* Logo */}
+        <a href="#inicio" style={{ display: 'flex', alignItems: 'center' }}>
+          <img src="uploads/logo-cipba-vii.png" alt="CIPBA Distrito VII" style={{ height: 46, width: 'auto', filter: 'brightness(0) invert(1)' }}/>
+        </a>
+
+        {/* Desktop Nav */}
+        <div style={{ display: 'flex', gap: 2, alignItems: 'center' }} className="desktop-nav">
+          {navLinks.map(link => (
+            <div key={link.label} style={{ position: 'relative' }}
+              onMouseEnter={() => setActiveMenu(link.label)}
+              onMouseLeave={() => setActiveMenu(null)}>
+              <a href={link.href} style={{
+                color: 'rgba(255,255,255,0.88)', fontSize: 13.5, fontWeight: 600,
+                padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 3,
+                borderRadius: 4, transition: 'all 0.2s',
+                background: activeMenu === link.label ? 'rgba(255,255,255,0.12)' : 'transparent',
+                letterSpacing: 0.3,
+              }}>
+                {link.label}
+                {link.sub && <Icon name="chevronDown" size={13} color="rgba(255,255,255,0.6)"/>}
+              </a>
+              {link.sub && activeMenu === link.label && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, minWidth: 200,
+                  background: 'white', boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+                  borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.08)',
+                  borderTop: '3px solid #2a9e2a',
+                }}>
+                  {link.sub.map(s => {
+                    const subLabel = typeof s === 'string' ? s : s.label;
+                    const subHref = typeof s === 'string' ? '#' : s.href;
+                    return (
+                      <a key={subLabel} href={subHref} style={{
+                        display: 'block', padding: '10px 16px', fontSize: 13.5,
+                        color: '#1a2540', borderBottom: '1px solid #f0f2f7',
+                        transition: 'background 0.15s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#e8f1fc'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                        {subLabel}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
+          <a href="https://colegioingenieros.org.ar/visado" target="_blank" style={{
+            background: '#2a9e2a', color: 'white', fontSize: 13, fontWeight: 700,
+            padding: '8px 16px', borderRadius: 5, marginLeft: 8,
+            transition: 'background 0.2s', display: 'flex', alignItems: 'center', gap: 5,
+          }}
+          onMouseEnter={e=>e.currentTarget.style.background='#1f7a1f'}
+          onMouseLeave={e=>e.currentTarget.style.background='#2a9e2a'}>
+            Visado Online <Icon name="externalLink" size={13} color="white"/>
+          </a>
+        </div>
+
+        {/* Mobile burger */}
+        <button onClick={() => setOpen(!open)} style={{ background: 'none', color: 'white', display: 'none' }} className="mobile-burger">
+          <Icon name={open ? 'close' : 'menu'} size={26}/>
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div style={{ background: '#0d2d5e', borderTop: '1px solid rgba(255,255,255,0.1)', padding: '8px 0 16px' }}>
+          {navLinks.map(link => (
+            <a key={link.label} href={link.href} onClick={() => setOpen(false)} style={{
+              display: 'block', padding: '11px 24px', color: 'rgba(255,255,255,0.88)',
+              fontSize: 15, borderBottom: '1px solid rgba(255,255,255,0.06)',
+            }}>
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+};
+
+/* ─── HERO ─── */
+const Hero = ({ tweaks }) => {
+  const [slide, setSlide] = useState(0);
+  const slides = [
+    {
+      tag: "Trámites digitales",
+      title: "Visado Online para Ingenieros Matriculados",
+      desc: "Realizá el visado de tus trabajos profesionales en línea, cualquier día del año, con descuento del 20% sobre la tasa presencial.",
+      cta: "Acceder al sistema",
+      cta2: "Cómo funciona",
+      bg: "linear-gradient(135deg, #0d2d5e 0%, #1a4a8a 60%, #2563b0 100%)",
+    },
+    {
+      tag: "Matrícula profesional",
+      title: "Habilitá tu ejercicio profesional en el Distrito VII",
+      desc: "Inscribite al Colegio de Ingenieros y ejercé legalmente tu profesión en los 24 partidos del Distrito VII de la Provincia de Buenos Aires.",
+      cta: "Solicitar matrícula",
+      cta2: "Requisitos",
+      bg: "linear-gradient(135deg, #0a2247 0%, #0d2d5e 50%, #14458a 100%)",
+    },
+    {
+      tag: "Capacitación",
+      title: "Cursos y formación continua para profesionales",
+      desc: "Mantenete actualizado con nuestros cursos de posgrado, seminarios técnicos y jornadas de capacitación continua.",
+      cta: "Ver oferta académica",
+      cta2: "Inscribirse",
+      bg: "linear-gradient(135deg, #0d2d5e 0%, #1e3c6e 60%, #1a5590 100%)",
+    },
+    {
+      tag: "Pagos",
+      title: "Pagá tu matrícula de forma simple y segura",
+      desc: "Elegí entre transferencia bancaria, débito automático, Red Link o Pagomiscuentas para mantener tu matrícula al día.",
+      cta: "Ver medios de pago",
+      cta2: "Cómo pagar",
+      ctaHref: "pago-matricula.html",
+      cta2Href: "pago-matricula.html#modalidades",
+      bg: "linear-gradient(135deg, #0a2247 0%, #0d2d5e 55%, #1a4a8a 100%)",
+    },
+  ];
+  const s = slides[slide];
+
+  useEffect(() => {
+    const t = setInterval(() => setSlide(p => (p+1) % slides.length), 6000);
+    return () => clearInterval(t);
+  }, []);
+
+  return (
+    <section id="inicio" style={{ position: 'relative', overflow: 'hidden', minHeight: 520 }}>
+      <div style={{ background: s.bg, transition: 'background 0.8s ease', minHeight: 520, display: 'flex', alignItems: 'center', position: 'relative' }}>
+        {/* Decorative pattern */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}/>
+        <div style={{ position: 'absolute', right: 0, top: 0, width: '45%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.03))', pointerEvents: 'none' }}/>
+
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px', position: 'relative', zIndex: 1, width: '100%' }}>
+          <div style={{ maxWidth: 680 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(42,158,42,0.2)', border: '1px solid rgba(42,158,42,0.4)', borderRadius: 20, padding: '5px 14px', marginBottom: 20 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#2a9e2a' }}/>
+              <span style={{ color: '#d4f0d4', fontSize: 13, fontWeight: 600, letterSpacing: 0.5 }}>{s.tag}</span>
+            </div>
+            <h1 style={{ color: 'white', fontSize: 'clamp(26px, 4vw, 44px)', fontWeight: 900, lineHeight: 1.15, marginBottom: 20, textWrap: 'pretty' }}>
+              {s.title}
+            </h1>
+            <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: 17, lineHeight: 1.65, marginBottom: 36, maxWidth: 580, textWrap: 'pretty' }}>
+              {s.desc}
+            </p>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+              <a href={s.ctaHref || '#tramites'} style={{
+                background: '#2a9e2a', color: 'white', padding: '13px 28px', borderRadius: 6,
+                fontWeight: 700, fontSize: 15, display: 'flex', alignItems: 'center', gap: 8,
+                transition: 'all 0.2s', boxShadow: '0 4px 16px rgba(42,158,42,0.4)',
+              }}
+              onMouseEnter={e=>{e.currentTarget.style.background='#1f7a1f'; e.currentTarget.style.transform='translateY(-2px)'}}
+              onMouseLeave={e=>{e.currentTarget.style.background='#2a9e2a'; e.currentTarget.style.transform='none'}}>
+                {s.cta} <Icon name="chevronRight" size={16} color="white"/>
+              </a>
+              <a href={s.cta2Href || '#institucional'} style={{
+                background: 'transparent', color: 'white', padding: '13px 24px', borderRadius: 6,
+                fontWeight: 600, fontSize: 15, border: '1px solid rgba(255,255,255,0.4)',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.1)'}
+              onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                {s.cta2}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide indicators */}
+        <div style={{ position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8 }}>
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => setSlide(i)} style={{
+              width: i === slide ? 28 : 8, height: 8, borderRadius: 4,
+              background: i === slide ? '#2a9e2a' : 'rgba(255,255,255,0.35)',
+              transition: 'all 0.3s', border: 'none',
+            }}/>
+          ))}
+        </div>
+      </div>
+
+      {/* Stats strip */}
+      <div style={{ background: 'white', borderBottom: '1px solid #e8f1fc', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          {[
+            { n: '+8.500', label: 'Matriculados activos' },
+            { n: '24', label: 'Partidos del Distrito VII' },
+            { n: '3', label: 'Sedes de atención' },
+            { n: '+30', label: 'Años de trayectoria' },
+          ].map((s, i) => (
+            <div key={i} style={{
+              padding: '20px 16px', textAlign: 'center',
+              borderRight: i < 3 ? '1px solid #e8f1fc' : 'none',
+            }}>
+              <div style={{ fontSize: 26, fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif" }}>{s.n}</div>
+              <div style={{ fontSize: 12, color: '#9aa5b8', marginTop: 3, letterSpacing: 0.3 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── QUICK ACCESS ─── */
+const quickItems = [
+  { icon: 'award', label: 'Matrícula', desc: 'Nueva inscripción, reinscripción y certificados', color: '#2563b0', href: '#tramites' },
+  { icon: 'file', label: 'Visado Online', desc: 'Visá tus trabajos con 20% de descuento', color: '#1a8a4a', href: '#visado' },
+  { icon: 'dollar', label: 'Honorarios', desc: 'Planillas y calculadora de honorarios mínimos', color: '#8a1a1a', href: '#honorarios' },
+  { icon: 'shield', label: 'Seguro Profesional', desc: 'Póliza de responsabilidad civil para matriculados', color: '#7a1a8a', href: '#seguro' },
+  { icon: 'book', label: 'Capacitación', desc: 'Cursos, seminarios y jornadas técnicas', color: '#8a5a1a', href: '#capacitacion' },
+  { icon: 'users', label: 'Beneficios', desc: 'Descuentos y convenios para matriculados', color: '#1a6a8a', href: '#beneficios' },
+];
+
+const QuickAccess = () => (
+  <section id="tramites" style={{ background: 'var(--gray-light)', padding: '52px 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ marginBottom: 36, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
+        <div>
+          <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Acceso rápido</div>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif" }}>Trámites y servicios</h2>
+        </div>
+        <a href="#" style={{ color: '#2563b0', fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+          Ver todos los trámites <Icon name="chevronRight" size={15} color="#2563b0"/>
+        </a>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16 }}>
+        {quickItems.map(item => (
+          <a key={item.label} href={item.href} style={{
+            background: 'white', borderRadius: 10, padding: '24px 18px',
+            border: '1px solid #e8f1fc', display: 'flex', flexDirection: 'column', gap: 12,
+            transition: 'all 0.25s', cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+          }}
+          onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 8px 24px rgba(0,0,0,0.1)`; e.currentTarget.style.borderColor=item.color}}
+          onMouseLeave={e=>{e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'; e.currentTarget.style.borderColor='#e8f1fc'}}>
+            <div style={{ width: 44, height: 44, borderRadius: 10, background: item.color+'18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name={item.icon} size={22} color={item.color}/>
+            </div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: 14.5, color: '#1a2540', marginBottom: 5 }}>{item.label}</div>
+              <div style={{ fontSize: 12.5, color: '#6b7a99', lineHeight: 1.5, textWrap: 'pretty' }}>{item.desc}</div>
+            </div>
+            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 4, color: item.color, fontSize: 12.5, fontWeight: 700 }}>
+              Acceder <Icon name="chevronRight" size={13} color={item.color}/>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ─── NOTICIAS ─── */
+const noticias = [
+  {
+    cat: 'Institucional', date: '18 Abr 2026',
+    title: 'Asamblea General Ordinaria: convocatoria a matriculados',
+    desc: 'Se convoca a todos los matriculados del Distrito VII a la Asamblea General Ordinaria del ejercicio 2025/2026 a realizarse el próximo 15 de mayo.',
+    highlight: true,
+  },
+  {
+    cat: 'Capacitación', date: '14 Abr 2026',
+    title: 'Nuevo curso de Integración y Automatización Profesional',
+    desc: 'Inscripciones abiertas para el módulo de Nivelación. Modalidad presencial, sede San Justo. Cupos limitados.',
+  },
+  {
+    cat: 'Normativa', date: '9 Abr 2026',
+    title: 'Actualización de honorarios mínimos – 1° trimestre 2026',
+    desc: 'El Consejo Superior aprobó la actualización del cuadro de honorarios mínimos para el primer trimestre de 2026.',
+  },
+  {
+    cat: 'Visado', date: '3 Abr 2026',
+    title: 'Sistema de visado online: nuevas funcionalidades',
+    desc: 'Se incorporaron mejoras al sistema: adjunto de planos en formato DWG y notificaciones automáticas por e-mail.',
+  },
+];
+
+const catColors = { Institucional: '#0d2d5e', Capacitación: '#1a8a4a', Normativa: '#8a1a1a', Visado: '#2563b0' };
+
+const Noticias = () => {
+  const [active, setActive] = useState(null);
+  return (
+    <section id="noticias" style={{ background: 'white', padding: '60px 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ marginBottom: 36, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Novedades</div>
+            <h2 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif" }}>Noticias del Distrito</h2>
+          </div>
+          <a href="#" style={{ color: '#2563b0', fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+            Archivo completo <Icon name="chevronRight" size={15} color="#2563b0"/>
+          </a>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+          {noticias.map((n, i) => (
+            <article key={i} style={{
+              border: '1px solid #e8f1fc', borderRadius: 10,
+              overflow: 'hidden', transition: 'all 0.25s',
+              boxShadow: active === i ? '0 8px 28px rgba(0,0,0,0.1)' : '0 2px 8px rgba(0,0,0,0.04)',
+              transform: active === i ? 'translateY(-3px)' : 'none',
+              borderTop: `3px solid ${catColors[n.cat] || '#2563b0'}`,
+              cursor: 'pointer',
+            }}
+            onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}>
+              {n.highlight && (
+                <div style={{ background: '#0d2d5e', padding: '6px 14px' }}>
+                  <span style={{ color: '#d4f0d4', fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>📌 Destacado</span>
+                </div>
+              )}
+              <div style={{ padding: '20px 20px 24px' }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12 }}>
+                  <span style={{
+                    background: (catColors[n.cat] || '#2563b0') + '18',
+                    color: catColors[n.cat] || '#2563b0',
+                    fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, letterSpacing: 0.5,
+                  }}>{n.cat}</span>
+                  <span style={{ color: '#9aa5b8', fontSize: 12 }}>{n.date}</span>
+                </div>
+                <h3 style={{ fontSize: 15.5, fontWeight: 800, color: '#1a2540', lineHeight: 1.4, marginBottom: 10, textWrap: 'pretty' }}>{n.title}</h3>
+                <p style={{ fontSize: 13.5, color: '#6b7a99', lineHeight: 1.6, textWrap: 'pretty' }}>{n.desc}</p>
+                <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 4, color: '#2563b0', fontSize: 13, fontWeight: 700 }}>
+                  Leer más <Icon name="chevronRight" size={13} color="#2563b0"/>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── VISADO BANNER ─── */
+const VisadoBanner = () => (
+  <section id="visado" style={{ background: 'linear-gradient(135deg, #0d2d5e 0%, #1a4a8a 100%)', padding: '52px 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32 }}>
+      <div style={{ flex: 1, minWidth: 280 }}>
+        <div style={{ color: '#d4f0d4', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Sistema online</div>
+        <h2 style={{ color: 'white', fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 900, fontFamily: "'Roboto Condensed', sans-serif", lineHeight: 1.2, marginBottom: 16 }}>
+          Visado de trabajos profesionales 100% online
+        </h2>
+        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 16, lineHeight: 1.65, maxWidth: 520, textWrap: 'pretty' }}>
+          Realizá el visado de tus trabajos desde cualquier dispositivo, las 24 horas. Con 20% de descuento en la tasa de visado respecto al trámite presencial.
+        </p>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, minWidth: 220 }}>
+        {['Tasa con 20% de descuento', 'Disponible 365 días al año', 'Aprobación por visador habilitado', 'Documentación 100% digital'].map((f, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#2a9e2a', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="11" height="11" viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>
+            </div>
+            <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14.5 }}>{f}</span>
+          </div>
+        ))}
+        <a href="https://colegioingenieros.org.ar/visado" target="_blank" style={{
+          marginTop: 8, background: '#2a9e2a', color: 'white', padding: '13px 24px',
+          borderRadius: 6, fontWeight: 700, fontSize: 15, display: 'flex', alignItems: 'center', gap: 8,
+          transition: 'background 0.2s', justifyContent: 'center',
+          boxShadow: '0 4px 16px rgba(42,158,42,0.4)',
+        }}
+        onMouseEnter={e=>e.currentTarget.style.background='#1f7a1f'}
+        onMouseLeave={e=>e.currentTarget.style.background='#2a9e2a'}>
+          Acceder al sistema <Icon name="externalLink" size={15} color="white"/>
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+/* ─── CAPACITACIÓN ─── */
+const cursos = [
+  { titulo: 'Integración y Automatización Profesional', modalidad: 'Presencial', fecha: 'Inicia 5 Mayo 2026', vacantes: 12 },
+  { titulo: 'BIM – Building Information Modeling Módulo 1', modalidad: 'Presencial', fecha: 'Inicia 16 Mayo 2026', vacantes: 8 },
+  { titulo: 'Honorarios Mínimos: cálculo y defensa profesional', modalidad: 'Virtual', fecha: 'Inicia 22 Mayo 2026', vacantes: 25 },
+];
+
+const Capacitacion = () => (
+  <section id="capacitacion" style={{ background: '#f0f2f7', padding: '60px 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ marginBottom: 36, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
+        <div>
+          <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Formación profesional</div>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif" }}>Próximos cursos</h2>
+        </div>
+        <a href="#" style={{ color: '#2563b0', fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+          Ver toda la oferta <Icon name="chevronRight" size={15} color="#2563b0"/>
+        </a>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        {cursos.map((c, i) => (
+          <div key={i} style={{
+            background: 'white', borderRadius: 10, padding: '20px 24px',
+            border: '1px solid #e8f1fc', display: 'flex', alignItems: 'center',
+            justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
+            transition: 'box-shadow 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+          }}
+          onMouseEnter={e=>e.currentTarget.style.boxShadow='0 6px 20px rgba(0,0,0,0.09)'}
+          onMouseLeave={e=>e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flex: 1, minWidth: 240 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 8, background: '#e8f1fc', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon name="book" size={22} color="#2563b0"/>
+              </div>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: 15, color: '#1a2540', marginBottom: 4, textWrap: 'pretty' }}>{c.titulo}</div>
+                <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 12.5, color: '#6b7a99', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Icon name="calendar" size={13} color="#9aa5b8"/> {c.fecha}
+                  </span>
+                  <span style={{
+                    fontSize: 11.5, fontWeight: 700, padding: '2px 10px', borderRadius: 20,
+                    background: c.modalidad === 'Virtual' ? '#e8f5ee' : '#e8f1fc',
+                    color: c.modalidad === 'Virtual' ? '#1a7a3a' : '#2563b0',
+                  }}>{c.modalidad}</span>
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 20, fontWeight: 900, color: c.vacantes < 10 ? '#2a9e2a' : '#1a8a4a' }}>{c.vacantes}</div>
+                <div style={{ fontSize: 11, color: '#9aa5b8' }}>vacantes</div>
+              </div>
+              <a href="#" style={{
+                background: '#0d2d5e', color: 'white', padding: '10px 20px',
+                borderRadius: 6, fontWeight: 700, fontSize: 13.5,
+                transition: 'background 0.2s', whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={e=>e.currentTarget.style.background='#1a4a8a'}
+              onMouseLeave={e=>e.currentTarget.style.background='#0d2d5e'}>
+                Inscribirse
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ─── REGLAMENTACIONES / RESOLUCIONES ─── */
+const reglamentaciones = [
+  { tipo: 'Resolución', num: 'CS 187/2026', titulo: 'Actualización del cuadro de honorarios mínimos – 1° trimestre 2026', fecha: '02 Abr 2026', categoria: 'Honorarios', tamaño: '342 KB', paginas: 12 },
+  { tipo: 'Resolución', num: 'CS 174/2026', titulo: 'Régimen de visado de trabajos profesionales – Modalidad online', fecha: '14 Mar 2026', categoria: 'Visado', tamaño: '486 KB', paginas: 18 },
+  { tipo: 'Reglamento', num: 'D7 12/2026', titulo: 'Reglamento interno de la Asamblea General Ordinaria del Distrito VII', fecha: '28 Feb 2026', categoria: 'Institucional', tamaño: '215 KB', paginas: 8 },
+  { tipo: 'Resolución', num: 'CS 158/2026', titulo: 'Cuota anual de matrícula y bonificaciones para el ejercicio 2026', fecha: '15 Feb 2026', categoria: 'Matrícula', tamaño: '198 KB', paginas: 6 },
+  { tipo: 'Disposición', num: 'D7 09/2026', titulo: 'Procedimiento para la baja temporal de matrícula por servicio militar o estudios', fecha: '22 Ene 2026', categoria: 'Matrícula', tamaño: '174 KB', paginas: 5 },
+  { tipo: 'Resolución', num: 'CS 142/2025', titulo: 'Reglamento de capacitación profesional continua y créditos académicos', fecha: '18 Dic 2025', categoria: 'Capacitación', tamaño: '512 KB', paginas: 22 },
+  { tipo: 'Reglamento', num: 'CS 138/2025', titulo: 'Código de Ética Profesional del Colegio de Ingenieros PBA', fecha: '04 Nov 2025', categoria: 'Institucional', tamaño: '628 KB', paginas: 28 },
+  { tipo: 'Resolución', num: 'CS 125/2025', titulo: 'Aranceles de servicios y trámites administrativos – Tabla vigente', fecha: '20 Oct 2025', categoria: 'Honorarios', tamaño: '256 KB', paginas: 10 },
+];
+
+const regCatColors = {
+  'Honorarios': '#8a1a1a',
+  'Visado': '#2563b0',
+  'Institucional': '#0d2d5e',
+  'Matrícula': '#1a8a4a',
+  'Capacitación': '#7a1a8a',
+};
+
+const tipoIcons = {
+  'Resolución': 'file',
+  'Reglamento': 'book',
+  'Disposición': 'shield',
+};
+
+const Reglamentaciones = () => {
+  const [filter, setFilter] = useState('Todas');
+  const [search, setSearch] = useState('');
+  const [previewIdx, setPreviewIdx] = useState(null);
+
+  const categorias = ['Todas', ...new Set(reglamentaciones.map(r => r.categoria))];
+  const filtered = reglamentaciones.filter(r =>
+    (filter === 'Todas' || r.categoria === filter) &&
+    (r.titulo.toLowerCase().includes(search.toLowerCase()) || r.num.toLowerCase().includes(search.toLowerCase()))
+  );
+
+  return (
+    <section id="normativa" style={{ background: 'white', padding: '60px 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Marco normativo</div>
+            <h2 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif" }}>Reglamentaciones y Resoluciones</h2>
+            <p style={{ color: '#6b7a99', fontSize: 14.5, marginTop: 6, maxWidth: 560 }}>Documentación oficial del Colegio Superior y del Distrito VII. Vigente y de consulta pública.</p>
+          </div>
+          <a href="#" style={{ color: '#2563b0', fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+            Archivo histórico completo <Icon name="chevronRight" size={15} color="#2563b0"/>
+          </a>
+        </div>
+
+        {/* Toolbar: search + filters */}
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center' }}>
+          <div style={{ position: 'relative', flex: '1 1 260px', minWidth: 200 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa5b8" strokeWidth="2" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }}>
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input
+              type="text" placeholder="Buscar por título o número de resolución..."
+              value={search} onChange={e => setSearch(e.target.value)}
+              style={{
+                width: '100%', padding: '10px 14px 10px 38px', borderRadius: 6,
+                border: '1.5px solid #e0e6f0', fontSize: 13.5, outline: 'none',
+                fontFamily: 'inherit', background: '#f8f9fc',
+              }}
+              onFocus={e=>e.target.style.borderColor='#2563b0'}
+              onBlur={e=>e.target.style.borderColor='#e0e6f0'}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            {categorias.map(c => (
+              <button key={c} onClick={() => setFilter(c)} style={{
+                padding: '8px 14px', borderRadius: 20, fontSize: 12.5, fontWeight: 700,
+                border: '1.5px solid ' + (filter === c ? '#0d2d5e' : '#e0e6f0'),
+                background: filter === c ? '#0d2d5e' : 'white',
+                color: filter === c ? 'white' : '#6b7a99',
+                transition: 'all 0.15s',
+              }}>{c}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results count */}
+        <div style={{ fontSize: 12.5, color: '#9aa5b8', marginBottom: 14 }}>
+          {filtered.length} {filtered.length === 1 ? 'documento' : 'documentos'}
+          {filter !== 'Todas' && <> en categoría <b style={{ color: regCatColors[filter] }}>{filter}</b></>}
+        </div>
+
+        {/* List */}
+        <div style={{ border: '1px solid #e8f1fc', borderRadius: 10, overflow: 'hidden', background: 'white' }}>
+          {filtered.length === 0 && (
+            <div style={{ padding: '48px 20px', textAlign: 'center', color: '#9aa5b8', fontSize: 14 }}>
+              No se encontraron documentos con esos criterios.
+            </div>
+          )}
+          {filtered.map((r, i) => {
+            const color = regCatColors[r.categoria] || '#2563b0';
+            const isOpen = previewIdx === i;
+            return (
+              <div key={i} style={{
+                borderBottom: i < filtered.length - 1 ? '1px solid #e8f1fc' : 'none',
+                background: isOpen ? '#f8f9fc' : 'white',
+                transition: 'background 0.15s',
+              }}>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '52px 1fr auto auto auto',
+                  gap: 16, alignItems: 'center', padding: '16px 20px',
+                }} className="reg-row">
+                  {/* PDF icon */}
+                  <div style={{
+                    width: 44, height: 52, borderRadius: 4, background: color + '12',
+                    border: '1px solid ' + color + '28', display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center', position: 'relative',
+                  }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+                      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    <span style={{ fontSize: 8.5, fontWeight: 800, color: color, marginTop: 2, letterSpacing: 0.5 }}>PDF</span>
+                  </div>
+
+                  {/* Title + meta */}
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 5, flexWrap: 'wrap' }}>
+                      <span style={{
+                        background: color + '15', color: color, fontSize: 10.5, fontWeight: 800,
+                        padding: '2px 8px', borderRadius: 3, letterSpacing: 0.5, textTransform: 'uppercase',
+                      }}>{r.categoria}</span>
+                      <span style={{ fontSize: 11.5, color: '#9aa5b8', fontWeight: 700, fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: 0.5 }}>{r.tipo} {r.num}</span>
+                    </div>
+                    <div style={{ fontSize: 14.5, fontWeight: 700, color: '#1a2540', lineHeight: 1.4, textWrap: 'pretty' }}>{r.titulo}</div>
+                  </div>
+
+                  {/* Date */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#6b7a99', fontSize: 13 }} className="reg-date">
+                    <Icon name="calendar" size={14} color="#9aa5b8"/>
+                    {r.fecha}
+                  </div>
+
+                  {/* Size */}
+                  <div style={{ fontSize: 12, color: '#9aa5b8', fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: 0.3 }} className="reg-size">
+                    {r.paginas} pág · {r.tamaño}
+                  </div>
+
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button onClick={() => setPreviewIdx(isOpen ? null : i)} style={{
+                      padding: '8px 12px', borderRadius: 5, fontSize: 12.5, fontWeight: 700,
+                      background: isOpen ? color : 'transparent', color: isOpen ? 'white' : color,
+                      border: '1.5px solid ' + color, display: 'flex', alignItems: 'center', gap: 5,
+                      transition: 'all 0.15s',
+                    }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                      </svg>
+                      Ver
+                    </button>
+                    <a href="#" download style={{
+                      padding: '8px 12px', borderRadius: 5, fontSize: 12.5, fontWeight: 700,
+                      background: '#0d2d5e', color: 'white',
+                      display: 'flex', alignItems: 'center', gap: 5,
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e=>e.currentTarget.style.background='#1a4a8a'}
+                    onMouseLeave={e=>e.currentTarget.style.background='#0d2d5e'}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
+                      PDF
+                    </a>
+                  </div>
+                </div>
+
+                {/* PDF Preview */}
+                {isOpen && (
+                  <div style={{ padding: '0 20px 24px', borderTop: '1px dashed ' + color + '40' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, marginTop: 18 }}>
+                      {/* Faux PDF preview */}
+                      <div style={{
+                        background: 'white', border: '1px solid #d0d8e8', borderRadius: 4,
+                        padding: '32px 36px', minHeight: 320, position: 'relative',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                        fontFamily: 'Georgia, serif',
+                      }}>
+                        <div style={{ position: 'absolute', top: 12, right: 16, fontSize: 10, color: '#bfc8d8', letterSpacing: 1 }}>Página 1 de {r.paginas}</div>
+                        <div style={{ textAlign: 'center', borderBottom: '2px solid ' + color, paddingBottom: 14, marginBottom: 18 }}>
+                          <div style={{ fontSize: 9, letterSpacing: 2, color: '#6b7a99', textTransform: 'uppercase', marginBottom: 4 }}>Colegio de Ingenieros · Provincia de Buenos Aires</div>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: '#1a2540', letterSpacing: 0.5, textTransform: 'uppercase' }}>{r.tipo} {r.num}</div>
+                        </div>
+                        <div style={{ fontSize: 13, color: '#3d4b63', lineHeight: 1.7, fontWeight: 600, marginBottom: 12 }}>{r.titulo}</div>
+                        <div style={{ fontSize: 11.5, color: '#6b7a99', lineHeight: 1.7 }}>
+                          <p style={{ marginBottom: 10 }}>VISTO la necesidad de actualizar la normativa vigente en materia de {r.categoria.toLowerCase()}, conforme lo establecido por la Ley 10.416 y sus modificatorias;</p>
+                          <p style={{ marginBottom: 10 }}>CONSIDERANDO que el Consejo Superior del Colegio de Ingenieros de la Provincia de Buenos Aires, en uso de las atribuciones conferidas por su estatuto orgánico, ha resuelto en sesión plenaria del día {r.fecha}...</p>
+                          <p style={{ color: '#bfc8d8', fontStyle: 'italic' }}>[ Vista previa del documento — contenido completo en el PDF descargable ]</p>
+                        </div>
+                      </div>
+
+                      {/* Metadata sidebar */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13 }}>
+                        <div style={{ fontWeight: 800, color: '#0d2d5e', fontSize: 13, marginBottom: 4 }}>Información del documento</div>
+                        {[
+                          ['Tipo', r.tipo], ['Número', r.num], ['Categoría', r.categoria],
+                          ['Fecha', r.fecha], ['Páginas', r.paginas], ['Tamaño', r.tamaño],
+                          ['Estado', '✓ Vigente'],
+                        ].map(([k, v]) => (
+                          <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px dashed #e8f1fc' }}>
+                            <span style={{ color: '#9aa5b8', fontSize: 12 }}>{k}</span>
+                            <span style={{ color: '#3d4b63', fontWeight: 700, fontSize: 12.5 }}>{v}</span>
+                          </div>
+                        ))}
+                        <a href="#" style={{
+                          marginTop: 6, background: color, color: 'white', padding: '10px',
+                          borderRadius: 5, fontWeight: 700, fontSize: 13, textAlign: 'center',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                        }}>
+                          <Icon name="file" size={14} color="white"/> Descargar PDF completo
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── INSTITUCIONAL ─── */
+const Institucional = () => (
+  <section id="institucional" style={{ background: 'white', padding: '60px 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+      <div>
+        <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Quiénes somos</div>
+        <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif", lineHeight: 1.25, marginBottom: 20 }}>
+          Distrito VII del Colegio de Ingenieros de la Provincia de Buenos Aires
+        </h2>
+        <p style={{ color: '#6b7a99', lineHeight: 1.75, marginBottom: 16, textWrap: 'pretty' }}>
+          El Colegio de Ingenieros de la Provincia de Buenos Aires es una entidad de carácter público no estatal, creada por Ley 10.416, que tiene a su cargo el control del ejercicio profesional de la Ingeniería en la Provincia.
+        </p>
+        <p style={{ color: '#6b7a99', lineHeight: 1.75, marginBottom: 28, textWrap: 'pretty' }}>
+          El Distrito VII comprende 24 partidos de la zona norte y oeste del Gran Buenos Aires, con sede principal en San Justo (La Matanza).
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {[
+            ['Autoridades del Distrito', 'users'],
+            ['Normativa y resoluciones', 'file'],
+            ['Partidos del Distrito VII', 'location'],
+          ].map(([label, icon]) => (
+            <a key={label} href="#" style={{
+              display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px',
+              border: '1px solid #e8f1fc', borderRadius: 8, color: '#1a2540',
+              transition: 'all 0.2s', fontSize: 14, fontWeight: 600,
+            }}
+            onMouseEnter={e=>{e.currentTarget.style.background='#e8f1fc'; e.currentTarget.style.borderColor='#2563b0'}}
+            onMouseLeave={e=>{e.currentTarget.style.background='transparent'; e.currentTarget.style.borderColor='#e8f1fc'}}>
+              <Icon name={icon} size={18} color="#2563b0"/> {label}
+              <Icon name="chevronRight" size={15} color="#9aa5b8" style={{ marginLeft: 'auto' }}/>
+            </a>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {/* Sede card */}
+        <div style={{ background: '#0d2d5e', borderRadius: 12, padding: '28px 28px', color: 'white' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: '#d4f0d4', marginBottom: 16 }}>Sede Principal</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[
+              { icon: 'location', text: 'Almafuerte 2868, San Justo (La Matanza)' },
+              { icon: 'phone', text: '(011) 4651-0064 / 4482-2231' },
+              { icon: 'mail', text: 'info@cipba.org' },
+              { icon: 'clock', text: 'Lun–Vie 9:00 a 16:00 hs' },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <Icon name={item.icon} size={16} color="rgba(255,255,255,0.6)"/>
+                <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Sede 2 */}
+        <div style={{ background: 'white', border: '1px solid #e8f1fc', borderRadius: 12, padding: '22px 24px' }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: '#9aa5b8', marginBottom: 14 }}>Sede Olivos</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              { icon: 'location', text: 'Ricardo Gutiérrez 1834, Olivos' },
+              { icon: 'clock', text: 'Solo correspondencia' },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <Icon name={item.icon} size={15} color="#9aa5b8"/>
+                <span style={{ fontSize: 13.5, color: '#6b7a99' }}>{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ background: 'white', border: '1px solid #e8f1fc', borderRadius: 12, padding: '22px 24px' }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: '#9aa5b8', marginBottom: 14 }}>Sede Haedo</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              { icon: 'location', text: 'Valentín Gómez 577 1° Of. 1, Haedo' },
+              { icon: 'phone', text: '(011) 5433-5344' },
+              { icon: 'clock', text: 'Lun–Vie 8:00 a 16:00 hs' },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <Icon name={item.icon} size={15} color="#9aa5b8"/>
+                <span style={{ fontSize: 13.5, color: '#6b7a99' }}>{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+/* ─── CONTACTO ─── */
+const Contacto = () => {
+  const [form, setForm] = useState({ nombre: '', email: '', asunto: '', mensaje: '' });
+  const [sent, setSent] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const e = {};
+    if (!form.nombre.trim()) e.nombre = 'Requerido';
+    if (!form.email.includes('@')) e.email = 'Email inválido';
+    if (!form.mensaje.trim()) e.mensaje = 'Requerido';
+    return e;
+  };
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    const e = validate();
+    if (Object.keys(e).length) { setErrors(e); return; }
+    setSent(true);
+  };
+
+  return (
+    <section id="contacto" style={{ background: '#f0f2f7', padding: '60px 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <div style={{ color: '#2a9e2a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 10 }}>Escribinos</div>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 900, color: '#0d2d5e', fontFamily: "'Roboto Condensed', sans-serif" }}>Contacto</h2>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 40, alignItems: 'start' }}>
+          {/* Info */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ background: 'white', borderRadius: 10, padding: '24px', border: '1px solid #e8f1fc' }}>
+              <div style={{ fontWeight: 800, color: '#0d2d5e', fontSize: 15, marginBottom: 16 }}>Área Administrativa</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ fontSize: 14, color: '#6b7a99' }}><b style={{ color: '#3d4b63' }}>Rolando Menna:</b> (011) 1158570060</div>
+                <div style={{ fontSize: 14, color: '#6b7a99' }}><b style={{ color: '#3d4b63' }}>Griselda Bezerra:</b> (011) 1127134055</div>
+                <div style={{ fontSize: 14, color: '#6b7a99' }}><b style={{ color: '#3d4b63' }}>Mónica Rodríguez:</b> (011) 1127133321</div>
+              </div>
+            </div>
+            <div style={{ background: 'white', borderRadius: 10, padding: '24px', border: '1px solid #e8f1fc' }}>
+              <div style={{ fontWeight: 800, color: '#0d2d5e', fontSize: 15, marginBottom: 16 }}>Área Técnica</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ fontSize: 14, color: '#6b7a99' }}><b style={{ color: '#3d4b63' }}>Ing. Marcelo Romano:</b> (011) 1138293041</div>
+                <div style={{ fontSize: 14, color: '#6b7a99' }}><b style={{ color: '#3d4b63' }}>Visador Ing. Pappolla:</b> (011) 1127133789</div>
+              </div>
+            </div>
+            <a href="https://wa.me/541138293041" target="_blank" style={{
+              background: '#25d366', color: 'white', padding: '14px 20px',
+              borderRadius: 8, display: 'flex', alignItems: 'center', gap: 10,
+              fontWeight: 700, fontSize: 15, justifyContent: 'center',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={e=>e.currentTarget.style.background='#1da851'}
+            onMouseLeave={e=>e.currentTarget.style.background='#25d366'}>
+              <Icon name="whatsapp" size={22} color="white"/> Consultar por WhatsApp
+            </a>
+          </div>
+
+          {/* Form */}
+          {sent ? (
+            <div style={{ background: 'white', borderRadius: 10, padding: '48px', textAlign: 'center', border: '1px solid #e8f1fc' }}>
+              <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#e8f5ee', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                <svg width="28" height="28" viewBox="0 0 28 28"><polyline points="4,14 10,20 24,8" stroke="#1a8a4a" strokeWidth="2.5" fill="none" strokeLinecap="round"/></svg>
+              </div>
+              <h3 style={{ color: '#0d2d5e', fontSize: 20, fontWeight: 800, marginBottom: 10 }}>¡Mensaje enviado!</h3>
+              <p style={{ color: '#6b7a99', lineHeight: 1.6 }}>Nos pondremos en contacto a la brevedad. Muchas gracias.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} style={{ background: 'white', borderRadius: 10, padding: '32px', border: '1px solid #e8f1fc', display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {[
+                { id: 'nombre', label: 'Nombre completo', type: 'text', placeholder: 'Ing. Juan Pérez' },
+                { id: 'email', label: 'Correo electrónico', type: 'email', placeholder: 'correo@ejemplo.com' },
+                { id: 'asunto', label: 'Asunto', type: 'text', placeholder: 'Consulta sobre matrícula...' },
+              ].map(field => (
+                <div key={field.id}>
+                  <label style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#3d4b63', marginBottom: 6 }}>{field.label}</label>
+                  <input
+                    type={field.type} placeholder={field.placeholder} value={form[field.id]}
+                    onChange={e => setForm({...form, [field.id]: e.target.value})}
+                    style={{
+                      width: '100%', padding: '10px 14px', borderRadius: 6, border: errors[field.id] ? '1.5px solid #c0392b' : '1.5px solid #e0e6f0',
+                      fontSize: 14, outline: 'none', transition: 'border 0.2s', fontFamily: 'inherit',
+                    }}
+                    onFocus={e=>e.target.style.borderColor='#2563b0'}
+                    onBlur={e=>e.target.style.borderColor=errors[field.id]?'#c0392b':'#e0e6f0'}
+                  />
+                  {errors[field.id] && <div style={{ color: '#c0392b', fontSize: 12, marginTop: 4 }}>{errors[field.id]}</div>}
+                </div>
+              ))}
+              <div>
+                <label style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#3d4b63', marginBottom: 6 }}>Mensaje</label>
+                <textarea
+                  rows={4} placeholder="Tu consulta..."
+                  value={form.mensaje} onChange={e => setForm({...form, mensaje: e.target.value})}
+                  style={{
+                    width: '100%', padding: '10px 14px', borderRadius: 6, resize: 'vertical',
+                    border: errors.mensaje ? '1.5px solid #c0392b' : '1.5px solid #e0e6f0',
+                    fontSize: 14, outline: 'none', fontFamily: 'inherit',
+                  }}
+                  onFocus={e=>e.target.style.borderColor='#2563b0'}
+                  onBlur={e=>e.target.style.borderColor=errors.mensaje?'#c0392b':'#e0e6f0'}
+                />
+              </div>
+              <button type="submit" style={{
+                background: '#0d2d5e', color: 'white', padding: '13px', borderRadius: 6,
+                fontWeight: 700, fontSize: 15, transition: 'background 0.2s',
+              }}
+              onMouseEnter={e=>e.currentTarget.style.background='#1a4a8a'}
+              onMouseLeave={e=>e.currentTarget.style.background='#0d2d5e'}>
+                Enviar mensaje
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─── FOOTER ─── */
+const Footer = () => (
+  <footer style={{ background: '#060f1e', color: 'rgba(255,255,255,0.7)', padding: '48px 24px 24px' }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 40, marginBottom: 40 }}>
+        {/* Brand */}
+        <div>
+          <div style={{ marginBottom: 16 }}>
+            <img src="uploads/logo-cipba-vii.png" alt="CIPBA Distrito VII" style={{ height: 52, width: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }}/>
+          </div>
+          <p style={{ fontSize: 13.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', maxWidth: 280, textWrap: 'pretty' }}>
+            Entidad pública no estatal creada por Ley 10.416. Ejercicio profesional habilitado en 24 partidos de la zona oeste y norte del Gran Buenos Aires.
+          </p>
+        </div>
+        {/* Links */}
+        {[
+          { title: 'Trámites', items: ['Nueva Matrícula', 'Reinscripción', 'Visado Online', 'Honorarios', 'Certificados'] },
+          { title: 'Institucional', items: ['Autoridades', 'Historia', 'Normativa', 'Delegaciones', 'CAAITBA'] },
+          { title: 'Servicios', items: ['Capacitación', 'Seguro Profesional', 'Beneficios', 'Bolsa de Trabajo', 'Contacto'] },
+        ].map(col => (
+          <div key={col.title}>
+            <div style={{ color: 'white', fontWeight: 800, fontSize: 14, marginBottom: 16, letterSpacing: 0.5 }}>{col.title}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+              {col.items.map(item => (
+                <a key={item} href="#" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.55)', transition: 'color 0.2s' }}
+                  onMouseEnter={e=>e.target.style.color='#2a9e2a'} onMouseLeave={e=>e.target.style.color='rgba(255,255,255,0.55)'}>
+                  {item}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>
+          © 2026 CIPBA Distrito VII. Todos los derechos reservados.
+        </div>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>
+          Almafuerte 2868, San Justo · (011) 4651-0064 · info@cipba.org
+        </div>
+      </div>
+    </div>
+  </footer>
+);
+
+/* ─── TWEAKS PANEL ─── */
+const TweaksPanel = ({ visible, tweaks, setTweaks }) => {
+  if (!visible) return null;
+  return (
+    <div style={{
+      position: 'fixed', bottom: 24, right: 24, background: 'white', borderRadius: 12,
+      boxShadow: '0 8px 40px rgba(0,0,0,0.18)', padding: '20px', width: 260, zIndex: 999,
+      border: '1px solid #e0e6f0',
+    }}>
+      <div style={{ fontWeight: 800, fontSize: 15, color: '#0d2d5e', marginBottom: 16 }}>Tweaks</div>
+      {[
+        { key: 'showBanner', label: 'Mostrar banner animado', type: 'toggle' },
+        { key: 'heroTitle', label: 'Título del hero', type: 'text' },
+      ].map(t => (
+        <div key={t.key} style={{ marginBottom: 14 }}>
+          <label style={{ fontSize: 12.5, fontWeight: 700, color: '#3d4b63', display: 'block', marginBottom: 5 }}>{t.label}</label>
+          {t.type === 'toggle' ? (
+            <button onClick={() => {
+              const next = {...tweaks, [t.key]: !tweaks[t.key]};
+              setTweaks(next);
+              window.parent.postMessage({type: '__edit_mode_set_keys', edits: {[t.key]: next[t.key]}}, '*');
+            }} style={{
+              background: tweaks[t.key] ? '#0d2d5e' : '#e0e6f0', color: tweaks[t.key] ? 'white' : '#6b7a99',
+              padding: '6px 14px', borderRadius: 6, fontSize: 13, fontWeight: 700, border: 'none',
+            }}>
+              {tweaks[t.key] ? 'Activado' : 'Desactivado'}
+            </button>
+          ) : (
+            <input
+              value={tweaks[t.key]} onChange={e => {
+                const next = {...tweaks, [t.key]: e.target.value};
+                setTweaks(next);
+                window.parent.postMessage({type: '__edit_mode_set_keys', edits: {[t.key]: e.target.value}}, '*');
+              }}
+              style={{ width: '100%', padding: '7px 10px', borderRadius: 6, border: '1px solid #e0e6f0', fontSize: 13, fontFamily: 'inherit' }}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ─── APP ─── */
+const App = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('message', e => {
+      if (e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    });
+    window.parent.postMessage({type: '__edit_mode_available'}, '*');
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-burger { display: flex !important; }
+        }
+        @media (max-width: 900px) {
+          #institucional > div { grid-template-columns: 1fr !important; }
+          #contacto > div > div:last-child { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+          footer > div > div:first-child { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 860px) {
+          .reg-row { grid-template-columns: 44px 1fr auto !important; }
+          .reg-date, .reg-size { display: none !important; }
+          #normativa .reg-row > div:last-child a span { display: none; }
+        }
+        @media (max-width: 900px) {
+          #normativa div[style*="grid-template-columns: 1fr 280px"] { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+      <Hero tweaks={tweaks}/>
+      <QuickAccess/>
+      <Noticias/>
+      <VisadoBanner/>
+      <Capacitacion/>
+      <Reglamentaciones/>
+      <Institucional/>
+      <Contacto/>
+      <Footer/>
+      <TweaksPanel visible={tweaksVisible} tweaks={tweaks} setTweaks={setTweaks}/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

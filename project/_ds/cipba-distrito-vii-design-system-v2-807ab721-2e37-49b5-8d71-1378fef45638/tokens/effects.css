@@ -1,0 +1,17 @@
+:root{
+--radius-btn:6px;
+--radius-card:10px;
+--radius-card-lg:12px;
+--radius-badge:20px;
+--radius-icon:8px;
+
+--shadow-card:0 2px 8px rgba(0,0,0,.04);
+--shadow-hover:0 8px 24px rgba(0,0,0,.10);
+--shadow-nav:0 2px 20px rgba(0,0,0,.25);
+--shadow-hero-card:0 12px 40px rgba(13,45,94,.18);
+
+--ease-standard:cubic-bezier(.4,0,.2,1); /* @kind other */
+--duration-fast:.2s; /* @kind other */
+--duration-base:.3s; /* @kind other */
+--duration-slow:.8s; /* @kind other */
+}
