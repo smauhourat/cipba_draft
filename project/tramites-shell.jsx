@@ -53,7 +53,7 @@ const TopBar = () => (
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 5, opacity: .8 }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.8}>
           <Icon name="whatsapp" size={13} color="white"/> WhatsApp
         </a>
-        <a href="https://colegioingenieros.org.ar" target="_blank" className="tb-cs" style={{ display: 'flex', alignItems: 'center', gap: 4, opacity: .8 }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.8}>
+        <a href="http://www.colegioingenieros.org.ar/" target="_blank" className="tb-cs" style={{ display: 'flex', alignItems: 'center', gap: 4, opacity: .8 }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.8}>
           Consejo Superior <Icon name="externalLink" size={11} color="white"/>
         </a>
       </div>
@@ -337,7 +337,7 @@ const Ayuda = ({ mail = 'info@cipba.org' }) => (
       <a href="contacto.html" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a' }}>
         <Icon name="users" size={15} color="#00a48a"/> Contacto por área
       </a>
-      <a href="https://wa.me/541138293041" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a' }}>
+      <a href="https://wa.me/5491127133330" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a' }}>
         <Icon name="whatsapp" size={15} color="#25d366"/> Consultar por WhatsApp
       </a>
     </div>

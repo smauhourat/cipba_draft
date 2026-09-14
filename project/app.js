@@ -529,7 +529,7 @@ const TopBar = () => React.createElement("div", {
   size: 13,
   color: "white"
 }), " WhatsApp"), React.createElement("a", {
-  href: "https://colegioingenieros.org.ar",
+  href: "http://www.colegioingenieros.org.ar/",
   target: "_blank",
   className: "tb-cs",
   style: {

@@ -504,7 +504,7 @@ Página interna accesible desde el dropdown "Institucional" del navbar (ítem "S
 | Botones primarios | Oscurecimiento de color + `translateY(-2px)` en hover |
 | Dropdowns navbar | Aparecen en `onMouseEnter`, desaparecen en `onMouseLeave` |
 | Formulario | Validación inline (nombre, email requeridos), estado "enviado" con animación |
-| WhatsApp | Link a `https://wa.me/541138293041` en nueva pestaña |
+| WhatsApp | Link a `https://wa.me/5491127133330` en nueva pestaña |
 
 ---
 

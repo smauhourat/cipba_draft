@@ -1496,7 +1496,7 @@ function TopBar({
     size: 15,
     color: "#fff"
   })), /*#__PURE__*/React.createElement("a", {
-    href: "https://colegioingenieros.org.ar",
+    href: "http://www.colegioingenieros.org.ar/",
     target: "_blank",
     rel: "noreferrer",
     style: {
