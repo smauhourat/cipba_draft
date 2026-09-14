@@ -232,10 +232,11 @@ const Navbar = ({ scrolled }) => {
 /* ─── ANNOUNCEMENT BAR ─── */
 const AnnouncementBar = () => (
   <div style={{ background: '#e8f5f1', borderBottom: '1px solid #c0e2ca' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-      <Icon name="scale" size={14} color="#14484a"/>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', lineHeight: 1.7 }}>
+      <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 8 }}><Icon name="scale" size={14} color="#14484a"/></span>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
+      {' '}
+      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'inline-flex', alignItems: 'center', gap: 3, verticalAlign: 'middle' }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
