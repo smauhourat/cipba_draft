@@ -414,10 +414,10 @@ const TramitePage = ({ hero, actual, children, aside }) => {
 
 /* ─── REDES / FOOTER ─── */
 const redes = [
-  { icon: 'instagram', label: 'Instagram', href: '#' },
+  { icon: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/cipba7/' },
   { icon: 'facebook', label: 'Facebook', href: '#' },
   { icon: 'linkedin', label: 'LinkedIn', href: '#' },
-  { icon: 'whatsapp', label: 'WhatsApp', href: '#' },
+  { icon: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/5491127133330' },
 ];
 
 const SocialIcons = ({ size = 17 }) => {
