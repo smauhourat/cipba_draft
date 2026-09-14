@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Baja | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel">
+const { TramitePage, Requisitos, Descargas, Costo, Ayuda, Aviso, Icon } = window;
+
+const requisitos = [
+  { t: 'Formulario de baja B-2024 completo' },
+  { t: 'Carácter de declaración jurada', d: 'la solicitud en sí misma tiene carácter de declaración jurada. El único motivo válido para solicitar la baja es no ejercer la profesión en la Provincia de Buenos Aires, o tramitar la jubilación ante la CAAITBA.' },
+  { t: 'Si está inscripto como perito judicial', d: 'acompañar nota debidamente recepcionada por el organismo de contralor solicitando la baja en el o los listados de peritos.' },
+  { t: 'Condiciones ineludibles', d: 'no encontrarse en relación de dependencia del Estado provincial o municipal ni de una empresa privada en carácter de ingeniero; no tener tareas profesionales pendientes de conclusión en la provincia; y no realizar, a partir de la fecha, ninguna tarea profesional propia del título, conforme los Arts. 1°, 2°, 3° y concordantes de la Ley 10.416 y el Art. 247° del Código Penal.' },
+  { t: 'Constancias a acompañar', d: 'certificado de negatividad de aportes ANSES/IPS; para independientes o en relación de dependencia, constancia de AFIP de que no registra impuestos activos o de ARBA de baja en Ingresos Brutos (si realiza una actividad no relacionada con la ingeniería, debe presentar constancia de la misma); y por jubilación, constancia de inicio de trámite ante la CAAITBA.' },
+  { t: 'Devolución de credenciales', d: 'del carnet de matrícula y de los carnets de los registros especiales donde estuviere inscripto.' },
+  { t: 'Documentación completa', d: 'cuando al momento de la presentación la documentación no esté completa, el trámite no debe ser recepcionado.' },
+  { t: 'Trámite personal', d: 'se realiza por vía electrónica.' },
+];
+
+const fallecimiento = [
+  { t: 'Formulario BF-2024 completo' },
+  { t: 'Copia del certificado o acta de defunción' },
+];
+
+const descargas = [
+  { label: 'B-2024 Formulario de baja', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/B-2024%20FORMULARIO%20DE%20BAJA.pdf' },
+  { label: 'BF-2024 Baja por fallecimiento', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/BF-2024%20BAJA%20POR%20FALLECIMIENTO.pdf' },
+];
+
+const App = () => (
+  <TramitePage
+    actual="baja.html"
+    hero={{
+      eyebrow: 'Matrícula profesional',
+      titulo: 'Baja',
+      intro: 'Solicitud de baja de matrícula (B-2024) y baja por fallecimiento (BF-2024). El trámite es personal y se realiza por vía electrónica.',
+    }}
+    aside={<>
+      <Costo titulo="A tener en cuenta" filas={[
+        { label: 'La presentación no cierra el trámite', value: 'Queda sujeto a revisión y posterior aprobación o rechazo por parte del Consejo Superior. Hasta entonces el profesional debe continuar pagando la matrícula por los períodos que se generen.' },
+        { label: 'Relación de dependencia', value: 'Cuando el profesional se encuentre en relación de dependencia y solicite la baja, el Distrito le enviará una nota junto con la constancia de notificación y la declaración jurada que deberá firmar.' },
+      ]}/>
+      <Ayuda/>
+    </>}>
+
+    <Requisitos titulo="Solicitud de baja de matrícula: B-2024" items={requisitos}/>
+
+    <Requisitos titulo="Baja por fallecimiento: BF-2024" sub="El formulario junto con el acta de defunción puede enviarse por mail o presentarse en el Distrito y/o en el Consejo Superior. Se le da curso prioritario y se comunica a la brevedad a la CAAITBA mediante la remisión del certificado de continuidad." items={fallecimiento}/>
+
+    <Aviso titulo="Prestaciones de la CAAITBA">
+      A los efectos de las prestaciones de la CAAITBA (pensión, subsidio o la que corresponda) es requisito que el profesional se encuentre activo y con los pagos de matrícula al día al momento del fallecimiento. En cuanto a la credencial, es conveniente anularla para evitar su uso indebido.
+    </Aviso>
+
+    <Descargas items={descargas}/>
+  </TramitePage>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

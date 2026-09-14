@@ -87,10 +87,10 @@ const navLinks = [
   { label: 'Inicio', href: 'index.html' },
   { label: 'Trámites', href: 'index.html#tramites', groups: [
     { title: 'Matrícula', items: [
-      { label: 'Inscripción', href: '#' },
-      { label: 'Rehabilitación', href: '#' },
-      { label: 'Baja', href: '#' },
-      { label: 'Solicitud de credencial', href: '#' },
+      { label: 'Inscripción', href: 'inscripcion.html' },
+      { label: 'Rehabilitación', href: 'rehabilitacion.html' },
+      { label: 'Baja', href: 'baja.html' },
+      { label: 'Solicitud de credenciales', href: 'solicitud-credenciales.html' },
       { label: 'Medios de pago', href: 'pago-matricula.html' },
     ] },
     { title: 'Sistemas', items: [
@@ -116,13 +116,13 @@ const navLinks = [
   ] },
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
-      { label: 'Autoridades', href: 'institucional.html' },
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
-      { label: 'Partidos del Distrito', href: 'index.html#institucional' },
-      { label: 'Sedes y delegaciones', href: 'index.html#institucional' },
+      { label: 'Autoridades', href: 'institucional.html#autoridades' },
+      { label: 'Partidos del Distrito', href: 'institucional.html#partidos' },
+      { label: 'Sedes y delegaciones', href: 'institucional.html#sedes' },
     ] },
   ] },
-  { label: 'Contacto', href: 'index.html#contacto' },
+  { label: 'Contacto', href: 'contacto.html' },
 ];
 
 const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index.html') : '');
@@ -194,7 +194,7 @@ const Navbar = ({ scrolled }) => {
                   onMouseEnter={e => e.currentTarget.style.background = '#e8f5f1'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <Icon name="search" size={17} color="#14484a"/>
                 </button>}
-            <a href="index.html#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
+            <a href="inscripcion.html" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.background = '#0d3234'} onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
               Matricularse <Icon name="externalLink" size={12} color="white"/>
             </a>
@@ -223,7 +223,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="index.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="inscripcion.html" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -654,7 +654,7 @@ const CTAFinal = () => (
         El área administrativa del Distrito VII puede ayudarte a confirmar tu código de pago electrónico o el estado de tu matrícula.
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <a href="index.html#contacto" style={{
+        <a href="contacto.html" style={{
           background: 'white', color: '#008c75', padding: '12px 24px',
           borderRadius: 6, fontWeight: 800, fontSize: 14.5,
           display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.2s',

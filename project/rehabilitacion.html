@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rehabilitación | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel">
+const { TramitePage, Requisitos, Descargas, Costo, Ayuda, Aviso, Icon } = window;
+
+const requisitos = [
+  { t: 'Formulario R-2024 completo', d: 'o sus posteriores actualizaciones.' },
+  { t: 'Fotocopia simple del diploma', d: 'escaneada.' },
+  { t: 'Documento de identidad (DNI)', d: 'copia escaneada. El original se solicita al retirar la credencial.' },
+  { t: 'Firma y foto digitalizadas' },
+  { t: 'Certificado con el plan de estudios (año)', d: 'extendido por la facultad emisora del título, en caso de no haberlo presentado oportunamente.' },
+  { t: 'Formulario de afiliación a la CAAITBA', d: 'completo.' },
+];
+
+const descargas = [
+  { label: 'Solicitud de rehabilitación de matrícula', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/SOLICITUD%20DE%20REHABILITACI%C3%93N%20DE%20MATRICULA%202024.pdf' },
+  { label: 'Ficha de afiliación CAAITBA', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/FichaAfiliacion.pdf' },
+  { label: 'Notificación sobre afiliación CAAITBA', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/NOTIFICACION%20SOBRE%20AFILIACION%20CAAITBA.docx', tipo: 'DOCX' },
+];
+
+const App = () => (
+  <TramitePage
+    actual="rehabilitacion.html"
+    hero={{
+      eyebrow: 'Matrícula profesional',
+      titulo: 'Rehabilitación',
+      intro: 'Para reactivar una matrícula dada de baja, suspendida, cancelada o inhabilitada. Completá el formulario R-2024 y presentá la documentación en el Distrito VII.',
+    }}
+    aside={<>
+      <Costo filas={[
+        { label: 'Costo del trámite', value: 'Cuota matricular vigente (1 módulo) más el Derecho de Rehabilitación.' },
+        { label: 'Derecho de rehabilitación', value: 'Matrículas dadas de baja: un (1) módulo. Matrículas suspendidas, canceladas o inhabilitadas por falta de pago: tres (3) módulos.' },
+      ]}/>
+      <Ayuda/>
+    </>}>
+
+    <Requisitos titulo="Requisitos" items={requisitos}/>
+
+    <Aviso titulo="Aclaración importante">
+      Los profesionales suspendidos, inhabilitados, cancelados o dados de baja que deseen reactivar su matrícula deben cumplimentar los requisitos de la Resolución 1489/2024, entre ellos completar el formulario correspondiente y abonar la cuota de matrícula vigente más un módulo por derecho de rehabilitación en caso de baja, o tres módulos si estaban suspendidos, inhabilitados o cancelados.
+    </Aviso>
+
+    <Aviso tono="ambar" titulo="Ejercicio profesional no declarado">
+      Cuando de los antecedentes (eximición por relación de dependencia en la CAAITBA, recibos de sueldo o certificación de la entidad donde presta servicios) se constate ejercicio profesional no declarado en ese período, se deberán abonar de 1 a 5 módulos por incumplimiento: $ 395.000 por cada año hasta el 31/03/2026. Vencido ese plazo, las cuotas pasan a valer $ 564.000 por cada año.
+    </Aviso>
+
+    <Descargas items={descargas}/>
+  </TramitePage>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

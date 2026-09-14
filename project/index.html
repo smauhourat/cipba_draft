@@ -98,10 +98,10 @@ const navLinks = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Trámites', href: '#tramites', groups: [
     { title: 'Matrícula', items: [
-      { label: 'Inscripción', href: '#' },
-      { label: 'Rehabilitación', href: '#' },
-      { label: 'Baja', href: '#' },
-      { label: 'Solicitud de credencial', href: '#' },
+      { label: 'Inscripción', href: 'inscripcion.html' },
+      { label: 'Rehabilitación', href: 'rehabilitacion.html' },
+      { label: 'Baja', href: 'baja.html' },
+      { label: 'Solicitud de credenciales', href: 'solicitud-credenciales.html' },
       { label: 'Medios de pago', href: 'pago-matricula.html' },
     ] },
     { title: 'Sistemas', items: [
@@ -127,13 +127,13 @@ const navLinks = [
   ] },
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
-      { label: 'Autoridades', href: 'institucional.html' },
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
-      { label: 'Partidos del Distrito', href: '#institucional' },
-      { label: 'Sedes y delegaciones', href: '#institucional' },
+      { label: 'Autoridades', href: 'institucional.html#autoridades' },
+      { label: 'Partidos del Distrito', href: 'institucional.html#partidos' },
+      { label: 'Sedes y delegaciones', href: 'institucional.html#sedes' },
     ] },
   ] },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Contacto', href: 'contacto.html' },
 ];
 
 const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index.html') : '');
@@ -205,7 +205,7 @@ const Navbar = ({ scrolled }) => {
                   onMouseEnter={e => e.currentTarget.style.background = '#e8f5f1'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <Icon name="search" size={17} color="#14484a"/>
                 </button>}
-            <a href="#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
+            <a href="inscripcion.html" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.background = '#0d3234'} onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
               Matricularse <Icon name="externalLink" size={12} color="white"/>
             </a>
@@ -234,7 +234,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="inscripcion.html" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -327,7 +327,7 @@ const autogestion = [
 ];
 
 const tramites = [
-  { icon: 'shield', title: 'Inscripción y bajas', desc: 'Alta, rehabilitación, baja y credencial.', color: '#00a48a', hover: '#00705e', bg: '#f2faf7', href: '#' },
+  { icon: 'shield', title: 'Inscripción y bajas', desc: 'Alta, rehabilitación, baja y credencial.', color: '#00a48a', hover: '#00705e', bg: '#f2faf7', href: 'inscripcion.html' },
   { icon: 'dollar', title: 'Medios de pago', desc: 'Cuota, timbrado y CBU.', color: '#00a48a', hover: '#00705e', bg: '#f2faf7', href: 'pago-matricula.html' },
   { icon: 'building', title: 'TAD', desc: 'Registro de Árbitros y amigables componedores.', color: '#00a48a', hover: '#00705e', bg: '#f2faf7', href: '#' },
 ];
@@ -441,7 +441,6 @@ const Eventos = () => {
           }}>
             <div style={{ aspectRatio: '4 / 5', position: 'relative', background: C.gray }}>
               <img src={`assets/images/${e.img}`} alt={e.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'absolute', inset: 0 }}/>
-																																																																																					
             </div>
             <div style={{ padding: '18px 20px 20px' }}>
               <h3 style={{ fontFamily: HEAD, fontSize: 18, fontWeight: 700, color: C.deep, lineHeight: 1.25, marginBottom: 14, textWrap: 'pretty' }}>{e.title}</h3>
@@ -453,7 +452,6 @@ const Eventos = () => {
           </article>
         ))}
       </div>
-
 
       <div style={{ ...wrap, display: 'flex', gap: 7 }}>
         {Array.from({ length: pages }).map((_, i) => (
@@ -727,6 +725,15 @@ const SocialIcons = ({ dark, size = 18 }) => {
 };
 
 /* ─── FOOTER ─── */
+const footerHrefs = {
+  'Medios de pago': 'pago-matricula.html',
+  'Inscripción y bajas': 'inscripcion.html',
+  'Subcomisiones': 'subcomisiones.html',
+  'Autoridades': 'institucional.html#autoridades',
+  'Partidos del Distrito': 'institucional.html#partidos',
+  'Sedes y delegaciones': 'institucional.html#sedes',
+};
+
 const footerCols = [
   { title: 'Trámites', items: ['Inscripción y bajas', 'Medios de pago', 'Certificados CAIE', 'Visado online', 'SIGMA'] },
   { title: 'Normativa', items: ['Ley 10.416', 'Código de Ética', 'Resoluciones', 'Honorarios mínimos', 'Vademécum'] },
@@ -748,7 +755,7 @@ const Footer = () => (
             <h3 style={{ fontFamily: HEAD, fontSize: 14, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'white', marginBottom: 15 }}>{col.title}</h3>
             <div style={{ display: 'grid', gap: 9 }}>
               {col.items.map(it => (
-                <a key={it} href="#" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
+                <a key={it} href={footerHrefs[it] || '#'} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#00a48a'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.72)'}>{it}</a>
               ))}
             </div>

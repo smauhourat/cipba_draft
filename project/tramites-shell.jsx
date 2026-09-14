@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Contacto | CIPBA – Distrito VII</title>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
-  a { text-decoration: none; color: inherit; }
-  button { cursor: pointer; border: none; font-family: inherit; }
-  img { display: block; }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #eef2f1; }
-  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
-</style>
-</head>
-<body>
-<div id="root"></div>
-<script type="text/babel">
 const { useState, useEffect } = React;
 
 /* ─── ICONS ─── */
@@ -34,6 +9,8 @@ const Icon = ({ name, size = 20, color = "currentColor" }) => {
     phone: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>,
     mail: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
     location: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+    shield: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+    award: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>,
     clock: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
     chevronRight: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>,
     chevronDown: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>,
@@ -196,7 +173,7 @@ const Navbar = ({ scrolled }) => {
                   onMouseEnter={e => e.currentTarget.style.background = '#e8f5f1'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <Icon name="search" size={17} color="#14484a"/>
                 </button>}
-            <a href="inscripcion.html" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
+            <a href="index.html#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.background = '#0d3234'} onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
               Matricularse <Icon name="externalLink" size={12} color="white"/>
             </a>
@@ -225,7 +202,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="inscripcion.html" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="index.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -247,230 +224,195 @@ const AnnouncementBar = () => (
   </div>
 );
 
+
 /* ─── PAGE HERO ─── */
-const PageHero = () => (
+const PageHero = ({ eyebrow, titulo, intro, breadcrumb }) => (
   <section style={{ background: 'linear-gradient(135deg, #14484a 0%, #1a5f5c 60%, #00a48a 100%)', position: 'relative', overflow: 'hidden' }}>
     <div style={{ position: 'absolute', inset: 0, opacity: 0.06, backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}/>
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 56px', position: 'relative' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 22, fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>
-        <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5, transition: 'color 0.2s' }}
-          onMouseEnter={e=>e.currentTarget.style.color='#c0e2ca'} onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.65)'}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '44px 24px 52px', position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20, fontSize: 13, color: 'rgba(255,255,255,0.65)', flexWrap: 'wrap' }}>
+        <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <Icon name="home" size={13}/> Inicio
         </a>
         <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
-        <span style={{ color: 'white', fontWeight: 700 }}>Contacto</span>
+        <span>Trámites</span>
+        <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
+        <span style={{ color: 'white', fontWeight: 700 }}>{breadcrumb || titulo}</span>
       </div>
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,164,138,0.22)', border: '1px solid rgba(0,164,138,0.4)', borderRadius: 20, padding: '5px 14px', marginBottom: 16 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#00a48a' }}/>
-        <span style={{ color: '#c0e2ca', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>Atención al matriculado</span>
+        <span style={{ color: '#c0e2ca', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>{eyebrow}</span>
       </div>
-      <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18, fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: -0.5 }}>
-        Contacto
-      </h1>
-      <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 17, lineHeight: 1.6, maxWidth: 720, marginBottom: 24, textWrap: 'pretty' }}>
-        Escribinos por el área que corresponda a tu consulta. También podés comunicarte por WhatsApp o acercarte a la sede de San Justo y a las delegaciones del Distrito.
-      </p>
-      <a href="#formulario" style={{
-        background: '#00a48a', color: 'white', fontSize: 13, fontWeight: 700, padding: '10px 20px',
-        borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 6, transition: 'background 0.2s',
-      }}
-      onMouseEnter={e=>e.currentTarget.style.background='#008c75'}
-      onMouseLeave={e=>e.currentTarget.style.background='#00a48a'}>
-        Escribinos <Icon name="chevronRight" size={13} color="white"/>
-      </a>
+      <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 46px)', fontWeight: 900, lineHeight: 1.1, marginBottom: 16, fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: -0.5 }}>{titulo}</h1>
+      <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 16.5, lineHeight: 1.6, maxWidth: 760, textWrap: 'pretty' }}>{intro}</p>
     </div>
   </section>
 );
 
-/* ─── CONTACTO ─── */
-const areas = [
-  { titulo: 'Área Administrativa', icon: 'users', personas: [
-    { nombre: 'Rolando Menna', tel: '(011) 15-5857-0060', link: '+5491158570060' },
-    { nombre: 'Griselda Bezerra', tel: '(011) 15-2713-4055', link: '+5491127134055' },
-    { nombre: 'Mónica Rodríguez', tel: '(011) 15-2713-3321', link: '+5491127133321' },
-  ], email: 'administracion@cipba.org' },
-  { titulo: 'Área Técnica', icon: 'building', personas: [
-    { nombre: 'Ing. Marcelo Romano', tel: '(011) 15-3829-3041', link: '+5491138293041' },
-    { nombre: 'Visador Ing. Pappolla', tel: '(011) 15-2713-3789', link: '+5491127133789' },
-  ], email: 'gerencia-tecnica@cipba.org' },
-  { titulo: 'Secretaría y Tesorería', icon: 'file', personas: [
-    { nombre: 'Sabrina Simone · Secretaría', tel: '(011) 15-2713-3330', link: '+5491127133330' },
-    { nombre: 'Tesorería', tel: '(011) 15-2713-3831', link: '+5491127133831' },
-  ], email: 'tesoreria@cipba.org' },
-];
-
-
-const sedesLista = [
-  { nombre: 'Sede San Justo', tag: 'Sede principal', destacada: true, dir: 'Almafuerte N° 2868, San Justo (1754) – La Matanza', tel: '(011) 3535-0751', mail: 'info@cipba.org', hor: 'Lun a vie 9:00 a 16:00 hs' },
-];
-
-const delegaciones = [
-  { nombre: 'Delegación Haedo', dir: 'Valentín Gómez N° 577, 1° of. 1', tel: '(011) 5433-5344', hor: 'Lun a vie 9:00 a 15:00 hs' },
-  { nombre: 'Delegación Olivos', dir: 'Ricardo Gutiérrez N° 1834', tel: '(011) 7398-2119', hor: 'Sólo correspondencia' },
-  { nombre: 'Delegación General Rodríguez', dir: 'Av. España 493', tel: '(011) 2563-1616', hor: 'Lun a vie 9:00 a 13:00 hs' },
-];
-
-const Contacto = () => {
-  const [form, setForm] = useState({ nombre: '', email: '', matricula: '', area: '', asunto: '', mensaje: '' });
-  const [sent, setSent] = useState(false);
-  const [errors, setErrors] = useState({});
-
-  const handleSubmit = ev => {
-    ev.preventDefault();
-    const e = {};
-    if (!form.nombre.trim()) e.nombre = 'Requerido';
-    if (!form.email.includes('@')) e.email = 'Email inválido';
-    if (!form.mensaje.trim()) e.mensaje = 'Requerido';
-    if (Object.keys(e).length) { setErrors(e); return; }
-    setSent(true);
-  };
-
-  const field = (id, label, type, placeholder) => (
-    <div key={id}>
-      <label htmlFor={id} style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#4a6062', marginBottom: 6 }}>{label}</label>
-      <input id={id} type={type} placeholder={placeholder} value={form[id]}
-        onChange={e => setForm({ ...form, [id]: e.target.value })}
-        style={{
-          width: '100%', padding: '10px 14px', borderRadius: 6, fontSize: 14, outline: 'none',
-          border: errors[id] ? '1.5px solid #c0392b' : '1.5px solid #dbe6e3', transition: 'border .2s', fontFamily: 'inherit',
-        }}
-        onFocus={e => e.target.style.borderColor = '#00a48a'}
-        onBlur={e => e.target.style.borderColor = errors[id] ? '#c0392b' : '#dbe6e3'}/>
-      {errors[id] && <div style={{ color: '#c0392b', fontSize: 12, marginTop: 4 }}>{errors[id]}</div>}
+/* ─── BLOQUES DE CONTENIDO ─── */
+const Aviso = ({ children, tono = 'verde', titulo }) => {
+  const t = tono === 'ambar'
+    ? { bg: '#fff8e6', border: '#f0d79a', ink: '#6b5417', icon: '#b98a1a' }
+    : { bg: '#e8f5f1', border: '#c0e2ca', ink: '#14484a', icon: '#00a48a' };
+  return (
+    <div style={{ background: t.bg, border: '1px solid ' + t.border, borderRadius: 10, padding: '16px 18px', display: 'flex', gap: 12 }}>
+      <Icon name="shield" size={18} color={t.icon}/>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {titulo && <div style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 15, fontWeight: 700, color: t.ink, marginBottom: 5 }}>{titulo}</div>}
+        <div style={{ fontSize: 13.5, color: t.ink, lineHeight: 1.65, textWrap: 'pretty' }}>{children}</div>
+      </div>
     </div>
   );
+};
 
-  return (
-    <section id="formulario" style={{ background: '#eef2f1', padding: '56px 24px 64px' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div className="cont-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 34, alignItems: 'stretch' }}>
-
-          <div style={{ display: 'grid', gap: 16 }}>
-            {areas.map(a => (
-              <div key={a.titulo} style={{ background: 'white', borderRadius: 10, padding: '22px 24px', border: '1px solid #e8f5f1' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 14 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 8, background: '#e8f5f1', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
-                    <Icon name={a.icon} size={18} color="#1a5f5c"/>
-                  </div>
-                  <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 17, fontWeight: 700, color: '#14484a' }}>{a.titulo}</h3>
-                </div>
-                <div style={{ display: 'grid', gap: 9 }}>
-                  {a.personas.map(p => (
-                    <div key={p.nombre} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: 13.5, color: '#4a6062', fontWeight: 700 }}>{p.nombre}</span>
-                      <a href={'tel:' + p.link} style={{ fontSize: 13.5, color: '#00705e', whiteSpace: 'nowrap' }}>{p.tel}</a>
-                    </div>
-                  ))}
-                </div>
-                <a href={'mailto:' + a.email} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 14, paddingTop: 12, borderTop: '1px dashed #e8f5f1', fontSize: 13, fontWeight: 700, color: '#14484a', width: '100%' }}>
-                  <Icon name="mail" size={13} color="#00a48a"/> {a.email}
-                </a>
-              </div>
-            ))}
-            <a href="https://wa.me/541138293041" target="_blank" style={{
-              background: '#25d366', color: 'white', padding: '14px 20px', borderRadius: 8,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              fontWeight: 700, fontSize: 15, transition: 'background .2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = '#1da851'}
-            onMouseLeave={e => e.currentTarget.style.background = '#25d366'}>
-              <Icon name="whatsapp" size={20} color="white"/> Consultar por WhatsApp
-            </a>
+const Requisitos = ({ items, titulo, sub }) => (
+  <div>
+    {titulo && <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(20px, 2.6vw, 26px)', fontWeight: 900, color: '#14484a', marginBottom: sub ? 8 : 18 }}>{titulo}</h2>}
+    {sub && <p style={{ fontSize: 14.5, color: '#607a7c', lineHeight: 1.65, marginBottom: 18, textWrap: 'pretty' }}>{sub}</p>}
+    <ol style={{ listStyle: 'none', display: 'grid', gap: 10 }}>
+      {items.map((it, i) => (
+        <li key={i} style={{ background: 'white', border: '1px solid #e8f5f1', borderRadius: 10, padding: '14px 16px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+          <span style={{ flexShrink: 0, width: 24, height: 24, borderRadius: 6, background: '#e8f5f1', color: '#1a5f5c', fontSize: 12.5, fontWeight: 800, fontFamily: "'Roboto Condensed', sans-serif", display: 'grid', placeItems: 'center' }}>{i + 1}</span>
+          <div style={{ flex: 1, minWidth: 0, fontSize: 14, color: '#4a6062', lineHeight: 1.6, textWrap: 'pretty' }}>
+            <b style={{ color: '#14484a' }}>{it.t}</b>{it.d ? ' — ' + it.d : ''}
           </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+);
 
-          <div style={{ display: 'grid', gap: 18, alignContent: 'stretch', height: '100%' }}>
-            {sent ? (
-              <div style={{ background: 'white', borderRadius: 10, padding: '48px 32px', textAlign: 'center', border: '1px solid #e8f5f1' }}>
-                <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#e8f5f1', display: 'grid', placeItems: 'center', margin: '0 auto 20px' }}>
-                  <Icon name="check" size={28} color="#00705e"/>
-                </div>
-                <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", color: '#14484a', fontSize: 22, fontWeight: 900, marginBottom: 10 }}>¡Mensaje enviado!</h3>
-                <p style={{ color: '#607a7c', lineHeight: 1.6, fontSize: 14.5 }}>Nos pondremos en contacto a la brevedad. Muchas gracias.</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ background: 'white', borderRadius: 10, padding: '28px 30px 30px', border: '1px solid #e8f5f1', display: 'flex', flexDirection: 'column', gap: 16, height: '100%' }}>
-                <div>
-                  <div style={{ color: '#00a48a', fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>Escribinos</div>
-                  <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(21px, 2.6vw, 27px)', fontWeight: 900, color: '#14484a' }}>Formulario de consulta</h2>
-                </div>
-                <div className="cont-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 16 }}>
-                  {field('nombre', 'Nombre completo', 'text', 'Ing. Juan Pérez')}
-                  {field('matricula', 'N° de matrícula (opcional)', 'text', '53.929')}
-                </div>
-                <div className="cont-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 16 }}>
-                  {field('email', 'Correo electrónico', 'email', 'correo@ejemplo.com')}
-                  <div>
-                    <label htmlFor="area" style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#4a6062', marginBottom: 6 }}>Área</label>
-                    <select id="area" value={form.area} onChange={e => setForm({ ...form, area: e.target.value })}
-                      style={{ width: '100%', padding: '10px 14px', borderRadius: 6, fontSize: 14, outline: 'none', border: '1.5px solid #dbe6e3', fontFamily: 'inherit', background: 'white', color: form.area ? '#373d3e' : '#9aa8a9' }}>
-                      <option value="">Elegí un área…</option>
-                      <option>Matrícula e inscripción</option>
-                      <option>Pagos y tesorería</option>
-                      <option>Visado y consultas técnicas</option>
-                      <option>Subcomisiones</option>
-                      <option>Otra consulta</option>
-                    </select>
-                  </div>
-                </div>
-                {field('asunto', 'Asunto', 'text', 'Consulta sobre matrícula…')}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 120 }}>
-                  <label htmlFor="mensaje" style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: '#4a6062', marginBottom: 6 }}>Mensaje</label>
-                  <textarea id="mensaje" placeholder="Tu consulta…" value={form.mensaje}
-                    onChange={e => setForm({ ...form, mensaje: e.target.value })}
-                    style={{
-                      width: '100%', flex: 1, minHeight: 110, padding: '10px 14px', borderRadius: 6, resize: 'vertical', fontSize: 14, outline: 'none',
-                      border: errors.mensaje ? '1.5px solid #c0392b' : '1.5px solid #dbe6e3', fontFamily: 'inherit',
-                    }}
-                    onFocus={e => e.target.style.borderColor = '#00a48a'}
-                    onBlur={e => e.target.style.borderColor = errors.mensaje ? '#c0392b' : '#dbe6e3'}/>
-                  {errors.mensaje && <div style={{ color: '#c0392b', fontSize: 12, marginTop: 4 }}>{errors.mensaje}</div>}
-                </div>
-                <button type="submit" style={{
-                  flexShrink: 0, background: '#14484a', color: 'white', padding: '13px', borderRadius: 6,
-                  fontWeight: 700, fontSize: 15, transition: 'background .2s',
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = '#1a5f5c'}
-                onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
-                  Enviar mensaje
-                </button>
-              </form>
-            )}
-
+const Descargas = ({ items, titulo = 'Formularios y documentación' }) => (
+  <div>
+    <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(20px, 2.6vw, 26px)', fontWeight: 900, color: '#14484a', marginBottom: 8 }}>{titulo}</h2>
+    <p style={{ fontSize: 14.5, color: '#607a7c', lineHeight: 1.65, marginBottom: 18, textWrap: 'pretty' }}>
+      Descargá y completá los formularios, y enviálos por mail junto con el resto de la documentación. Para editarlos conviene usar Adobe Acrobat Reader.
+    </p>
+    <div className="dl-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
+      {items.map(d => (
+        <a key={d.label} href={d.href} target="_blank" style={{
+          background: 'white', border: '1px solid #e8f5f1', borderRadius: 10, padding: '15px 17px',
+          display: 'flex', alignItems: 'center', gap: 12, transition: 'all .2s',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = '#00a48a'; e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,72,74,0.10)'; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e8f5f1'; e.currentTarget.style.boxShadow = 'none'; }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: '#e8f5f1', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+            <Icon name="file" size={17} color="#1a5f5c"/>
           </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#14484a', lineHeight: 1.35 }}>{d.label}</div>
+            <div style={{ fontSize: 11.5, color: '#9aa8a9', textTransform: 'uppercase', letterSpacing: 0.6, marginTop: 2 }}>{d.tipo || 'PDF'}</div>
+          </div>
+          <Icon name="chevronRight" size={14} color="#00a48a"/>
+        </a>
+      ))}
+    </div>
+  </div>
+);
+
+const Costo = ({ filas, titulo = 'Costo del trámite' }) => (
+  <div style={{ background: '#14484a', borderRadius: 12, padding: '22px 24px 24px', color: 'white' }}>
+    <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 19, fontWeight: 900, color: 'white', marginBottom: 16 }}>{titulo}</h3>
+    <div style={{ display: 'grid', gap: 12 }}>
+      {filas.map((f, i) => (
+        <div key={i} style={{ paddingBottom: 12, borderBottom: i < filas.length - 1 ? '1px dashed rgba(255,255,255,0.18)' : 'none' }}>
+          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: 3 }}>{f.label}</div>
+          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.88)', lineHeight: 1.5 }}>{f.value}</div>
         </div>
+      ))}
+    </div>
+  </div>
+);
 
-        <div style={{ marginTop: 34, paddingTop: 28, borderTop: '1px solid #c0e2ca' }}>
-          <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 20, fontWeight: 900, color: '#14484a', marginBottom: 16 }}>Sedes y delegaciones</h3>
-          <div className="deleg-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 16 }}>
-            {[...sedesLista, ...delegaciones].map(d => {
-              const dest = !!d.destacada;
-              const ink = dest ? 'rgba(255,255,255,0.88)' : '#4a6062';
-              const ico = dest ? '#c0e2ca' : '#00a48a';
-              return (
-                <div key={d.nombre} style={{
-                  background: dest ? '#14484a' : 'white', border: dest ? 'none' : '1px solid #e8f5f1',
-                  borderRadius: 12, padding: '20px 22px 22px',
-                  boxShadow: dest ? '0 10px 28px rgba(20,72,74,0.18)' : 'none',
-                }}>
-                  {dest && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: '#c0e2ca', marginBottom: 4 }}>{d.tag}</div>}
-                  <h4 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 17, fontWeight: 700, color: dest ? 'white' : '#14484a', marginBottom: 12 }}>{d.nombre}</h4>
-                  <div style={{ display: 'grid', gap: 8, fontSize: 13.5, color: ink }}>
-                    <div style={{ display: 'flex', gap: 8 }}><Icon name="location" size={14} color={ico}/> <span>{d.dir}</span></div>
-                    <div style={{ display: 'flex', gap: 8 }}><Icon name="phone" size={14} color={ico}/> <span>{d.tel}</span></div>
-                    {d.mail && <div style={{ display: 'flex', gap: 8 }}><Icon name="mail" size={14} color={ico}/> <a href={'mailto:' + d.mail} style={{ color: 'inherit', borderBottom: '1px dotted rgba(255,255,255,0.4)' }}>{d.mail}</a></div>}
-                    <div style={{ display: 'flex', gap: 8 }}><Icon name="clock" size={14} color={ico}/> <span>{d.hor}</span></div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+const Ayuda = ({ mail = 'info@cipba.org' }) => (
+  <div style={{ background: 'white', border: '1px solid #e8f5f1', borderRadius: 12, padding: '22px 24px 24px' }}>
+    <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 18, fontWeight: 700, color: '#14484a', marginBottom: 8 }}>¿Dudas con el trámite?</h3>
+    <p style={{ fontSize: 13.5, color: '#607a7c', lineHeight: 1.6, marginBottom: 16, textWrap: 'pretty' }}>
+      El trámite se inicia por mail en el Distrito que corresponde a tu domicilio legal. Escribinos y te orientamos.
+    </p>
+    <div style={{ display: 'grid', gap: 9 }}>
+      <a href={'mailto:' + mail} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a' }}>
+        <Icon name="mail" size={15} color="#00a48a"/> {mail}
+      </a>
+      <a href="contacto.html" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a' }}>
+        <Icon name="users" size={15} color="#00a48a"/> Contacto por área
+      </a>
+      <a href="https://wa.me/541138293041" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a' }}>
+        <Icon name="whatsapp" size={15} color="#25d366"/> Consultar por WhatsApp
+      </a>
+    </div>
+  </div>
+);
+
+const OtrosTramites = ({ actual }) => {
+  const links = [
+    { label: 'Inscripción', href: 'inscripcion.html', icon: 'award' },
+    { label: 'Rehabilitación', href: 'rehabilitacion.html', icon: 'check' },
+    { label: 'Baja', href: 'baja.html', icon: 'file' },
+    { label: 'Solicitud de credenciales', href: 'solicitud-credenciales.html', icon: 'shield' },
+    { label: 'Medios de pago', href: 'pago-matricula.html', icon: 'dollar' },
+  ].filter(l => l.href !== actual);
+  return (
+    <section style={{ background: '#eef2f1', padding: '44px 24px 52px', borderTop: '1px solid #c0e2ca' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 20, fontWeight: 900, color: '#14484a', marginBottom: 16 }}>Otros trámites</h2>
+        <div className="otros-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 14 }}>
+          {links.map(l => (
+            <a key={l.href} href={l.href} style={{
+              background: 'white', border: '1px solid #e8f5f1', borderRadius: 10, padding: '16px 18px',
+              display: 'flex', alignItems: 'center', gap: 11, transition: 'all .2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#00a48a'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#e8f5f1'; e.currentTarget.style.transform = 'none'; }}>
+              <div style={{ width: 34, height: 34, borderRadius: 8, background: '#e8f5f1', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                <Icon name={l.icon} size={16} color="#1a5f5c"/>
+              </div>
+              <span style={{ fontSize: 14, fontWeight: 700, color: '#14484a' }}>{l.label}</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-/* ─── REDES ─── */
+const TramiteShellStyles = () => (
+  <style>{`
+    @media (max-width: 1160px) { .desktop-nav { display: none !important; } .mobile-burger { display: flex !important; } }
+    @media (max-width: 900px) { .tram-grid { grid-template-columns: 1fr !important; } .otros-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+    @media (max-width: 1000px) { .foot-grid { grid-template-columns: 1fr 1fr !important; } .foot-grid > div:first-child { grid-column: span 2; } }
+    @media (max-width: 640px) { .dl-grid { grid-template-columns: 1fr !important; } .otros-grid { grid-template-columns: 1fr !important; } .foot-grid { grid-template-columns: 1fr !important; } .foot-grid > div:first-child { grid-column: auto; } }
+  `}</style>
+);
+
+const TramitePage = ({ hero, actual, children, aside }) => {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <>
+      <TramiteShellStyles/>
+      <HeaderStyles/>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+      <PageHero {...hero}/>
+      <section style={{ background: '#f7faf9', padding: '48px 24px 56px' }}>
+        <div className="tram-grid" style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1.55fr 1fr', gap: 34, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gap: 28 }}>{children}</div>
+          <div style={{ display: 'grid', gap: 16, position: 'sticky', top: 88 }}>{aside}</div>
+        </div>
+      </section>
+      <OtrosTramites actual={actual}/>
+      <Footer/>
+    </>
+  );
+};
+
+
+/* ─── REDES / FOOTER ─── */
 const redes = [
   { icon: 'instagram', label: 'Instagram', href: '#' },
   { icon: 'facebook', label: 'Facebook', href: '#' },
@@ -538,50 +480,5 @@ const Footer = () => (
   </footer>
 );
 
-/* ─── APP ─── */
-const App = () => {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
-  return (
-    <>
-      <style>{`
-        @media (max-width: 1160px) {
-          .desktop-nav { display: none !important; }
-          .mobile-burger { display: flex !important; }
-        }
-        @media (max-width: 900px) {
-          .cont-grid { grid-template-columns: 1fr !important; }
-          .deleg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-        }
-        @media (max-width: 560px) {
-          .cont-row { grid-template-columns: 1fr !important; }
-          .deleg-grid { grid-template-columns: 1fr !important; }
-        }
-        @media (max-width: 1000px) {
-          .foot-grid { grid-template-columns: 1fr 1fr !important; }
-          .foot-grid > div:first-child { grid-column: span 2; }
-        }
-        @media (max-width: 640px) {
-          .foot-grid { grid-template-columns: 1fr !important; }
-          .foot-grid > div:first-child { grid-column: auto; }
-        }
-      `}</style>
-      <HeaderStyles/>
-      <TopBar/>
-      <Navbar scrolled={scrolled}/>
-      <PageHero/>
-      <Contacto/>
-      <Footer/>
-    </>
-  );
-};
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script>
-</body>
-</html>
+Object.assign(window, { Icon, HeaderStyles, TopBar, Navbar, PageHero, Aviso, Requisitos, Descargas, Costo, Ayuda, OtrosTramites, TramitePage, Footer, SocialIcons });

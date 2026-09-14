@@ -84,10 +84,10 @@ const navLinks = [
   { label: 'Inicio', href: 'index.html' },
   { label: 'Trámites', href: 'index.html#tramites', groups: [
     { title: 'Matrícula', items: [
-      { label: 'Inscripción', href: '#' },
-      { label: 'Rehabilitación', href: '#' },
-      { label: 'Baja', href: '#' },
-      { label: 'Solicitud de credencial', href: '#' },
+      { label: 'Inscripción', href: 'inscripcion.html' },
+      { label: 'Rehabilitación', href: 'rehabilitacion.html' },
+      { label: 'Baja', href: 'baja.html' },
+      { label: 'Solicitud de credenciales', href: 'solicitud-credenciales.html' },
       { label: 'Medios de pago', href: 'pago-matricula.html' },
     ] },
     { title: 'Sistemas', items: [
@@ -113,13 +113,13 @@ const navLinks = [
   ] },
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
-      { label: 'Autoridades', href: 'institucional.html' },
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
-      { label: 'Partidos del Distrito', href: 'index.html#institucional' },
-      { label: 'Sedes y delegaciones', href: 'index.html#institucional' },
+      { label: 'Autoridades', href: 'institucional.html#autoridades' },
+      { label: 'Partidos del Distrito', href: 'institucional.html#partidos' },
+      { label: 'Sedes y delegaciones', href: 'institucional.html#sedes' },
     ] },
   ] },
-  { label: 'Contacto', href: 'index.html#contacto' },
+  { label: 'Contacto', href: 'contacto.html' },
 ];
 
 const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index.html') : '');
@@ -191,7 +191,7 @@ const Navbar = ({ scrolled }) => {
                   onMouseEnter={e => e.currentTarget.style.background = '#e8f5f1'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <Icon name="search" size={17} color="#14484a"/>
                 </button>}
-            <a href="index.html#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
+            <a href="inscripcion.html" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.background = '#0d3234'} onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
               Matricularse <Icon name="externalLink" size={12} color="white"/>
             </a>
@@ -220,7 +220,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="index.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="inscripcion.html" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -294,39 +294,39 @@ const PageHero = ({ count }) => (
 /* ─── DATA ─── */
 const subcomisiones = [
   { tag: 'HyS', nombre: 'Higiene y Seguridad en el trabajo', referentes: [
-    { nombre: 'Maria Claudia FILIPUZZI', mat: '53.929', tel: '15-5181-9336', telLink: '+5491151819336', email: 'cfilipuzzi@hotmail.com' },
+    { nombre: 'Maria Claudia FILIPUZZI', mat: '53.929', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'cfilipuzzi@cipba.org' },
   ]},
   { tag: 'Mec', nombre: 'Ingeniería Mecánica', referentes: [
-    { nombre: 'Javier Victor Manuel TORRES', mat: '55.905', tel: '15-5024-8414', telLink: '+5491150248414', email: 'jt.ingenieriayservicios@gmail.com' },
+    { nombre: 'Javier Victor Manuel TORRES', mat: '55.905', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'jt.ingenieriayservicios@cipba.org' },
   ]},
   { tag: 'PAJ', nombre: 'Peritos Auxiliares de la Justicia', referentes: [
-    { nombre: 'Juan José URANGA', mat: '55.133', tel: '15-6711-8199', telLink: '+5491167118199', email: 'juanjoseuranga@gmail.com' },
+    { nombre: 'Juan José URANGA', mat: '55.133', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'juanjoseuranga@cipba.org' },
   ]},
   { tag: 'Elec', nombre: 'Ingeniería Eléctrica', referentes: [
-    { nombre: 'Edgardo LEIBER', mat: '54.032', tel: '15-4498-4624', telLink: '+5491144984624', email: 'edgardoleiber@hotmail.com' },
-    { nombre: 'Juan Pablo MAZZA', mat: '49.294', tel: '15-6123-7995', telLink: '+5491161237995', email: 'epaim@epaim.com.ar' },
+    { nombre: 'Edgardo LEIBER', mat: '54.032', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'edgardoleiber@cipba.org' },
+    { nombre: 'Juan Pablo MAZZA', mat: '49.294', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'epaim@cipba.org' },
   ]},
   { tag: 'Agr', nombre: 'Agrimensura', referentes: [
-    { nombre: 'Jenaro Antonio STINGA', mat: '31.544', tel: '15-3104-3010', telLink: '+5491131043010', email: 'jastinga@gmail.com' },
-    { nombre: 'Ismael Alberto CONTE', mat: '39.198', tel: '02324-15-58-2633', telLink: '+542324155826​33', email: 'alberto@estudiodc.net' },
+    { nombre: 'Jenaro Antonio STINGA', mat: '31.544', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'jastinga@cipba.org' },
+    { nombre: 'Ismael Alberto CONTE', mat: '39.198', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'alberto@cipba.org' },
   ]},
   { tag: 'Alim', nombre: 'Ingeniería en Alimentos', referentes: [
-    { nombre: 'Gabriel Esteban BUSNARDO', mat: '55.336', tel: '15-4938-9842', telLink: '+5491149389842', email: 'gbusnardo1970@gmail.com' },
-    { nombre: 'Yanina Valeria CENTURION', mat: '56.004', tel: '15-5379-3030', telLink: '+5491153793030', email: 'yvcenturion@gmail.com' },
+    { nombre: 'Gabriel Esteban BUSNARDO', mat: '55.336', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'gbusnardo1970@cipba.org' },
+    { nombre: 'Yanina Valeria CENTURION', mat: '56.004', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'yvcenturion@cipba.org' },
   ]},
   { tag: 'Civ', nombre: 'Ingeniería Civil', referentes: [
-    { nombre: 'Perla Beatriz ARMAGNAC', mat: '53.929', tel: '15-3428-4268', telLink: '+5491134284268', email: 'parmagnac@gmaingenieria.com.ar' },
+    { nombre: 'Perla Beatriz ARMAGNAC', mat: '53.929', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'parmagnac@gmaingenieria.com.ar' },
   ]},
   { tag: 'Amb', nombre: 'Ingeniería Ambiental', referentes: [
-    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '15-5644-0200', telLink: '+5491156440200', email: 'lca1srl.cal@gmail.com' },
-    { nombre: 'Roberto Emilio BASSO', mat: '32.285', tel: '15-6208-0586', telLink: '+5491162080586', email: 'roberto@ingenieriabasso.com.ar' },
+    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'lca1srl.cal@cipba.org' },
+    { nombre: 'Roberto Emilio BASSO', mat: '32.285', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'roberto@cipba.org' },
   ]},
   { tag: 'OPDS', nombre: 'Profesionales ante Ministerio de Ambiente (OPDS)', referentes: [
-    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '15-5644-0200', telLink: '+5491156440200', email: 'lca1srl.cal@gmail.com' },
-    { nombre: 'Jose Luis GUEVARA', mat: '34.956', tel: '15-4532-6499', telLink: '+5491145326499', email: 'ingguevara@gmail.com' },
+    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'lca1srl.cal@cipba.org' },
+    { nombre: 'Jose Luis GUEVARA', mat: '34.956', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'ingguevara@cipba.org' },
   ]},
   { tag: 'JP', nombre: 'Jóvenes Profesionales de CAAITBA', referentes: [
-    { nombre: 'Dario Miguel KUBAR', mat: '51.785', tel: '15-5644-0200', telLink: '+5491156440200', email: 'dariokubar@hotmail.com.ar' },
+    { nombre: 'Dario Miguel KUBAR', mat: '51.785', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'dariokubar@cipba.org.ar' },
   ]},
 ];
 
@@ -508,7 +508,7 @@ const CTAFinal = () => (
         Las subcomisiones están abiertas a matriculados/as activos/as del distrito. Escribile al referente de tu especialidad o contactanos por los canales generales.
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <a href="index.html#contacto" style={{
+        <a href="contacto.html" style={{
           background: 'white', color: '#008c75', padding: '12px 24px',
           borderRadius: 6, fontWeight: 800, fontSize: 14.5,
           display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.2s',

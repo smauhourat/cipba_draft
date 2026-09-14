@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inscripción | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel">
+const { TramitePage, Requisitos, Descargas, Costo, Ayuda, Aviso, Icon } = window;
+
+const requisitos = [
+  { t: 'Diploma original habilitante', d: 'legalizado por el Ministerio de Educación y el Ministerio del Interior de la Nación para títulos expedidos hasta 2011 inclusive. Los expedidos a partir de 2012 requieren únicamente la legalización del Ministerio de Educación.' },
+  { t: 'Diplomas digitales', d: 'en formato PDF con firma digital (por ejemplo UNLP s/ ordenanza N° 300/2021, UCA s/ Resolución 591/2024 y las universidades que en lo sucesivo adhieran a este formato).' },
+  { t: 'Fotocopia autenticada del diploma', d: 'anverso y reverso, autenticada por escribano público, juez de paz o la universidad emisora. Fotocopia simple cuando la universidad lo otorgue en formato digital.' },
+  { t: 'Formulario I-2024 completo', d: 'o sus posteriores actualizaciones.' },
+  { t: 'Domicilio legal en la Provincia de Buenos Aires', d: 'consignado en el formulario I-2024, junto con el domicilio real donde reside el profesional.' },
+  { t: 'Formulario de afiliación a la CAAITBA', d: 'la afiliación es obligatoria; consultá en caaitba.org.ar las formas de eximición de pagos.' },
+  { t: 'Documento de identidad (DNI)', d: 'copia escaneada. El original se solicita al retirar la credencial.' },
+  { t: 'Firma y foto actual digitalizadas' },
+  { t: 'Comprobante de CUIT o CUIL' },
+  { t: 'Certificado con el plan de estudios (año)', d: 'extendido por la facultad emisora del título, o compromiso firmado de presentarlo en un plazo máximo de noventa días.' },
+];
+
+const registros = [
+  { t: 'Formulario I.R.-2026 completo', d: 'seleccionando el registro correspondiente.' },
+  { t: 'Diploma original de la especialidad o curso que inscribe', d: 'cuando la inscripción no sea en función del título de grado ya registrado, con las mismas legalizaciones que la inscripción de matrícula.' },
+  { t: 'Fotocopia autenticada del diploma', d: 'o copia simple del diploma digital según la universidad emisora.' },
+  { t: 'Firma y foto digitalizadas' },
+  { t: 'Matrícula al día', d: 'con el pago correspondiente al título de grado con el que se encuentra inscripto.' },
+];
+
+const descargas = [
+  { label: 'Solicitud de inscripción de matrícula 2024', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/SOLICITUD%20DE%20INSCRIPCI%C3%93N%20DE%20MATR%C3%8DCULA%202024.pdf' },
+  { label: 'Ficha de afiliación CAAITBA', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/FichaAfiliacion.pdf' },
+  { label: 'Notificación sobre afiliación CAAITBA', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/NOTIFICACION%20SOBRE%20AFILIACION%20CAAITBA.docx', tipo: 'DOCX' },
+  { label: 'Información para pago de trámites según distrito', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/PagoTramitesDistrito.pdf' },
+  { label: 'Solicitud de inscripción en registros especiales', href: 'http://www.colegioingenieros.org.ar/static/docs/matriculados/SOLICITUD%20DE%20INSCRIPCI%C3%93N%20REGISTROS2026.pdf' },
+];
+
+const App = () => (
+  <TramitePage
+    actual="inscripcion.html"
+    hero={{
+      eyebrow: 'Matrícula profesional',
+      titulo: 'Inscripción',
+      intro: 'El trámite se realiza en el Distrito correspondiente al domicilio legal del profesional, actualmente por mail. Leé los requisitos, completá los formularios y enviá la documentación al Distrito VII.',
+    }}
+    aside={<>
+      <Costo filas={[
+        { label: 'Costo del trámite', value: 'Cuota matricular vigente (1 módulo) más Derecho de Inscripción: un (1) módulo por cada título que inscriba, por única vez.' },
+        { label: 'Beneficio para recién graduados', value: 'Durante el primer año desde la expedición del título se abona el 50 % del derecho de matriculación y de las cuotas de matrícula. El beneficio sobre las cuotas dura tres años desde la expedición, siempre que la inscripción se haga dentro del año.' },
+        { label: 'Ejemplo', value: 'Título expedido el 15 de febrero de 2020: se puede inscribir con este beneficio hasta el 15 de febrero de 2021.' },
+      ]}/>
+      <Ayuda/>
+    </>}>
+
+    <Aviso titulo="Iniciá tu trámite por mail">
+      Leé detenidamente los requisitos, completá y descargá los formularios y enviá la documentación adjunta por mail al Distrito que corresponde a tu domicilio legal. Ante cualquier duda podés consultar a <a href="mailto:secretaria@colegioingenieros.org.ar" style={{ color: '#00705e', fontWeight: 700 }}>secretaria@colegioingenieros.org.ar</a>.
+    </Aviso>
+
+    <Requisitos titulo="Requisitos de inscripción" items={requisitos}/>
+
+    <Aviso tono="ambar" titulo="Relación de dependencia — Estado provincial o entidades privadas">
+      Además de lo normado por la Resolución 1489/24 se debe presentar documentación que acredite la condición laboral según la requisitoria colegial, y abonar la matrícula vigente más un adicional de 1 a 5 módulos por incumplimiento cuando corresponda. Si de los antecedentes se constata ejercicio profesional no declarado, el módulo por incumplimiento vale $ 395.000 por cada año hasta el 31/03/2026; vencido ese plazo, $ 564.000 por cada año.
+    </Aviso>
+
+    <Requisitos titulo="Inscripción en registros especiales: I.R.-2026" sub="Requisitos básicos para la inscripción en todos los registros especiales." items={registros}/>
+
+    <Descargas items={descargas}/>
+  </TramitePage>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
