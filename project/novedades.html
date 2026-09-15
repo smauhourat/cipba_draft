@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Eventos y novedades | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="image-slot.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+  @media (max-width: 1160px) { .desktop-nav { display: none !important; } .mobile-burger { display: flex !important; } }
+  @media (max-width: 1000px) { .nov-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; } .dest-grid { grid-template-columns: 1fr !important; } .foot-grid { grid-template-columns: 1fr 1fr !important; } .foot-grid > div:first-child { grid-column: span 2; } }
+  @media (max-width: 760px) {
+    .filtros-bar { padding: 10px 0 !important; gap: 10px !important; flex-direction: column; align-items: stretch !important; }
+    .chips-row { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; padding: 0 16px 2px !important; -webkit-overflow-scrolling: touch; }
+    .chips-row::-webkit-scrollbar { display: none; }
+    .buscador { margin: 0 16px !important; min-width: 0 !important; }
+    .nov-head { padding: 24px 16px 18px !important; }
+    .nov-body { padding: 22px 16px 44px !important; }
+    .crumbs { padding: 10px 16px !important; }
+    .dest-img { min-height: 200px !important; aspect-ratio: 16/9; }
+    .dest-txt { padding: 22px 20px 24px !important; gap: 11px !important; }
+  }
+  @media (max-width: 640px) { .nov-grid { grid-template-columns: 1fr !important; } .foot-grid { grid-template-columns: 1fr !important; } .foot-grid > div:first-child { grid-column: auto; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel" src="novedades-data.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+const { TopBar, Navbar, Footer, Icon, HeaderStyles, NOVEDADES, CATS, CatBadge, NovCard } = window;
+
+const Chip = ({ label, active, onClick }) => (
+  <button onClick={onClick} style={{
+    background: active ? '#14484a' : 'white', color: active ? 'white' : '#4a6062',
+    border: `1px solid ${active ? '#14484a' : '#dfe9e7'}`, borderRadius: 20,
+    padding: '8px 16px', fontSize: 13.5, fontWeight: 700, transition: 'all .18s',
+  }}>{label}</button>
+);
+
+const Destacada = ({ n }) => {
+  const [h, setH] = useState(false);
+  return (
+    <a href={`novedad.html?id=${n.id}`} className="dest-grid" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
+      display: 'grid', gridTemplateColumns: '1.05fr 1fr', background: 'white',
+      border: `1px solid ${h ? '#00a48a' : '#e8f5f1'}`, borderRadius: 14, overflow: 'hidden',
+      transition: 'all .22s ease', boxShadow: h ? '0 14px 32px rgba(20,72,74,0.13)' : '0 2px 8px rgba(0,0,0,0.04)', marginBottom: 26,
+    }}>
+      <div className="dest-img" style={{ minHeight: 300, background: '#eef2f1', position: 'relative' }}>
+        <image-slot id={`nov-${n.id}`} shape="rect" placeholder="Imagen del evento destacado"></image-slot>
+      </div>
+      <div className="dest-txt" style={{ padding: '34px 38px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <span style={{ background: '#00a48a', color: 'white', fontSize: 11, fontWeight: 800, letterSpacing: 0.8, textTransform: 'uppercase', padding: '4px 10px', borderRadius: 20 }}>Destacado</span>
+          <CatBadge cat={n.cat}/>
+          <span style={{ fontSize: 12.5, color: '#9aa8a9', fontWeight: 600 }}>{n.fechaTxt}</span>
+        </div>
+        <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 900, color: '#14484a', lineHeight: 1.15, textWrap: 'pretty' }}>{n.title}</h2>
+        <p style={{ fontSize: 15.5, color: '#607a7c', lineHeight: 1.65, textWrap: 'pretty' }}>{n.bajada}</p>
+        {n.evento && (
+          <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', fontSize: 13.5, color: '#4a6062', fontWeight: 600 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Icon name="calendar" size={14} color="#00a48a"/>{n.evento.dia}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Icon name="location" size={14} color="#00a48a"/>{n.evento.lugar}</span>
+          </div>
+        )}
+        <span style={{ marginTop: 6, alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 14, fontWeight: 700, padding: '11px 20px', borderRadius: 6 }}>
+          Ver la novedad <Icon name="chevronRight" size={14} color="white"/>
+        </span>
+      </div>
+    </a>
+  );
+};
+
+const App = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [cat, setCat] = useState('Todas');
+  const [q, setQ] = useState('');
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const term = q.trim().toLowerCase();
+  const lista = NOVEDADES.filter(n =>
+    (cat === 'Todas' || n.cat === cat) &&
+    (!term || (n.title + ' ' + n.bajada).toLowerCase().includes(term))
+  );
+  const dest = lista.find(n => n.destacado);
+  const resto = lista.filter(n => n !== dest);
+
+  return (
+    <>
+      <HeaderStyles/>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+      <div style={{ background: 'white', borderBottom: '1px solid #e8f5f1' }}>
+        <div className="crumbs" style={{ maxWidth: 1200, margin: '0 auto', padding: '11px 24px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: '#9aa8a9', flexWrap: 'wrap' }}>
+          <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="home" size={12}/> Inicio</a>
+          <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+          <span style={{ color: '#4a6062', fontWeight: 700 }}>Novedades</span>
+        </div>
+      </div>
+
+      <header style={{ background: 'white' }}>
+        <div className="nov-head" style={{ maxWidth: 1200, margin: '0 auto', padding: '34px 24px 26px' }}>
+          <h1 style={{ color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(26px, 6vw, 44px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.5 }}>Eventos y novedades</h1>
+          <p style={{ marginTop: 12, color: '#607a7c', fontSize: 'clamp(14.5px, 3.4vw, 16.5px)', lineHeight: 1.6, maxWidth: 720, textWrap: 'pretty' }}>Jornadas, cursos, asambleas, beneficios y avisos internos del Distrito VII. Las actividades con inscripción abierta se publican con cupo y fecha de cierre.</p>
+        </div>
+      </header>
+
+      <section style={{ background: 'white', borderBottom: '1px solid #e8f5f1', borderTop: '1px solid #eef2f1', position: 'sticky', top: 66, zIndex: 40 }}>
+        <div className="filtros-bar" style={{ maxWidth: 1200, margin: '0 auto', padding: '16px 24px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+          <div className="chips-row" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <Chip label="Todas" active={cat === 'Todas'} onClick={() => setCat('Todas')}/>
+            {CATS.map(c => <Chip key={c} label={c} active={cat === c} onClick={() => setCat(c)}/>)}
+          </div>
+          <div className="buscador" style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #dfe9e7', borderRadius: 20, padding: '8px 14px', background: '#f7faf9', minWidth: 230 }}>
+            <Icon name="search" size={15} color="#607a7c"/>
+            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Buscar publicación…" style={{ border: 'none', background: 'none', outline: 'none', fontFamily: 'inherit', fontSize: 13.5, color: '#373d3e', width: '100%' }}/>
+          </div>
+        </div>
+      </section>
+
+      <section className="nov-body" style={{ background: '#f7faf9', padding: '36px 24px 60px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ fontSize: 13, color: '#9aa8a9', fontWeight: 700, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 18 }}>
+            {lista.length} {lista.length === 1 ? 'publicación' : 'publicaciones'}{cat !== 'Todas' ? ` en ${cat}` : ''}
+          </div>
+          {dest && <Destacada n={dest}/>}
+          {resto.length > 0 && (
+            <div className="nov-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 20 }}>
+              {resto.map(n => <NovCard key={n.id} n={n}/>)}
+            </div>
+          )}
+          {lista.length === 0 && (
+            <div style={{ background: 'white', border: '1px solid #e8f5f1', borderRadius: 12, padding: '46px 24px', textAlign: 'center' }}>
+              <div style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 20, fontWeight: 700, color: '#14484a', marginBottom: 6 }}>No hay publicaciones para esa búsqueda</div>
+              <p style={{ fontSize: 14, color: '#607a7c' }}>Probá con otra categoría o borrá el texto del buscador.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

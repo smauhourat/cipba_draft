@@ -112,6 +112,7 @@ const navLinks = [
       { label: 'Vademécum', href: '#', ext: true },
     ] },
   ] },
+  { label: 'Novedades', href: 'novedades.html' },									 
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
@@ -221,7 +222,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="inscripcion.html" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="index.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -233,17 +234,16 @@ const Navbar = ({ scrolled }) => {
 /* ─── ANNOUNCEMENT BAR ─── */
 const AnnouncementBar = () => (
   <div style={{ background: '#e8f5f1', borderBottom: '1px solid #c0e2ca' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', lineHeight: 1.7 }}>
-      <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 8 }}><Icon name="scale" size={14} color="#14484a"/></span>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+      <Icon name="scale" size={14} color="#14484a"/>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      {' '}
-      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'inline-flex', alignItems: 'center', gap: 3, verticalAlign: 'middle' }}>
+		   
+      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
   </div>
 );
-
 /* ─── PAGE HERO ─── */
 const PageHero = () => (
   <section style={{ background: 'linear-gradient(135deg, #14484a 0%, #1a5f5c 60%, #00a48a 100%)', position: 'relative', overflow: 'hidden' }}>

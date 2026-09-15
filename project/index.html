@@ -125,6 +125,7 @@ const navLinks = [
       { label: 'Vademécum', href: '#', ext: true },
     ] },
   ] },
+  { label: 'Novedades', href: 'novedades.html' },										 
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
@@ -419,7 +420,7 @@ const Eventos = () => {
       <div style={wrap}>
         <SectionHead title="Eventos y novedades" sub="Vida institucional del Distrito: jornadas, cursos, asambleas y avisos internos para matriculados.">
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <MoreLink label="Ver listado completo"/>
+            <MoreLink label="Ver listado completo" href="novedades.html"/>
             <div style={{ display: 'flex', gap: 8 }}>
               <button aria-label="Anterior" onClick={() => jump(idx - 1)} style={arrow(idx === 0)}>
                 <span style={{ display: 'flex', transform: 'rotate(180deg)' }}><Icon name="chevronRight" size={15} color={C.deep}/></span>

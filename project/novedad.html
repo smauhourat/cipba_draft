@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Novedad | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="image-slot.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  img { display: block; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+  @media (max-width: 1160px) { .desktop-nav { display: none !important; } .mobile-burger { display: flex !important; } }
+  @media (max-width: 960px) { .nota-grid { grid-template-columns: 1fr !important; } .nota-grid > div:last-child { position: static !important; } .rel-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; } }
+  @media (max-width: 1000px) { .foot-grid { grid-template-columns: 1fr 1fr !important; } .foot-grid > div:first-child { grid-column: span 2; } }
+  @media (max-width: 640px) { .rel-grid { grid-template-columns: 1fr !important; } .foot-grid { grid-template-columns: 1fr !important; } .foot-grid > div:first-child { grid-column: auto; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel" src="novedades-data.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+const { TopBar, Navbar, Footer, Icon, HeaderStyles, NOVEDADES, byId, CatBadge, NovCard } = window;
+
+const n = byId(new URLSearchParams(location.search).get('id'));
+document.title = n.title + ' | CIPBA – Distrito VII';
+
+const Encabezado = () => (
+  <>
+    <div style={{ background: 'white', borderBottom: '1px solid #e8f5f1' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '11px 24px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: '#9aa8a9', flexWrap: 'wrap' }}>
+        <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="home" size={12}/> Inicio</a>
+        <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+        <a href="novedades.html">Novedades</a>
+        <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+        <span style={{ color: '#4a6062', fontWeight: 700 }}>{n.cat}</span>
+      </div>
+    </div>
+    <header style={{ background: 'white' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '38px 24px 30px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+          <CatBadge cat={n.cat} size={11.5}/>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#9aa8a9', fontSize: 13, fontWeight: 600 }}>
+            <Icon name="calendar" size={13} color="#9aa8a9"/> {n.fechaTxt}
+          </span>
+        </div>
+        <h1 style={{ color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(30px, 4.4vw, 46px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.5, maxWidth: 940, textWrap: 'pretty' }}>{n.title}</h1>
+        <p style={{ marginTop: 14, paddingLeft: 16, borderLeft: '3px solid #00a48a', color: '#4a6062', fontSize: 18, lineHeight: 1.6, maxWidth: 780, fontWeight: 300, textWrap: 'pretty' }}>{n.bajada}</p>
+      </div>
+    </header>
+  </>
+);
+
+const Cuerpo = () => (
+  <article style={{ display: 'grid', gap: 18 }}>
+    {n.cuerpo.map((b, i) => {
+      if (b.t === 'h') return <h2 key={i} style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 24, fontWeight: 900, color: '#14484a', marginTop: 12 }}>{b.c}</h2>;
+      if (b.t === 'ul') return (
+        <ul key={i} style={{ display: 'grid', gap: 10 }}>
+          {b.c.map((li, j) => (
+            <li key={j} style={{ display: 'flex', gap: 11, alignItems: 'flex-start', fontSize: 16, color: '#4a6062', lineHeight: 1.65, textWrap: 'pretty' }}>
+              <span style={{ flexShrink: 0, marginTop: 4 }}><Icon name="check" size={16} color="#00a48a"/></span>{li}
+            </li>
+          ))}
+        </ul>
+      );
+      return <p key={i} style={{ fontSize: 16.5, color: '#4a6062', lineHeight: 1.75, textWrap: 'pretty' }}>{b.c}</p>;
+    })}
+  </article>
+);
+
+const Ficha = () => {
+  const e = n.evento;
+  const filas = [
+    { icon: 'calendar', label: 'Fecha', value: e.dia },
+    { icon: 'clock', label: 'Horario', value: e.hora },
+    { icon: 'location', label: 'Lugar', value: e.lugar },
+    { icon: 'building', label: 'Modalidad', value: e.modalidad },
+    { icon: 'users', label: 'Cupo', value: e.cupo },
+    { icon: 'dollar', label: 'Arancel', value: e.costo },
+  ];
+  return (
+    <div style={{ background: '#14484a', borderRadius: 12, padding: '24px 24px 26px', color: 'white' }}>
+      <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 19, fontWeight: 900, color: 'white', marginBottom: 18 }}>Datos de la actividad</h3>
+      <div style={{ display: 'grid', gap: 14 }}>
+        {filas.map((f, i) => (
+          <div key={i} style={{ display: 'flex', gap: 11, alignItems: 'flex-start', paddingBottom: 14, borderBottom: i < filas.length - 1 ? '1px dashed rgba(255,255,255,0.18)' : 'none' }}>
+            <span style={{ flexShrink: 0, marginTop: 2 }}><Icon name={f.icon} size={15} color="#7fd8c5"/></span>
+            <div>
+              <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: 3 }}>{f.label}</div>
+              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.9)', lineHeight: 1.5 }}>{f.value}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Compartir = () => {
+  const [copiado, setCopiado] = useState(false);
+  const url = location.href;
+  const share = [
+    { label: 'WhatsApp', icon: 'whatsapp', color: '#25d366', href: `https://wa.me/?text=${encodeURIComponent(n.title + ' ' + url)}` },
+    { label: 'LinkedIn', icon: 'linkedin', color: '#14484a', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` },
+    { label: 'Facebook', icon: 'facebook', color: '#14484a', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
+    { label: 'Mail', icon: 'mail', color: '#14484a', href: `mailto:?subject=${encodeURIComponent(n.title)}&body=${encodeURIComponent(url)}` },
+  ];
+  return (
+    <div style={{ background: 'white', border: '1px solid #e8f5f1', borderRadius: 12, padding: '20px 22px 22px' }}>
+      <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 16, fontWeight: 700, color: '#14484a', marginBottom: 14 }}>Compartir</h3>
+      <div style={{ display: 'flex', gap: 9, flexWrap: 'wrap' }}>
+        {share.map(s => (
+          <a key={s.label} href={s.href} target="_blank" aria-label={s.label} title={s.label} style={{ width: 40, height: 40, borderRadius: 10, border: '1px solid #dfe9e7', background: '#f7faf9', display: 'grid', placeItems: 'center', transition: 'all .2s' }}
+            onMouseEnter={ev => { ev.currentTarget.style.borderColor = '#00a48a'; ev.currentTarget.style.background = '#e8f5f1'; }}
+            onMouseLeave={ev => { ev.currentTarget.style.borderColor = '#dfe9e7'; ev.currentTarget.style.background = '#f7faf9'; }}>
+            <Icon name={s.icon} size={16} color={s.color}/>
+          </a>
+        ))}
+        <button onClick={() => { navigator.clipboard.writeText(url); setCopiado(true); setTimeout(() => setCopiado(false), 1800); }}
+          style={{ height: 40, borderRadius: 10, border: '1px solid #dfe9e7', background: copiado ? '#e8f5f1' : '#f7faf9', display: 'flex', alignItems: 'center', gap: 7, padding: '0 14px', fontSize: 13, fontWeight: 700, color: '#14484a' }}>
+          <Icon name={copiado ? 'check' : 'copy'} size={15} color="#00a48a"/> {copiado ? 'Copiado' : 'Copiar enlace'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const CTA = () => (
+  <div style={{ background: '#e8f5f1', border: '1px solid #c0e2ca', borderRadius: 12, padding: '22px 24px 24px' }}>
+    <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 18, fontWeight: 700, color: '#14484a', marginBottom: 8 }}>{n.evento ? 'Inscripción' : 'Más información'}</h3>
+    <p style={{ fontSize: 13.5, color: '#4a6062', lineHeight: 1.6, marginBottom: 16, textWrap: 'pretty' }}>
+      {n.evento ? 'La inscripción se confirma por mail una vez verificada la matrícula. Si el cupo está completo, quedás en lista de espera.' : 'Para consultas sobre esta publicación podés escribirnos o comunicarte con el área correspondiente.'}
+    </p>
+    <div style={{ display: 'grid', gap: 9 }}>
+      <a href={n.cta ? n.cta.href : 'contacto.html'} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, background: '#00a48a', color: 'white', fontSize: 14.5, fontWeight: 800, padding: '13px', borderRadius: 6, transition: 'background .2s' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#00705e'} onMouseLeave={e => e.currentTarget.style.background = '#00a48a'}>
+        {n.cta ? n.cta.label : 'Escribinos'} <Icon name="chevronRight" size={14} color="white"/>
+      </a>
+      <a href="mailto:info@cipba.org" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 700, color: '#14484a', padding: '4px 2px' }}>
+        <Icon name="mail" size={15} color="#00a48a"/> info@cipba.org
+      </a>
+    </div>
+  </div>
+);
+
+const Relacionadas = () => {
+  const otras = NOVEDADES.filter(o => o.id !== n.id).sort((a, b) => (a.cat === n.cat ? -1 : 0) - (b.cat === n.cat ? -1 : 0)).slice(0, 3);
+  return (
+    <section style={{ background: '#eef2f1', borderTop: '1px solid #c0e2ca', padding: '46px 24px 56px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 20 }}>
+          <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 24, fontWeight: 900, color: '#14484a' }}>Otras novedades</h2>
+          <a href="novedades.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#00705e', display: 'flex', alignItems: 'center', gap: 4 }}>
+            Ver listado completo <Icon name="chevronRight" size={13} color="#00705e"/>
+          </a>
+        </div>
+        <div className="rel-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 20 }}>
+          {otras.map(o => <NovCard key={o.id} n={o}/>)}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const App = () => {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <>
+      <HeaderStyles/>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+      <Encabezado/>
+      <div style={{ background: 'white' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+          <div style={{ aspectRatio: '21 / 9', background: '#eef2f1', borderRadius: 14, overflow: 'hidden', border: '1px solid #e8f5f1' }}>
+            <image-slot id={`nov-hero-${n.id}`} shape="rect" placeholder="Imagen principal de la nota"></image-slot>
+          </div>
+        </div>
+        <div style={{ height: 46 }}/>
+      </div>
+      <section style={{ background: '#f7faf9', borderTop: '1px solid #e8f5f1', padding: '46px 24px 56px' }}>
+        <div className="nota-grid" style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 40, alignItems: 'start' }}>
+          <Cuerpo/>
+          <div style={{ display: 'grid', gap: 16, position: 'sticky', top: 88 }}>
+            {n.evento && <Ficha/>}
+            <CTA/>
+            <Compartir/>
+            <a href="novedades.html" style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 700, color: '#14484a', padding: '2px 2px' }}>
+              <Icon name="chevronRight" size={14} color="#00a48a"/> Volver a todas las novedades
+            </a>
+          </div>
+        </div>
+      </section>
+      <Relacionadas/>
+      <Footer/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

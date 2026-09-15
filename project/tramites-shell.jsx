@@ -93,6 +93,7 @@ const navLinks = [
       { label: 'Vademécum', href: '#', ext: true },
     ] },
   ] },
+  { label: 'Novedades', href: 'novedades.html' },										 
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
