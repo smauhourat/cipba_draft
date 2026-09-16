@@ -175,7 +175,7 @@ const Navbar = ({ scrolled }) => {
                     <div key={gi} style={{ paddingTop: gi ? 8 : 0, marginTop: gi ? 6 : 0, borderTop: gi ? '1px solid #eef2f1' : 'none' }}>
                       {g.title && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: '#9aa8a9', padding: '6px 18px 7px' }}>{g.title}</div>}
                       {g.items.map(s => (
-                        <a key={s.label} href={s.href} style={{
+                        <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} style={{
                           display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', fontSize: 13.5,
                           color: '#373d3e', transition: 'background .15s, color .15s',
                         }}

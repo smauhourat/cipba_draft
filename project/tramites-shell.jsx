@@ -80,20 +80,21 @@ const navLinks = [
   ] },
   { label: 'Normativa', href: 'normativa.html', groups: [
     { title: 'Marco legal', items: [
-      { label: 'Ley Colegial 10.416', href: '#' },
-      { label: 'Ley Previsional 12.490', href: '#' },
-      { label: 'Código de Ética', href: '#' },
-      { label: 'Reglamento Interno', href: '#' },
-      { label: 'Incumbencias', href: '#', ext: true },
+      { label: 'Ley Colegial 10.416', href: 'docs/ley-10416.pdf' },
+      { label: 'Ley Previsional 12.490', href: 'docs/ley-previsional-12490.pdf' },
+      { label: 'Código de Ética', href: 'docs/codigo-de-etica.pdf' },
+      { label: 'Reglamento Interno', href: 'docs/reglamento-interno.pdf' },
+      { label: 'Incumbencias', href: 'http://www.colegioingenieros.org.ar/incumbencias/', ext: true },
+      { label: 'Ver toda la normativa', href: 'normativa.html' },
     ] },
     { title: 'Consulta', items: [
-      { label: 'Resoluciones', href: '#', ext: true },
-      { label: 'Honorarios mínimos vigentes', href: '#' },
+      { label: 'Resoluciones', href: 'http://www.colegioingenieros.org.ar/category/resoluciones/', ext: true },
+      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html' },
       { label: 'Modelos de contrato', href: '#' },
       { label: 'Vademécum', href: '#', ext: true },
     ] },
   ] },
-  { label: 'Novedades', href: 'novedades.html' },										 
+  { label: 'Novedades', href: 'novedades.html' },
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
@@ -104,7 +105,6 @@ const navLinks = [
   ] },
   { label: 'Contacto', href: 'contacto.html' },
 ];
-
 const PAGE = (typeof location !== 'undefined' ? (location.pathname.split('/').pop() || 'index.html') : '');
 const isActive = (href) => !!href && !href.startsWith('#') && href.split('#')[0] === PAGE;
 
@@ -151,7 +151,7 @@ const Navbar = ({ scrolled }) => {
                     <div key={gi} style={{ paddingTop: gi ? 8 : 0, marginTop: gi ? 6 : 0, borderTop: gi ? '1px solid #eef2f1' : 'none' }}>
                       {g.title && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: '#9aa8a9', padding: '6px 18px 7px' }}>{g.title}</div>}
                       {g.items.map(s => (
-                        <a key={s.label} href={s.href} style={{
+                        <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} style={{
                           display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', fontSize: 13.5,
                           color: '#373d3e', transition: 'background .15s, color .15s',
                         }}

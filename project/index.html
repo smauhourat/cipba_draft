@@ -184,7 +184,7 @@ const Navbar = ({ scrolled }) => {
                     <div key={gi} style={{ paddingTop: gi ? 8 : 0, marginTop: gi ? 6 : 0, borderTop: gi ? '1px solid #eef2f1' : 'none' }}>
                       {g.title && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: '#9aa8a9', padding: '6px 18px 7px' }}>{g.title}</div>}
                       {g.items.map(s => (
-                        <a key={s.label} href={s.href} style={{
+                        <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} style={{
                           display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', fontSize: 13.5,
                           color: '#373d3e', transition: 'background .15s, color .15s',
                         }}
@@ -228,7 +228,7 @@ const Navbar = ({ scrolled }) => {
                 <div key={gi}>
                   {g.title && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: '#9aa8a9', padding: '10px 32px 4px' }}>{g.title}</div>}
                   {g.items.map(s => (
-                    <a key={s.label} href={s.href} onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 32px', fontSize: 14, color: '#607a7c', borderBottom: '1px solid #f7faf9' }}>
+                    <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 32px', fontSize: 14, color: '#607a7c', borderBottom: '1px solid #f7faf9' }}>
                       {s.label}{s.ext && <Icon name="externalLink" size={11} color="#00a48a"/>}
                     </a>
                   ))}
@@ -248,11 +248,10 @@ const Navbar = ({ scrolled }) => {
 /* ─── ANNOUNCEMENT BAR ─── */
 const AnnouncementBar = () => (
   <div style={{ background: '#e8f5f1', borderBottom: '1px solid #c0e2ca' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', lineHeight: 1.7 }}>
-      <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 8 }}><Icon name="scale" size={14} color="#14484a"/></span>
-      <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      {' '}
-      <a href="honorarios.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'nowrap', gap: 8 }}>
+      <span style={{ display: 'flex', flexShrink: 0 }}><Icon name="scale" size={14} color="#14484a"/></span>
+      <span style={{ fontSize: 'clamp(11.5px, 3vw, 13.5px)', color: '#373d3e', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
+      <a href="honorarios.html" style={{ fontSize: 'clamp(11.5px, 3vw, 13.5px)', fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0, whiteSpace: 'nowrap' }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
@@ -324,7 +323,7 @@ const Hero = () => {
 
 /* ─── AUTOGESTIÓN / TRÁMITES ─── */
 const autogestion = [
-  { icon: 'calculator', title: 'Honorarios', desc: 'Honorarios mínimos vigentes.', color: '#484586', hover: '#302E5C', bg: '#f6f5fb', ext: true },
+  { icon: 'calculator', title: 'Honorarios', desc: 'Honorarios mínimos vigentes.', color: '#484586', hover: '#302E5C', bg: '#f6f5fb', ext: false, href: 'honorarios.html' },
   { icon: 'file', title: 'Visado online', desc: 'Presentación de trabajos. 20 % de descuento.', color: '#484586', hover: '#302E5C', bg: '#f6f5fb', ext: true },
   { icon: 'users', title: 'SIGMA', desc: 'Sistema de gestión de matriculados.', color: '#484586', hover: '#302E5C', bg: '#f6f5fb', ext: true },
 ];
