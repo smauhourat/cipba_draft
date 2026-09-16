@@ -440,6 +440,18 @@ const SocialIcons = ({ size = 17 }) => {
 };
 
 /* ─── FOOTER ─── */
+const footerHrefs = {
+  'Medios de pago': 'pago-matricula.html',
+  'Inscripción y bajas': 'inscripcion.html',
+  'Ley 10.416': 'docs/ley-10416.pdf',
+  'Código de Ética': 'docs/codigo-de-etica.pdf',
+  'Honorarios mínimos': 'honorarios.html',
+  'Subcomisiones': 'subcomisiones.html',
+  'Autoridades': 'institucional.html#autoridades',
+  'Partidos del Distrito': 'institucional.html#partidos',
+  'Sedes y delegaciones': 'institucional.html#sedes',
+};
+
 const footerCols = [
   { title: 'Trámites', items: ['Inscripción y bajas', 'Medios de pago', 'Certificados CAIE', 'Visado online', 'SIGMA'] },
   { title: 'Normativa', items: ['Ley 10.416', 'Código de Ética', 'Resoluciones', 'Honorarios mínimos', 'Vademécum'] },
@@ -461,7 +473,7 @@ const Footer = () => (
             <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'white', marginBottom: 15 }}>{col.title}</h3>
             <div style={{ display: 'grid', gap: 9 }}>
               {col.items.map(it => (
-                <a key={it} href="#" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
+                <a key={it} href={footerHrefs[it] || '#'} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#00a48a'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.72)'}>{it}</a>
               ))}
             </div>
