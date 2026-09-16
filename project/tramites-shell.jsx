@@ -78,7 +78,7 @@ const navLinks = [
       { label: 'Otros trámites', href: '#', ext: true },
     ] },
   ] },
-  { label: 'Normativa', href: 'index.html#normativa', groups: [
+  { label: 'Normativa', href: 'normativa.html', groups: [
     { title: 'Marco legal', items: [
       { label: 'Ley Colegial 10.416', href: '#' },
       { label: 'Ley Previsional 12.490', href: '#' },
@@ -218,7 +218,7 @@ const AnnouncementBar = () => (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
       <Icon name="scale" size={14} color="#14484a"/>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
+      <a href="normativa.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Honorarios mínimos vigentes | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+  @media (max-width: 1160px) { .desktop-nav { display: none !important; } .mobile-burger { display: flex !important; } }
+  @media (max-width: 1000px) { .foot-grid { grid-template-columns: 1fr 1fr !important; } .foot-grid > div:first-child { grid-column: span 2; } }
+  @media (max-width: 760px) {
+    .vig-head { grid-template-columns: 1fr !important; gap: 14px !important; padding: 20px 18px !important; }
+    .vig-date { text-align: left !important; border-left: none !important; padding-left: 0 !important; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 14px; }
+    .doc-row { grid-template-columns: auto 1fr !important; gap: 13px !important; padding: 16px 18px !important; }
+    .doc-cta { grid-column: 2; justify-self: start !important; margin-top: 2px; }
+    .hon-head { padding: 26px 16px 20px !important; }
+    .hon-body { padding: 24px 16px 48px !important; }
+    .crumbs { padding: 10px 16px !important; }
+    .hist-row { grid-template-columns: 1fr !important; gap: 8px !important; }
+  }
+  @media (max-width: 640px) { .foot-grid { grid-template-columns: 1fr !important; } .foot-grid > div:first-child { grid-column: auto; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+const { TopBar, Navbar, Footer, Icon, HeaderStyles } = window;
+
+const CS = 'http://www.colegioingenieros.org.ar/wp-content/uploads/2026/02/';
+
+const vigente = {
+  nro: 'Resolución CS 1553/2026',
+  vigenciaDesde: '1 de abril de 2026',
+  publicada: '27 de febrero de 2026',
+  resumen: 'Tabla de honorarios mínimos para las tareas profesionales sujetas a visado en el ámbito de la provincia de Buenos Aires.',
+  piezas: [
+    { title: 'Resolución 1553', desc: 'Texto de la resolución del Consejo Superior: alcance, fecha de vigencia y criterios de aplicación.', href: CS + 'RESOLUCION-1553-HONORARIOS-A-PARTIR-DE-ABRIL-2026.pdf', tag: 'Resolución' },
+    { title: 'Anexos — Tablas de honorarios mínimos', desc: 'Valores por especialidad y tipo de tarea. Es el documento de consulta habitual para liquidar un trabajo.', href: CS + 'ANEXOS-RESOLUCION-1553-HONORARIOS-A-PARTIR-DE-ABRIL-2026.pdf', tag: 'Anexos' },
+  ],
+};
+
+const historico = [
+  { nro: 'Resolución CS 1543/2025', periodo: 'Publicada 17/11/2025', nota: 'Tabla de honorarios mínimos — certificados CAIE y CAIER.', href: 'http://www.colegioingenieros.org.ar/resolucion-1543-y-sus-anexos/' },
+  { nro: 'Resolución CS 1540/2025', periodo: 'Vigente 01/10/2025 – 31/03/2026', nota: 'Tabla general con Anexos I, II y III.', href: 'http://www.colegioingenieros.org.ar/resolucion-1540/' },
+  { nro: 'Resolución CS 1522/2025', periodo: 'Vigente 01/04/2025 – 30/09/2025', nota: 'Tabla general.', href: 'http://www.colegioingenieros.org.ar/resolucion-1522/' },
+  { nro: 'Resolución CS 1502/2024', periodo: 'Publicada 26/09/2024', nota: 'Tabla de honorarios mínimos para tareas de bioingeniería.', href: 'http://www.colegioingenieros.org.ar/resolucion-1502/' },
+  { nro: 'Resolución CS 1498/2024', periodo: 'Publicada 19/08/2024', nota: 'Tabla general con Anexos I, II y III.', href: 'http://www.colegioingenieros.org.ar/resolucion-1498-y-anexas-i-ii-y-iii/' },
+  { nro: 'Resolución CS 1474/2024', periodo: 'Publicada 06/03/2024', nota: 'Tabla general con Anexos I a IV.', href: 'http://www.colegioingenieros.org.ar/resolucion-1474-y-anexas-i-ii-iii-y-iv/' },
+];
+
+const PiezaRow = ({ d, principal }) => {
+  const [h, setH] = useState(false);
+  return (
+    <a href={d.href} target="_blank" rel="noopener" className="doc-row" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
+      display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 18,
+      background: 'white', border: `1px solid ${h ? '#00a48a' : '#e8f5f1'}`, borderRadius: 10,
+      padding: '18px 22px', transition: 'all .22s ease',
+      boxShadow: h ? '0 8px 24px rgba(20,72,74,0.10)' : '0 2px 8px rgba(0,0,0,0.04)',
+    }}>
+      <span style={{ width: 42, height: 42, borderRadius: 8, background: h ? '#00a48a' : (principal ? '#e8f5f1' : '#eef2f1'), display: 'grid', placeItems: 'center', transition: 'background .22s', flexShrink: 0 }}>
+        <Icon name="file" size={19} color={h ? 'white' : '#00705e'}/>
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 4, flexWrap: 'wrap' }}>
+          <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 18.5, fontWeight: 700, color: '#14484a', lineHeight: 1.25 }}>{d.title}</h3>
+          <span style={{ background: '#eef2f1', color: '#4a6062', fontSize: 10.5, fontWeight: 800, letterSpacing: 0.8, textTransform: 'uppercase', padding: '3px 8px', borderRadius: 20 }}>{d.tag}</span>
+        </div>
+        <p style={{ fontSize: 14, color: '#607a7c', lineHeight: 1.6, textWrap: 'pretty', marginBottom: 6 }}>{d.desc}</p>
+        <span style={{ fontSize: 12, color: '#9aa8a9', fontWeight: 700 }}>PDF · Consejo Superior</span>
+      </div>
+      <span className="doc-cta" style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: h ? '#00705e' : '#14484a', whiteSpace: 'nowrap', transition: 'color .2s' }}>
+        Abrir <Icon name="chevronRight" size={14} color={h ? '#00705e' : '#14484a'}/>
+      </span>
+    </a>
+  );
+};
+
+const HistRow = ({ r }) => {
+  const [h, setH] = useState(false);
+  return (
+    <a href={r.href} target="_blank" rel="noopener" className="hist-row" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
+      display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center', gap: 18,
+      padding: '15px 4px', borderBottom: '1px solid #e8f5f1', transition: 'all .18s',
+    }}>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 16.5, fontWeight: 700, color: h ? '#00705e' : '#14484a', marginBottom: 3, transition: 'color .18s' }}>{r.nro}</div>
+        <div style={{ fontSize: 13.5, color: '#607a7c', lineHeight: 1.55, textWrap: 'pretty' }}>{r.nota}</div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, whiteSpace: 'nowrap' }}>
+        <span style={{ fontSize: 12.5, color: '#9aa8a9', fontWeight: 700 }}>{r.periodo}</span>
+        <Icon name="externalLink" size={14} color={h ? '#00a48a' : '#c3d2d1'}/>
+      </div>
+    </a>
+  );
+};
+
+const App = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [abierto, setAbierto] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <>
+      <HeaderStyles/>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+
+      <div style={{ background: 'white', borderBottom: '1px solid #e8f5f1' }}>
+        <div className="crumbs" style={{ maxWidth: 1200, margin: '0 auto', padding: '11px 24px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: '#9aa8a9', flexWrap: 'wrap' }}>
+          <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="home" size={12}/> Inicio</a>
+          <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+          <a href="normativa.html">Normativa</a>
+          <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+          <span style={{ color: '#4a6062', fontWeight: 700 }}>Honorarios mínimos</span>
+        </div>
+      </div>
+
+      <header style={{ background: 'white' }}>
+        <div className="hon-head" style={{ maxWidth: 1200, margin: '0 auto', padding: '34px 24px 26px' }}>
+          <h1 style={{ color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(26px, 6vw, 44px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.5 }}>Honorarios mínimos</h1>
+          <p style={{ marginTop: 12, color: '#607a7c', fontSize: 'clamp(14.5px, 3.4vw, 16.5px)', lineHeight: 1.6, maxWidth: 740, textWrap: 'pretty' }}>Tablas sancionadas por el Consejo Superior y publicadas por resolución. Los trabajos presentados antes de una actualización se liquidan con la tabla vigente a la fecha de presentación.</p>
+        </div>
+      </header>
+
+      <section className="hon-body" style={{ background: '#f7faf9', borderTop: '1px solid #eef2f1', padding: '34px 24px 60px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+
+          <div style={{ background: 'white', border: '1px solid #c0e2ca', borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <div className="vig-head" style={{ background: '#14484a', display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center', gap: 24, padding: '22px 26px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 9, flexWrap: 'wrap' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#00a48a', color: 'white', fontSize: 11, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', padding: '4px 11px', borderRadius: 20 }}>
+                    <Icon name="check" size={12} color="white"/> Vigente
+                  </span>
+                  <span style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Publicada el {vigente.publicada}</span>
+                </div>
+                <h2 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(22px, 3.4vw, 28px)', fontWeight: 900, color: 'white', lineHeight: 1.15 }}>{vigente.nro}</h2>
+                <p style={{ marginTop: 8, fontSize: 14.5, color: 'rgba(255,255,255,0.8)', lineHeight: 1.6, maxWidth: 480, textWrap: 'pretty' }}>{vigente.resumen}</p>
+              </div>
+              <div className="vig-date" style={{ textAlign: 'right', borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 24 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.2, textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: 6 }}>Vigente desde</div>
+                <div style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 900, color: '#7fd8c5', lineHeight: 1.15 }}>{vigente.vigenciaDesde}</div>
+              </div>
+            </div>
+            <div style={{ padding: '18px 20px 20px', display: 'grid', gap: 12 }}>
+              {vigente.piezas.map(p => <PiezaRow key={p.title} d={p} principal/>)}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 16, display: 'flex', alignItems: 'flex-start', gap: 11, background: '#eef2f1', border: '1px solid #dfe9e7', borderRadius: 10, padding: '15px 18px' }}>
+            <span style={{ flexShrink: 0, marginTop: 1 }}><Icon name="clock" size={16} color="#607a7c"/></span>
+            <p style={{ fontSize: 13.5, color: '#4a6062', lineHeight: 1.6, textWrap: 'pretty' }}>
+              El Consejo Superior actualiza la tabla periódicamente. Si necesitás verificar que esta sea la última resolución publicada, podés consultar el <a href="http://www.colegioingenieros.org.ar/category/honorarios/" target="_blank" rel="noopener" style={{ color: '#00705e', fontWeight: 700 }}>listado de honorarios del Consejo Superior</a>.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 34 }}>
+            <button onClick={() => setAbierto(!abierto)} style={{
+              width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+              background: 'white', border: '1px solid #e8f5f1', borderRadius: abierto ? '10px 10px 0 0' : 10,
+              padding: '18px 22px', textAlign: 'left', transition: 'border-radius .2s',
+            }}>
+              <span>
+                <span style={{ display: 'block', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 19, fontWeight: 700, color: '#14484a', marginBottom: 3 }}>Resoluciones anteriores</span>
+                <span style={{ fontSize: 13.5, color: '#607a7c' }}>Tablas sin vigencia actual, necesarias para trabajos presentados con anterioridad</span>
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                <span style={{ fontSize: 12.5, fontWeight: 800, color: '#9aa8a9' }}>{historico.length}</span>
+                <span style={{ transform: abierto ? 'rotate(180deg)' : 'none', transition: 'transform .25s', display: 'grid' }}><Icon name="chevronDown" size={16} color="#00705e"/></span>
+              </span>
+            </button>
+            {abierto && (
+              <div style={{ background: 'white', border: '1px solid #e8f5f1', borderTop: 'none', borderRadius: '0 0 10px 10px', padding: '6px 22px 14px' }}>
+                {historico.map(r => <HistRow key={r.nro} r={r}/>)}
+              </div>
+            )}
+          </div>
+
+          <p style={{ marginTop: 22, fontSize: 13, color: '#9aa8a9', lineHeight: 1.6, textWrap: 'pretty' }}>Los documentos se publican tal como los emite el Consejo Superior y abren en una pestaña nueva. Ante cualquier discrepancia, prevalece el texto oficial.</p>
+        </div>
+      </section>
+
+      <Footer/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

@@ -97,22 +97,23 @@ const navLinks = [
       { label: 'Otros trámites', href: '#', ext: true },
     ] },
   ] },
-  { label: 'Normativa', href: 'index.html#normativa', groups: [
+  { label: 'Normativa', href: 'normativa.html', groups: [
     { title: 'Marco legal', items: [
-      { label: 'Ley Colegial 10.416', href: '#' },
-      { label: 'Ley Previsional 12.490', href: '#' },
-      { label: 'Código de Ética', href: '#' },
-      { label: 'Reglamento Interno', href: '#' },
-      { label: 'Incumbencias', href: '#', ext: true },
+      { label: 'Ley Colegial 10.416', href: 'docs/ley-10416.pdf' },
+      { label: 'Ley Previsional 12.490', href: 'docs/ley-previsional-12490.pdf' },
+      { label: 'Código de Ética', href: 'docs/codigo-de-etica.pdf' },
+      { label: 'Reglamento Interno', href: 'docs/reglamento-interno.pdf' },
+      { label: 'Incumbencias', href: 'http://www.colegioingenieros.org.ar/incumbencias/', ext: true },
+      { label: 'Ver toda la normativa', href: 'normativa.html' },
     ] },
     { title: 'Consulta', items: [
-      { label: 'Resoluciones', href: '#', ext: true },
-      { label: 'Honorarios mínimos vigentes', href: '#' },
+      { label: 'Resoluciones', href: 'http://www.colegioingenieros.org.ar/category/resoluciones/', ext: true },
+      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html' },
       { label: 'Modelos de contrato', href: '#' },
       { label: 'Vademécum', href: '#', ext: true },
     ] },
   ] },
-  { label: 'Novedades', href: 'novedades.html' },									 
+  { label: 'Novedades', href: 'novedades.html' },
   { label: 'Institucional', href: 'institucional.html', groups: [
     { items: [
       { label: 'Subcomisiones', href: 'subcomisiones.html' },
@@ -238,7 +239,7 @@ const AnnouncementBar = () => (
       <Icon name="scale" size={14} color="#14484a"/>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
 		   
-      <a href="index.html#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
+      <a href="honorarios.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>

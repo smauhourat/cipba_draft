@@ -110,17 +110,18 @@ const navLinks = [
       { label: 'Otros trámites', href: '#', ext: true },
     ] },
   ] },
-  { label: 'Normativa', href: '#normativa', groups: [
+  { label: 'Normativa', href: 'normativa.html', groups: [
     { title: 'Marco legal', items: [
-      { label: 'Ley Colegial 10.416', href: '#' },
-      { label: 'Ley Previsional 12.490', href: '#' },
-      { label: 'Código de Ética', href: '#' },
-      { label: 'Reglamento Interno', href: '#' },
-      { label: 'Incumbencias', href: '#', ext: true },
+      { label: 'Ley Colegial 10.416', href: 'docs/ley-10416.pdf' },
+      { label: 'Ley Previsional 12.490', href: 'docs/ley-previsional-12490.pdf' },
+      { label: 'Código de Ética', href: 'docs/codigo-de-etica.pdf' },
+      { label: 'Reglamento Interno', href: 'docs/reglamento-interno.pdf' },
+      { label: 'Incumbencias', href: 'http://www.colegioingenieros.org.ar/incumbencias/', ext: true },
+      { label: 'Ver toda la normativa', href: 'normativa.html' },
     ] },
     { title: 'Consulta', items: [
-      { label: 'Resoluciones', href: '#', ext: true },
-      { label: 'Honorarios mínimos vigentes', href: '#' },
+      { label: 'Resoluciones', href: 'http://www.colegioingenieros.org.ar/category/resoluciones/', ext: true },
+      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html' },
       { label: 'Modelos de contrato', href: '#' },
       { label: 'Vademécum', href: '#', ext: true },
     ] },
@@ -251,7 +252,7 @@ const AnnouncementBar = () => (
       <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 8 }}><Icon name="scale" size={14} color="#14484a"/></span>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
       {' '}
-      <a href="#normativa" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'inline-flex', alignItems: 'center', gap: 3, verticalAlign: 'middle' }}>
+      <a href="honorarios.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
@@ -482,7 +483,7 @@ const Noticias = () => {
         <SectionHead title="Noticias" right={<MoreLink label="Ver todas"/>}/>
         <div className="news-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 14 }}>
           {noticias.map((n, i) => (
-            <a key={i} href="#" {...hv(i)} style={{
+            <a key={i} href="novedades.html" {...hv(i)} style={{
               display: 'block', background: 'white', border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden',
               transition: 'all .25s', boxShadow: h === i ? '0 8px 22px rgba(0,0,0,0.10)' : '0 2px 8px rgba(0,0,0,0.04)',
               transform: h === i ? 'translateY(-4px)' : 'none',

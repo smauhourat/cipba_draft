@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Normativa | CIPBA – Distrito VII</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: #f7faf9; color: #373d3e; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  a:hover { color: #00705e; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+  ol, ul { list-style: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #eef2f1; }
+  ::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+  @media (max-width: 1160px) { .desktop-nav { display: none !important; } .mobile-burger { display: flex !important; } }
+  @media (max-width: 1000px) { .foot-grid { grid-template-columns: 1fr 1fr !important; } .foot-grid > div:first-child { grid-column: span 2; } }
+  @media (max-width: 760px) {
+    .doc-row { grid-template-columns: auto 1fr !important; gap: 14px !important; padding: 18px 18px 20px !important; }
+    .doc-cta { grid-column: 2; justify-self: start !important; margin-top: 4px; }
+    .norm-head { padding: 26px 16px 20px !important; }
+    .norm-body { padding: 24px 16px 48px !important; }
+    .crumbs { padding: 10px 16px !important; }
+  }
+  @media (max-width: 640px) { .foot-grid { grid-template-columns: 1fr !important; } .foot-grid > div:first-child { grid-column: auto; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tramites-shell.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+const { TopBar, Navbar, Footer, Icon, HeaderStyles } = window;
+
+const docs = [
+  {
+    title: 'Ley Colegial 10.416',
+    desc: 'Ley provincial que crea el Colegio de Ingenieros de la Provincia de Buenos Aires, define el ejercicio profesional de la ingeniería, la obligatoriedad de la matrícula y el régimen disciplinario.',
+    meta: ['PDF · 151 KB', 'Provincia de Buenos Aires'],
+    href: 'docs/ley-10416.pdf',
+  },
+  {
+    title: 'Código de Ética',
+    desc: 'Deberes del matriculado frente al comitente, los colegas y la comunidad. Es la norma de referencia en todo procedimiento del Tribunal de Ética y Disciplina.',
+    meta: ['PDF · 122 KB', 'Consejo Superior'],
+    href: 'docs/codigo-de-etica.pdf',
+  },
+  {
+    title: 'Reglamento Interno',
+    desc: 'Funcionamiento de los órganos del Colegio y de los distritos: atribuciones del Consejo Directivo, asambleas, subcomisiones y régimen electoral.',
+    meta: ['PDF · 149 KB', 'Consejo Superior'],
+    href: 'docs/reglamento-interno.pdf',
+  },
+  {
+    title: 'Ley Previsional 12.490',
+    desc: 'Régimen de la Caja de Previsión Social para Profesionales de la Ingeniería. Aportes, beneficios jubilatorios y obligaciones previsionales del matriculado.',
+    meta: ['PDF · 102 KB', 'Provincia de Buenos Aires'],
+    href: 'docs/ley-previsional-12490.pdf',
+  },
+];
+
+const externo = {
+  title: 'Incumbencias profesionales',
+  desc: 'Alcance de las tareas que habilita cada título de ingeniería. El listado completo por especialidad se publica y actualiza en el sitio del Consejo Superior.',
+  href: 'http://www.colegioingenieros.org.ar/incumbencias/',
+};
+
+const DocRow = ({ d }) => {
+  const [h, setH] = useState(false);
+  return (
+    <a href={d.href} target="_blank" rel="noopener" className="doc-row" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
+      display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 20,
+      background: 'white', border: `1px solid ${h ? '#00a48a' : '#e8f5f1'}`, borderRadius: 10,
+      padding: '20px 24px', transition: 'all .22s ease',
+      boxShadow: h ? '0 8px 24px rgba(20,72,74,0.10)' : '0 2px 8px rgba(0,0,0,0.04)',
+    }}>
+      <span style={{ width: 44, height: 44, borderRadius: 8, background: h ? '#00a48a' : '#e8f5f1', display: 'grid', placeItems: 'center', transition: 'background .22s', flexShrink: 0 }}>
+        <Icon name="file" size={20} color={h ? 'white' : '#00705e'}/>
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 20, fontWeight: 700, color: '#14484a', lineHeight: 1.25, marginBottom: 5 }}>{d.title}</h3>
+        <p style={{ fontSize: 14.5, color: '#607a7c', lineHeight: 1.6, textWrap: 'pretty', marginBottom: 8 }}>{d.desc}</p>
+        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+          {d.meta.map(m => <span key={m} style={{ fontSize: 12, color: '#9aa8a9', fontWeight: 700, letterSpacing: 0.3 }}>{m}</span>)}
+        </div>
+      </div>
+      <span className="doc-cta" style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: h ? '#00705e' : '#14484a', whiteSpace: 'nowrap', transition: 'color .2s' }}>
+        Abrir <Icon name="chevronRight" size={14} color={h ? '#00705e' : '#14484a'}/>
+      </span>
+    </a>
+  );
+};
+
+const ExtRow = () => {
+  const [h, setH] = useState(false);
+  return (
+    <a href={externo.href} target="_blank" rel="noopener" className="doc-row" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
+      display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 20,
+      background: '#eef2f1', border: `1px dashed ${h ? '#00a48a' : '#c0e2ca'}`, borderRadius: 10,
+      padding: '20px 24px', transition: 'all .22s ease',
+    }}>
+      <span style={{ width: 44, height: 44, borderRadius: 8, background: h ? '#00a48a' : 'white', border: '1px solid #c0e2ca', display: 'grid', placeItems: 'center', transition: 'background .22s', flexShrink: 0 }}>
+        <Icon name="externalLink" size={19} color={h ? 'white' : '#00705e'}/>
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 20, fontWeight: 700, color: '#14484a', lineHeight: 1.25, marginBottom: 5 }}>{externo.title}</h3>
+        <p style={{ fontSize: 14.5, color: '#607a7c', lineHeight: 1.6, textWrap: 'pretty', marginBottom: 8 }}>{externo.desc}</p>
+        <span style={{ fontSize: 12, color: '#9aa8a9', fontWeight: 700, letterSpacing: 0.3 }}>Sitio del Consejo Superior · colegioingenieros.org.ar</span>
+      </div>
+      <span className="doc-cta" style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: '#14484a', whiteSpace: 'nowrap' }}>
+        Ir al sitio <Icon name="externalLink" size={13} color="#14484a"/>
+      </span>
+    </a>
+  );
+};
+
+const App = () => {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <>
+      <HeaderStyles/>
+      <TopBar/>
+      <Navbar scrolled={scrolled}/>
+
+      <div style={{ background: 'white', borderBottom: '1px solid #e8f5f1' }}>
+        <div className="crumbs" style={{ maxWidth: 1200, margin: '0 auto', padding: '11px 24px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: '#9aa8a9', flexWrap: 'wrap' }}>
+          <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="home" size={12}/> Inicio</a>
+          <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+          <span style={{ color: '#4a6062', fontWeight: 700 }}>Normativa</span>
+        </div>
+      </div>
+
+      <header style={{ background: 'white' }}>
+        <div className="norm-head" style={{ maxWidth: 1200, margin: '0 auto', padding: '34px 24px 26px' }}>
+          <h1 style={{ color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(26px, 6vw, 44px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.5 }}>Normativa</h1>
+          <p style={{ marginTop: 12, color: '#607a7c', fontSize: 'clamp(14.5px, 3.4vw, 16.5px)', lineHeight: 1.6, maxWidth: 720, textWrap: 'pretty' }}>Marco legal que regula el ejercicio profesional de la ingeniería en la provincia y el funcionamiento del Colegio. Los documentos abren en una pestaña nueva.</p>
+        </div>
+      </header>
+
+      <section className="norm-body" style={{ background: '#f7faf9', borderTop: '1px solid #eef2f1', padding: '34px 24px 60px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', display: 'grid', gap: 14 }}>
+          {docs.map(d => <DocRow key={d.title} d={d}/>)}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '14px 0 2px' }}>
+            <span style={{ height: 1, flex: 1, background: '#dfe9e7' }}/>
+            <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', color: '#9aa8a9' }}>En el sitio del Consejo Superior</span>
+            <span style={{ height: 1, flex: 1, background: '#dfe9e7' }}/>
+          </div>
+          <ExtRow/>
+          <p style={{ marginTop: 10, fontSize: 13, color: '#9aa8a9', lineHeight: 1.6, textWrap: 'pretty' }}>Las versiones publicadas se mantienen actualizadas según el texto vigente. Ante cualquier discrepancia, prevalece el texto oficial publicado por la Provincia de Buenos Aires y el Consejo Superior.</p>
+        </div>
+      </section>
+
+      <Footer/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
