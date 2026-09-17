@@ -617,9 +617,6 @@ const navLinks = [{
       label: 'Honorarios mínimos vigentes',
       href: '#'
     }, {
-      label: 'Modelos de contrato',
-      href: '#'
-    }, {
       label: 'Vademécum',
       href: '#',
       ext: true
