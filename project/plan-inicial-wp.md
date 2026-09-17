@@ -41,8 +41,8 @@ El handoff deja 8 decisiones abiertas en su §9. Para no bloquear el arranque, e
 
 El §7 del handoff pide assets que hoy no están listos como archivos sueltos — están dentro del prototipo estático (`project/`). Extraer antes de empezar evita bloquear la Fase 3:
 
-- [ ] Exportar isologo horizontal en SVG + PNG@2x (navbar) y variante monocroma blanca para el pie, desde `_ds/.../tokens` o el prototipo.
-- [ ] Convertir las 7 tipografías a WOFF2 (Lato 300/400/700/900, Roboto Condensed 400/700/900), subset latin + latin-ext.
+- [x] Isologo horizontal en SVG + PNG@2x (navbar) y variante monocroma blanca para el pie. No había SVG original en el proyecto (solo los PNG en `uploads/`); se generó por autotrace (VTracer) a partir de `logo-cipba-navbar.png` y `Logo-blanco.png`, y se normalizaron los colores del trazo a los tokens exactos `#14484A` (verde-700) y `#00A48A` (verde-500) — el autotrace producía ~25 tonos casi idénticos por el antialiasing del PNG. Copiado a `wp-content/themes/cipba/assets/img/` (`logo-cipba-navbar.svg`, `logo-cipba-navbar@2x.png`, `logo-blanco.svg`, `logo.svg` con el isotipo completo). **Pendiente de validar contra el archivo vectorial oficial de la marca si existe** — esto es una reconstrucción por trazado, no el original de diseño.
+- [x] Convertir las 7 tipografías a WOFF2 (Lato 300/400/700/900, Roboto Condensed 400/700/900), subset latin + latin-ext — hecho, ya están en `wp-content/themes/cipba/assets/fonts/` (ver Fase 3).
 - [ ] Generar favicon 512×512.
 - [ ] Armar imagen social por defecto (1200×630).
 - [ ] Crear el patrón crosshatch SVG (tile 60×60).
@@ -76,9 +76,8 @@ No es necesario tener el 100% de estos assets para instalar WordPress, pero sí 
 ### 2.3 Privacidad / indexación
 - [ ] **Marcar "Desalentar a los motores de búsqueda"** (Ajustes → Lectura) mientras se desarrolla localmente/en staging. Quitar recién en el pase a producción — anotar esto como paso explícito de la checklist de salida a producción para no olvidarlo.
 
-### 2.4 Usuarios
-- [ ] **No hay usuario admin propio relevado todavía.** Si el sitio nunca terminó el instalador de WordPress, entrar a `http://localhost:8080/wp-admin/install.php` y crearlo ahí. Si ya existe un admin pero se perdió la contraseña, se puede resetear desde phpMyAdmin (`http://localhost:8081`, usuario `root` / `root_password`) actualizando el hash en `wp_users`, o pedirme que lo haga si hace falta.
-- [ ] Usar el email real de quien administra el sitio (no uno genérico).
+### 2.4 Usuarios — ✅ resuelto
+- [x] Hay dos usuarios administrador: `admin` (creado al completar el instalador) y `cipbaadmin` (creado después, con email propio). **Sugerencia:** si `admin` no lo va a usar nadie en particular, considerar borrarlo (reasignando su contenido a `cipbaadmin`) para no dejar una cuenta genérica activa — es una recomendación de seguridad básica, no bloqueante.
 - [ ] Definir si habrá roles editoriales separados (ej. alguien que solo carga novedades) — si sí, crear usuario con rol Editor o Autor, sin acceso a Apariencia/Plugins.
 
 ### 2.5 Limpieza de instalación por defecto
@@ -93,14 +92,14 @@ No es necesario tener el 100% de estos assets para instalar WordPress, pero sí 
 El tema hijo ya existe en disco (`wp-content/themes/cipba/`, `Template: astra`), así que esta fase es completarlo y activarlo, no crearlo desde cero. Se mantiene el nombre `cipba` en vez de `astra-cipba` para no generar un tema duplicado — todas las referencias del handoff a `astra-cipba` aplican igual a esta carpeta.
 
 1. [x] **Astra** (tema padre) ya está instalado en `wp-content/themes/astra` — no hace falta instalarlo.
-2. [ ] Completar `wp-content/themes/cipba/`:
-   - `theme.json` — todavía no existe; pegar el bloque completo del §2 del handoff
-   - `functions.php` — hoy solo tiene el enqueue de estilos; falta sumar el `add_image_size` (Fase 5), el snippet de PDFs en pestaña nueva (§5.9) y el script del navbar sticky (§5.2)
-   - Carpeta `assets/fonts/` con los 7 WOFF2 de la Fase 0 (hoy `assets/` solo tiene `js/`)
-   - Carpeta `assets/img/` con el crosshatch SVG y demás imágenes de tema
-   - Los tres `template-parts/*.php` están vacíos (0 bytes) — completarlos cuando se arme Subcomisiones/Institucional (fuera de este plan inicial)
-3. [ ] **Activar el tema hijo `cipba`** (hoy el activo es `twentytwentyfive`, el tema por defecto de WordPress).
-4. [ ] Verificar en el editor de bloques que la paleta de colores, tipografías y tamaños de `theme.json` aparecen correctamente (abrir cualquier página nueva → inspector de bloques → Color/Typography).
+2. [x] `theme.json` — pegado el bloque completo del §2 del handoff en `wp-content/themes/cipba/theme.json`. Confirmado en el HTML del front que `--wp--preset--color--verde-500: #00a48a` y el resto de las variables ya se generan.
+   - [x] `assets/img/logo-cipba-navbar.svg`, `logo-cipba-navbar@2x.png`, `logo-blanco.svg`, `logo.svg` — ya copiados (ver más arriba)
+   - [x] `assets/fonts/` — los 7 WOFF2 ya están en su lugar. Se generaron desde las fuentes originales de Google Fonts (repo `google/fonts`: Lato estático, Roboto Condensed variable instanciado a 400/700/900 con `fonttools`) y se subsetearon a latin + latin-ext combinados con `pyftsubset`, en vez de usar los archivos ya pre-recortados del CDN de Google (que vienen divididos por subset y no calzan con el único `src` por peso que pide `theme.json`). Verificado por `curl` que los 7 archivos responden 200 y que el `@font-face` del front-end ya los referencia.
+   - [ ] `functions.php` — hoy solo tiene el enqueue de estilos; falta sumar el `add_image_size` (Fase 5), el snippet de PDFs en pestaña nueva (§5.9) y el script del navbar sticky (§5.2)
+   - [ ] `assets/img/crosshatch.svg` — pendiente de la Fase 0
+   - [ ] Los tres `template-parts/*.php` están vacíos (0 bytes) — completarlos cuando se arme Subcomisiones/Institucional (fuera de este plan inicial)
+3. [x] **Tema hijo `cipba` activado** (`wp_options.template = astra`, `stylesheet = cipba`) — antes estaba activo `twentytwentyfive`.
+4. [ ] Verificar en el editor de bloques que la paleta de colores, tipografías y tamaños de `theme.json` aparecen correctamente (abrir cualquier página nueva → inspector de bloques → Color/Typography) — pendiente de confirmar visualmente en el admin.
 
 ### 3.1 Los tres ajustes obligatorios del Personalizador (§2, nota del handoff)
 
@@ -114,32 +113,34 @@ Verificación: abrir DevTools en el front, confirmar que `color` y `font-family`
 
 ---
 
-## Fase 4 — Plugins
+## Fase 4 — Plugins — ✅ resuelto
 
-Estado real de `wp-content/plugins/` después de esta sesión:
+Estado real de `wp-content/plugins/` después de esta sesión — **8 plugins activos**, confirmado en `wp_options.active_plugins`:
 
-| Plugin | Estado | Acción pendiente |
-|---|---|---|
-| ~~Elementor~~ / ~~header-footer-elementor~~ / ~~Smart Slider 3~~ | **Desinstalados** en esta sesión (nada estaba activo, no había contenido armado con ellos) | Ninguna — se optó por bloques + Spectra (§1 del handoff) |
-| Spectra (`ultimate-addons-for-gutenberg`) | **Instalado**, no activo | [ ] Activar desde *Plugins* en el admin; verificar que aparecen Container con enlace, Icon, Post Carousel y FAQ en el inserter de bloques |
-| Max Mega Menu (`megamenu`) | Instalado, no activo | [ ] Activar cuando se llegue a Fase 6 (menús) |
-| Sticky Menu on Scroll (`mystickymenu`) | Instalado, no activo | [ ] Decidir: activar este plugin o usar el CSS del §5.2 (el handoff recomienda el CSS). Si se usa CSS, dejarlo desinstalado para no sumar peso |
-| Custom Post Type UI (`custom-post-type-ui`) | Instalado, no activo | [ ] Decidir: usarlo para los 5 CPTs de Fase 5, o registrar por código en `functions.php` (preferencia del handoff, §4.14 — "así viajan con el tema"). Si se registra por código, se puede desinstalar |
-| PDF Embedder (`pdf-embedder`) | Instalado, no activo | No mencionado en el handoff — sirve para embeber (no solo enlazar) los PDFs de Normativa si se quiere esa UX. Activar solo si se usa |
-| Akismet | Instalado, no activo | Activar cuando haya formulario de contacto público (anti-spam) |
-| WP Reset | Instalado, no activo | Es una herramienta de desarrollo (permite resetear la base con un clic). **Desinstalar antes de pasar a producción** — no debe llegar a un sitio real |
+| Plugin | Estado |
+|---|---|
+| ~~Elementor~~ / ~~header-footer-elementor~~ / ~~Smart Slider 3~~ | **Desinstalados** (nada estaba activo, no había contenido armado con ellos) — se optó por bloques + Spectra (§1 del handoff) |
+| Spectra (`ultimate-addons-for-gutenberg`) | [x] **Activo** — falta verificar que aparecen Container con enlace, Icon, Post Carousel y FAQ en el inserter de bloques |
+| Max Mega Menu (`megamenu`) | [x] **Activo** — se configura en Fase 6 |
+| Meta Box (`meta-box`) | [x] **Activo** — repeaters para `resolucion.anexos` y `subcomision.referentes` |
+| Fluent Forms (`fluentform`) | [x] **Activo** — para el formulario de Contacto (§4.11) |
+| Rank Math (`seo-by-rank-math`) | [x] **Activo** — confirmar que no queda ningún otro plugin de SEO activo en simultáneo |
+| UpdraftPlus (`updraftplus`) | [x] **Activo** — falta correr el primer backup manual (ver Fase 8) |
+| Code Snippets | [x] **Activo** |
+| WP Reset | Instalado, no activo — es una herramienta de desarrollo. **No activar y desinstalar antes de pasar a producción** |
+| Sticky Menu on Scroll (`mystickymenu`) | Instalado, no activo |
+| Custom Post Type UI (`custom-post-type-ui`) | Instalado, no activo |
+| PDF Embedder (`pdf-embedder`) | Instalado, no activo |
+| Akismet | Instalado, no activo |
 
-Plugins que todavía **faltan instalar**:
+Decisiones pendientes sobre los plugins instalados pero inactivos:
 
-1. [ ] **Meta Box** (free) — repeaters para `resolucion.anexos` y `subcomision.referentes` (ACF free no los tiene).
-2. [ ] **Fluent Forms** (o WPForms Lite) — formulario de Contacto (§4.11).
-3. [ ] **Rank Math** (free) — SEO, Open Graph, sitemap. **No instalar Yoast en simultáneo.**
-4. [ ] **UpdraftPlus** — respaldos programados.
-5. [ ] **Code Snippets** — opcional; el handoff prefiere `functions.php` del tema hijo (§5.2, §5.9), instalar solo si no se quiere tocar código.
+- [ ] **Sticky Menu on Scroll:** activarlo, o usar el CSS del §5.2 (el handoff recomienda el CSS, más liviano — en ese caso este plugin se puede desinstalar).
+- [ ] **Custom Post Type UI:** usarlo para los 5 CPTs de la Fase 5, o registrarlos por código en `functions.php` (preferencia del handoff, §4.14 — "así viajan con el tema"). Si se registra por código, se puede desinstalar.
+- [ ] **PDF Embedder:** no está mencionado en el handoff — sirve para embeber (no solo enlazar) los PDFs de Normativa. Activar solo si se quiere esa UX.
+- [ ] **Akismet:** activar cuando haya un formulario de contacto público (anti-spam).
 
-No instalar todavía: Search & Filter (solo si el volumen de novedades lo justifica más adelante, ver tabla de decisiones).
-
-**Total esperado activo: 7-8 plugins** (Spectra, Max Mega Menu, Meta Box o CPT UI, Fluent Forms, Rank Math, UpdraftPlus, Akismet, y opcionalmente Sticky Menu/Code Snippets/PDF Embedder).
+No instalar: Search & Filter (solo si el volumen de novedades lo justifica más adelante, ver tabla de decisiones).
 
 ---
 
@@ -200,7 +201,7 @@ Verificar breakpoints alineados (§6 del handoff): Astra usa 921/544 px por defe
 
 Antes de pasar a construir las 11 secciones de la home (§4 del handoff), confirmar:
 
-- [ ] Existe un usuario administrador propio (no el instalador por defecto) con email real
+- [x] Existe un usuario administrador propio (no el instalador por defecto) con email real — `cipbaadmin`
 - [ ] `theme.json` gobierna colores y tipografías en el front (no CSS de Astra) — verificado con DevTools
 - [ ] Los 7 colores primarios coinciden entre `theme.json` y la paleta global de Astra
 - [ ] Fuentes locales cargando (Network tab: `.woff2` con 200, no llamadas a fonts.googleapis.com)
