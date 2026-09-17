@@ -73,9 +73,9 @@ const navLinks = [
       { label: 'Medios de pago', href: 'pago-matricula.html' },
     ] },
     { title: 'Sistemas', items: [
-      { label: 'Visado online', href: '#', ext: true },
-      { label: 'SIGMA', href: '#', ext: true },
-      { label: 'Otros trámites', href: '#', ext: true },
+      { label: 'Visado online', href: 'http://www.colegioingenieros.org.ar:8081/', ext: true },
+      { label: 'SIGMA', href: 'http://www.colegioingenieros.org.ar/front_distritos/front_matriculados/index.php?accion=login', ext: true },
+      { label: 'Otros trámites', href: 'http://www.colegioingenieros.org.ar/otros-tramites/', ext: true },
     ] },
   ] },
   { label: 'Normativa', href: 'normativa.html', groups: [
@@ -89,8 +89,7 @@ const navLinks = [
     ] },
     { title: 'Consulta', items: [
       { label: 'Resoluciones', href: 'http://www.colegioingenieros.org.ar/category/resoluciones/', ext: true },
-      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html' },
-      { label: 'Modelos de contrato', href: '#' },
+      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html', destacado: true },
       { label: 'Vademécum', href: '#', ext: true },
     ] },
   ] },
@@ -153,10 +152,12 @@ const Navbar = ({ scrolled }) => {
                       {g.items.map(s => (
                         <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} style={{
                           display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', fontSize: 13.5,
-                          color: '#373d3e', transition: 'background .15s, color .15s',
+                          color: s.destacado ? '#00705e' : '#373d3e', fontWeight: s.destacado ? 800 : 400,
+                          background: s.destacado ? '#f1faf7' : 'transparent', transition: 'background .15s, color .15s',
                         }}
                         onMouseEnter={e => { e.currentTarget.style.background = '#e8f5f1'; e.currentTarget.style.color = '#14484a'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#373d3e'; }}>
+                        onMouseLeave={e => { e.currentTarget.style.background = s.destacado ? '#f1faf7' : 'transparent'; e.currentTarget.style.color = s.destacado ? '#00705e' : '#373d3e'; }}>
+                          {s.destacado && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00a48a', flexShrink: 0 }}/>}
                           {s.label}{s.ext && <Icon name="externalLink" size={11} color="#00a48a"/>}
                         </a>
                       ))}
@@ -218,7 +219,7 @@ const AnnouncementBar = () => (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
       <Icon name="scale" size={14} color="#14484a"/>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      <a href="normativa.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
+      <a href="honorarios.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
@@ -227,7 +228,7 @@ const AnnouncementBar = () => (
 
 
 /* ─── PAGE HERO ─── */
-const PageHero = ({ eyebrow, titulo, intro, breadcrumb }) => (
+const PageHero = ({ eyebrow, titulo, intro, breadcrumb, seccion = 'Trámites', seccionHref, children }) => (
   <section style={{ background: 'linear-gradient(135deg, #14484a 0%, #1a5f5c 60%, #00a48a 100%)', position: 'relative', overflow: 'hidden' }}>
     <div style={{ position: 'absolute', inset: 0, opacity: 0.06, backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}/>
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '44px 24px 52px', position: 'relative' }}>
@@ -236,7 +237,7 @@ const PageHero = ({ eyebrow, titulo, intro, breadcrumb }) => (
           <Icon name="home" size={13}/> Inicio
         </a>
         <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
-        <span>Trámites</span>
+        {seccionHref ? <a href={seccionHref}>{seccion}</a> : <span>{seccion}</span>}
         <Icon name="chevronRight" size={12} color="rgba(255,255,255,0.35)"/>
         <span style={{ color: 'white', fontWeight: 700 }}>{breadcrumb || titulo}</span>
       </div>
@@ -245,11 +246,34 @@ const PageHero = ({ eyebrow, titulo, intro, breadcrumb }) => (
         <span style={{ color: '#c0e2ca', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>{eyebrow}</span>
       </div>
       <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 46px)', fontWeight: 900, lineHeight: 1.1, marginBottom: 16, fontFamily: "'Roboto Condensed', sans-serif", letterSpacing: -0.5 }}>{titulo}</h1>
-      <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 16.5, lineHeight: 1.6, maxWidth: 760, textWrap: 'pretty' }}>{intro}</p>
+      {intro && <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 16.5, lineHeight: 1.6, maxWidth: 760, textWrap: 'pretty' }}>{intro}</p>}
+      {children}
     </div>
   </section>
 );
 
+
+/* ─── PAGE HEAD (sin gradiente, estética novedades) ─── */
+const PageHead = ({ eyebrow, titulo, intro, breadcrumb, seccion = 'Trámites', seccionHref }) => (
+  <>
+    <div style={{ background: 'white', borderBottom: '1px solid #e8f5f1' }}>
+      <div className="crumbs" style={{ maxWidth: 1200, margin: '0 auto', padding: '11px 24px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: '#9aa8a9', flexWrap: 'wrap' }}>
+        <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="home" size={12}/> Inicio</a>
+        <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+        {seccionHref ? <a href={seccionHref}>{seccion}</a> : <span>{seccion}</span>}
+        <Icon name="chevronRight" size={11} color="#c3d2d1"/>
+        <span style={{ color: '#4a6062', fontWeight: 700 }}>{breadcrumb || titulo}</span>
+      </div>
+    </div>
+    <header style={{ background: 'white', borderBottom: '1px solid #eef2f1' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '34px 24px 30px' }}>
+        {eyebrow && <div style={{ color: '#00705e', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12 }}>{eyebrow}</div>}
+        <h1 style={{ color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(26px, 6vw, 44px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.5 }}>{titulo}</h1>
+        {intro && <p style={{ marginTop: 12, color: '#607a7c', fontSize: 'clamp(14.5px, 3.4vw, 16.5px)', lineHeight: 1.6, maxWidth: 760, textWrap: 'pretty' }}>{intro}</p>}
+      </div>
+    </header>
+  </>
+);
 /* ─── BLOQUES DE CONTENIDO ─── */
 const Aviso = ({ children, tono = 'verde', titulo }) => {
   const t = tono === 'ambar'
@@ -386,7 +410,7 @@ const TramiteShellStyles = () => (
   `}</style>
 );
 
-const TramitePage = ({ hero, actual, children, aside }) => {
+const TramitePage = ({ hero, actual, children, aside, encabezado }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -399,7 +423,7 @@ const TramitePage = ({ hero, actual, children, aside }) => {
       <HeaderStyles/>
       <TopBar/>
       <Navbar scrolled={scrolled}/>
-      <PageHero {...hero}/>
+      {encabezado === 'plano' ? <PageHead {...hero}/> : <PageHero {...hero}/>}
       <section style={{ background: '#f7faf9', padding: '48px 24px 56px' }}>
         <div className="tram-grid" style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1.55fr 1fr', gap: 34, alignItems: 'start' }}>
           <div style={{ display: 'grid', gap: 28 }}>{children}</div>
@@ -446,6 +470,9 @@ const footerHrefs = {
   'Ley 10.416': 'docs/ley-10416.pdf',
   'Código de Ética': 'docs/codigo-de-etica.pdf',
   'Honorarios mínimos': 'honorarios.html',
+  'Visado online': 'http://www.colegioingenieros.org.ar:8081/',
+  'SIGMA': 'http://www.colegioingenieros.org.ar/front_distritos/front_matriculados/index.php?accion=login',
+  'Resoluciones': 'http://www.colegioingenieros.org.ar/category/resoluciones/',
   'Subcomisiones': 'subcomisiones.html',
   'Autoridades': 'institucional.html#autoridades',
   'Partidos del Distrito': 'institucional.html#partidos',
@@ -473,7 +500,7 @@ const Footer = () => (
             <h3 style={{ fontFamily: "'Roboto Condensed', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'white', marginBottom: 15 }}>{col.title}</h3>
             <div style={{ display: 'grid', gap: 9 }}>
               {col.items.map(it => (
-                <a key={it} href={footerHrefs[it] || '#'} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
+                <a key={it} href={footerHrefs[it] || '#'} target={/^(https?:)?\/\/|\.pdf$/i.test(footerHrefs[it]||'') ? '_blank' : undefined} rel={/^(https?:)?\/\/|\.pdf$/i.test(footerHrefs[it]||'') ? 'noopener' : undefined} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#00a48a'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.72)'}>{it}</a>
               ))}
             </div>
@@ -494,4 +521,4 @@ const Footer = () => (
 );
 
 
-Object.assign(window, { Icon, HeaderStyles, TopBar, Navbar, PageHero, Aviso, Requisitos, Descargas, Costo, Ayuda, OtrosTramites, TramitePage, Footer, SocialIcons });
+Object.assign(window, { Icon, HeaderStyles, TopBar, Navbar, PageHero, PageHead, Aviso, Requisitos, Descargas, Costo, Ayuda, OtrosTramites, TramitePage, Footer, SocialIcons });

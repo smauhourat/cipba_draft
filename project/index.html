@@ -105,9 +105,9 @@ const navLinks = [
       { label: 'Medios de pago', href: 'pago-matricula.html' },
     ] },
     { title: 'Sistemas', items: [
-      { label: 'Visado online', href: '#', ext: true },
-      { label: 'SIGMA', href: '#', ext: true },
-      { label: 'Otros trámites', href: '#', ext: true },
+      { label: 'Visado online', href: 'http://www.colegioingenieros.org.ar:8081/', ext: true },
+      { label: 'SIGMA', href: 'http://www.colegioingenieros.org.ar/front_distritos/front_matriculados/index.php?accion=login', ext: true },
+      { label: 'Otros trámites', href: 'http://www.colegioingenieros.org.ar/otros-tramites/', ext: true },
     ] },
   ] },
   { label: 'Normativa', href: 'normativa.html', groups: [
@@ -121,7 +121,7 @@ const navLinks = [
     ] },
     { title: 'Consulta', items: [
       { label: 'Resoluciones', href: 'http://www.colegioingenieros.org.ar/category/resoluciones/', ext: true },
-      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html' },
+      { label: 'Honorarios mínimos vigentes', href: 'honorarios.html', destacado: true },
       { label: 'Modelos de contrato', href: '#' },
       { label: 'Vademécum', href: '#', ext: true },
     ] },
@@ -186,10 +186,12 @@ const Navbar = ({ scrolled }) => {
                       {g.items.map(s => (
                         <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} style={{
                           display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', fontSize: 13.5,
-                          color: '#373d3e', transition: 'background .15s, color .15s',
+                          color: s.destacado ? '#00705e' : '#373d3e', fontWeight: s.destacado ? 800 : 400,
+                          background: s.destacado ? '#f1faf7' : 'transparent', transition: 'background .15s, color .15s',
                         }}
                         onMouseEnter={e => { e.currentTarget.style.background = '#e8f5f1'; e.currentTarget.style.color = '#14484a'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#373d3e'; }}>
+                        onMouseLeave={e => { e.currentTarget.style.background = s.destacado ? '#f1faf7' : 'transparent'; e.currentTarget.style.color = s.destacado ? '#00705e' : '#373d3e'; }}>
+                          {s.destacado && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00a48a', flexShrink: 0 }}/>}
                           {s.label}{s.ext && <Icon name="externalLink" size={11} color="#00a48a"/>}
                         </a>
                       ))}
@@ -228,7 +230,8 @@ const Navbar = ({ scrolled }) => {
                 <div key={gi}>
                   {g.title && <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: '#9aa8a9', padding: '10px 32px 4px' }}>{g.title}</div>}
                   {g.items.map(s => (
-                    <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 32px', fontSize: 14, color: '#607a7c', borderBottom: '1px solid #f7faf9' }}>
+                    <a key={s.label} href={s.href} target={s.ext || /\.pdf$/i.test(s.href || '') ? '_blank' : undefined} rel={s.ext || /\.pdf$/i.test(s.href || '') ? 'noopener' : undefined} onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 32px', fontSize: 14, color: s.destacado ? '#00705e' : '#607a7c', fontWeight: s.destacado ? 800 : 400, background: s.destacado ? '#f1faf7' : 'transparent', borderBottom: '1px solid #f7faf9' }}>
+                      {s.destacado && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00a48a', flexShrink: 0 }}/>}
                       {s.label}{s.ext && <Icon name="externalLink" size={11} color="#00a48a"/>}
                     </a>
                   ))}
@@ -339,7 +342,7 @@ const CardGrid = ({ items }) => {
   return (
     <div className="card-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 18 }}>
       {items.map((t, i) => (
-        <a key={i} href={t.href || '#'} target={t.ext ? '_blank' : undefined} {...hv(i)} style={{
+        <a key={i} href={t.href || '#'} target={t.ext ? '_blank' : undefined} rel={t.ext ? 'noopener' : undefined} {...hv(i)} style={{
           display: 'block', background: t.bg || 'white', border: `1px solid ${h === i ? (t.hover || t.color) : C.border}`, borderLeft: `3px solid ${h === i ? (t.hover || t.color) : t.color}`, borderRadius: 10, padding: '20px 22px 24px',
           transition: 'all 0.25s', boxShadow: h === i ? `0 8px 24px ${t.color === '#484586' ? 'rgba(48,46,92,0.20)' : 'rgba(0,112,94,0.20)'}` : '0 1px 4px rgba(13,50,52,0.05)',
           transform: h === i ? 'translateY(-3px)' : 'none',
@@ -479,7 +482,7 @@ const Noticias = () => {
   return (
     <section id="noticias" style={{ background: C.gray2, borderTop: `1px solid ${C.border}`, padding: '54px 0' }}>
       <div style={wrap}>
-        <SectionHead title="Noticias" right={<MoreLink label="Ver todas"/>}/>
+        <SectionHead title="Noticias" right={<MoreLink label="Ver todas" href="novedades.html"/>}/>
         <div className="news-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 14 }}>
           {noticias.map((n, i) => (
             <a key={i} href="novedades.html" {...hv(i)} style={{
@@ -733,6 +736,9 @@ const footerHrefs = {
   'Ley 10.416': 'docs/ley-10416.pdf',
   'Código de Ética': 'docs/codigo-de-etica.pdf',
   'Honorarios mínimos': 'honorarios.html',
+  'Visado online': 'http://www.colegioingenieros.org.ar:8081/',
+  'SIGMA': 'http://www.colegioingenieros.org.ar/front_distritos/front_matriculados/index.php?accion=login',
+  'Resoluciones': 'http://www.colegioingenieros.org.ar/category/resoluciones/',
   'Subcomisiones': 'subcomisiones.html',
   'Autoridades': 'institucional.html#autoridades',
   'Partidos del Distrito': 'institucional.html#partidos',
@@ -760,7 +766,7 @@ const Footer = () => (
             <h3 style={{ fontFamily: HEAD, fontSize: 14, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'white', marginBottom: 15 }}>{col.title}</h3>
             <div style={{ display: 'grid', gap: 9 }}>
               {col.items.map(it => (
-                <a key={it} href={footerHrefs[it] || '#'} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
+                <a key={it} href={footerHrefs[it] || '#'} target={/\.pdf$/i.test(footerHrefs[it]||'') ? '_blank' : undefined} rel={/\.pdf$/i.test(footerHrefs[it]||'') ? 'noopener' : undefined} style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.72)', transition: 'color .2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#00a48a'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.72)'}>{it}</a>
               ))}
             </div>
