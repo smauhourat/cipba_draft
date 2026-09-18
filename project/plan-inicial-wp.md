@@ -45,7 +45,7 @@ El §7 del handoff pide assets que hoy no están listos como archivos sueltos �
 - [x] Convertir las 7 tipografías a WOFF2 (Lato 300/400/700/900, Roboto Condensed 400/700/900), subset latin + latin-ext — hecho, ya están en `wp-content/themes/cipba/assets/fonts/` (ver Fase 3).
 - [ ] Generar favicon 512×512.
 - [ ] Armar imagen social por defecto (1200×630).
-- [ ] Crear el patrón crosshatch SVG (tile 60×60).
+- [x] Crear el patrón crosshatch SVG (tile 60×60) — hecho en la Fase 7, `assets/img/crosshatch.svg`.
 - [ ] Confirmar que los 4 PDFs de `project/docs/` (Ley 10.416, Código de Ética, Reglamento Interno, Ley 12.490) son la versión final a publicar en Normativa.
 - [ ] Revisar `assets/images/` del prototipo (eventos, novedades) — son placeholders; confirmar si se reemplazan por imágenes reales antes de cargar contenido.
 - [ ] Simplificar/verificar el GeoJSON de los 23 partidos del Distrito VII (≤250 KB), con `nombre` y `delegacion` por feature. **Este es el ítem de mayor riesgo de timeline** — no depende de WordPress, se puede preparar en paralelo.
@@ -103,13 +103,18 @@ El tema hijo ya existe en disco (`wp-content/themes/cipba/`, `Template: astra`),
 
 ### 3.1 Los tres ajustes obligatorios del Personalizador (§2, nota del handoff)
 
-Sin esto, `theme.json` queda de adorno porque el CSS de Astra le gana por especificidad:
+El handoff advierte que sin esto `theme.json` queda de adorno porque el CSS de Astra le gana por especificidad. **Se investigó el CSS real que genera el sitio (no solo la teoría) y en esta combinación puntual de versiones (WordPress + Astra 4.13.9 + `cipba`) el problema no se da:**
 
-- [ ] *Personalizar → Tipografía → Cuerpo* y *Encabezados* → dejar en "Predeterminado" (hereda del tema hijo)
-- [ ] *Personalizar → Colores* → cargar los 7 hex primarios de la tabla del §2 como paleta global de Astra
-- [ ] *Personalizar → Contenedor* → ancho 1200 px, padding 24 px
+- [x] **Tipografía (Cuerpo/Encabezados):** los defaults de Astra (`body-font-family` y `headings-font-family`) ya vienen en `'inherit'` de fábrica — no hay nada que cambiar en el Personalizador.
+- [x] **Contenedor:** el default de Astra para `site-content-width` ya es **1200px** — coincide con `theme.json` sin tocar nada. El padding lateral de 24px lo pone `theme.json` vía `useRootPaddingAwareAlignments`, independiente de Astra.
+- [x] **Colores:** verificado en el HTML real del front. Astra sí emite sus propias reglas (`a{color:var(--ast-global-color-0)}`, etc.) pero WordPress encola `global-styles-inline-css` (el CSS de `theme.json`) **después** del `astra-theme-css-inline-css` — con la misma especificidad, gana el que carga último. Confirmado con `curl` sobre el HTML servido:
+  - `body{background-color: var(--wp--preset--color--blanco); color: var(--wp--preset--color--tinta-900); font-family: var(--wp--preset--font-family--lato); ...}` ✅
+  - Ningún `h1`-`h6` con `color` propio de Astra (headings quedan 100% gobernados por `theme.json`) ✅
+  - Los links sí tienen una regla de Astra compitiendo, pero pierde por orden de carga ✅
 
-Verificación: abrir DevTools en el front, confirmar que `color` y `font-family` del `<body>` vienen de las variables `--wp--preset--*` y no de clases `ast-*`.
+**No se tocó el Personalizador de Astra.** Si en el futuro se actualiza Astra o cambia el orden de encolado de estilos, esto podría dejar de cumplirse — repetir esta verificación (`curl http://localhost:8080/ | grep -oE "(html|body)\{[^}]*\}"`) después de cualquier actualización de Astra antes de dar por sentado que `theme.json` sigue mandando.
+
+Pendiente de revisar más adelante (no bloqueante para esta fase): botones (`.wp-block-button__link{border-color:var(--ast-global-color-0)}`, `button{color:var(--ast-global-color-0)}`) sí tienen reglas propias de Astra que compiten con el estilo de botón de `theme.json` — a verificar visualmente cuando se arme una sección con botones reales (Fase de contenido, fuera de este plan inicial).
 
 ---
 
@@ -136,7 +141,7 @@ Estado real de `wp-content/plugins/` después de esta sesión — **8 plugins ac
 Decisiones pendientes sobre los plugins instalados pero inactivos:
 
 - [ ] **Sticky Menu on Scroll:** activarlo, o usar el CSS del §5.2 (el handoff recomienda el CSS, más liviano — en ese caso este plugin se puede desinstalar).
-- [ ] **Custom Post Type UI:** usarlo para los 5 CPTs de la Fase 5, o registrarlos por código en `functions.php` (preferencia del handoff, §4.14 — "así viajan con el tema"). Si se registra por código, se puede desinstalar.
+- [x] **Custom Post Type UI:** decidido — los 5 CPTs se registraron por código en `functions.php`/`inc/custom-post-types.php` (preferencia del handoff, §4.14). El plugin sigue instalado pero inactivo; se puede desinstalar cuando se confirme que no hace falta para nada más.
 - [ ] **PDF Embedder:** no está mencionado en el handoff — sirve para embeber (no solo enlazar) los PDFs de Normativa. Activar solo si se quiere esa UX.
 - [ ] **Akismet:** activar cuando haya un formulario de contacto público (anti-spam).
 
@@ -144,56 +149,77 @@ No instalar: Search & Filter (solo si el volumen de novedades lo justifica más 
 
 ---
 
-## Fase 5 — Estructura de contenido (antes de cargar contenido real)
+## Fase 5 — Estructura de contenido — ✅ resuelto
 
-Registrar los custom post types en `functions.php` del tema hijo (no con Custom Post Type UI, salvo que el equipo no tenga perfil técnico — §4.14 del handoff):
+Los 5 CPTs se registraron por código en `wp-content/themes/cipba/inc/custom-post-types.php` (+ `inc/meta-boxes.php` para los campos, `inc/image-sizes.php`, `inc/helpers.php`), todos enganchados desde `functions.php`. Verificado con `wp post-type list` que los 5 aparecen registrados y que el sitio no tira error fatal.
 
-- [ ] `evento` — campos Meta Box: `fecha_inicio`, `cupo`, `inscripcion_abierta`, `cierre_inscripcion`, `lugar`
-- [ ] `documento` — campos: `archivo` (File), `formato`, `peso`, `origen`, `orden`
-- [ ] `resolucion` — campos: `numero`, `fecha_publicacion`, `vigencia_desde`, `vigente` (bool), `anexos` (repeater: título, archivo, descripción)
-- [ ] `subcomision` — campos: `tag`, `referentes` (repeater: nombre, matrícula, teléfono, mail)
-- [ ] `tramite` — sin campos custom, solo contenido con plantilla compartida
+- [x] `evento` — campos Meta Box: `fecha_inicio`, `cupo`, `inscripcion_abierta`, `cierre_inscripcion`, `lugar`
+- [x] `documento` — campo `archivo` (file_advanced) + `origen` + `orden`. **`formato` y `peso` no se registraron como campos** — se calculan en runtime desde el archivo subido con `cipba_get_documento_file_meta()` en `inc/helpers.php`, tal como pide el handoff ("no se tipean a mano")
+- [x] `resolucion` — campos: `numero`, `fecha_publicacion`, `vigencia_desde`, `vigente` (checkbox), `anexos` (Meta Box `group` + `clone` → título, archivo, descripción)
+- [x] `subcomision` — campos: `tag`, `referentes` (Meta Box `group` + `clone` → nombre, matrícula, teléfono, mail)
+- [x] `tramite` — sin campos custom, `public => true` con `rewrite slug 'tramites'` (necesita páginas individuales, a diferencia de los otros 4 CPT que son `public => false` porque solo alimentan listados en páginas ya existentes)
 
 Taxonomías:
-- [ ] Categorías nativas de `post` para Novedades: institucional, capacitación, normativa, matrícula, comisiones (deben coincidir con los slugs usados en `settings.custom.cat` de `theme.json` y con el CSS del §5.5)
+- [x] Categorías nativas de `post` para Novedades creadas: `institucional`, `capacitacion`, `normativa`, `matricula`, `comisiones` (slugs verificados contra `settings.custom.cat` de `theme.json` y el CSS del §5.5). Quedó además un hook `after_switch_theme` en el código para que se sembren solas en cualquier instalación futura del tema.
 
-Tamaños de imagen (`add_image_size` en `functions.php`):
-- [ ] `cipba-card` — 600×400, recorte duro
-- [ ] `cipba-nov-hero` — 1680×720, recorte duro (21:9)
-- [ ] `cipba-thumb` — 300×200
+Tamaños de imagen (`add_image_size`, en `inc/image-sizes.php`):
+- [x] `cipba-card` — 600×400, recorte duro
+- [x] `cipba-nov-hero` — 1680×720, recorte duro (21:9)
+- [x] `cipba-thumb` — 300×200
+- [x] Filtro `image_size_names_choose` agregado para que el selector de medios solo muestre estos 3 + los nativos de WordPress, sin los tamaños intermedios que el diseño no usa
 
-Desactivar tamaños intermedios de WordPress que no se usan (evita inflar la media library).
-
----
-
-## Fase 6 — Menús y estructura de navegación
-
-1. [ ] Crear menú **Principal** (Apariencia → Menús) con las 5 entradas de primer nivel. Asignarlo a la ubicación del Header Builder de Astra.
-2. [ ] Configurar Max Mega Menu sobre ese menú: columnas para Trámites y Normativa, subtítulos de grupo vía ítems de menú tipo etiqueta con clase `mm-group-title`.
-3. [ ] Marcar el ítem "Honorarios mínimos vigentes" con clase CSS `is-destacado`.
-4. [ ] Marcar los ítems que van a PDFs/sistemas externos con clase `abre-nuevo` (el snippet PHP del §5.9 depende de esta clase).
-5. [ ] Crear los 3 menús del pie (Trámites, Normativa, Institucional/Links de interés) como widgets *Navigation Menu* en el Footer Builder de Astra.
-6. [ ] Configurar el breakpoint de escritorio→hamburguesa en **1160 px** tanto en Astra (Personalizar → Header → Menú → Breakpoint) como en Max Mega Menu.
+**Pendiente de decidir, no bloqueante:** el CPT `tramite` no tiene todavía definido si el bloque "Otros trámites" se autogenera a partir de una taxonomía o de un campo de relación entre trámites — se resuelve cuando se arme esa sección de contenido (fuera de este plan inicial).
 
 ---
 
-## Fase 7 — CSS y snippets del tema hijo
+## Fase 6 — Menús y estructura de navegación — ✅ resuelto por completo
 
-Todo el CSS del §5 del handoff (~90 líneas) va en `style.css` del tema hijo, no en "CSS adicional" del Personalizador (no versiona):
+Se tomó la estructura real de navegación de `project/index.html` (arrays `navLinks` y `footerCols`/`footerHrefs` del prototipo), no una genérica — así que los menús ya reflejan el diseño aprobado, ítem por ítem. Se armaron con un script PHP corrido una sola vez vía `wp eval-file` (más confiable que crear ~50 ítems a mano desde el admin), verificado después con `wp menu list`.
 
-- [ ] §5.1 Variables puente
-- [ ] §5.2 Navbar sticky con sombra/blur al scrollear (+ script en `functions.php` vía `wp_footer`)
-- [ ] §5.3 Ítem de menú destacado
-- [ ] §5.4 Elevación de tarjetas en hover
-- [ ] §5.5 Color de badge por taxonomía
-- [ ] §5.6 Recorte de extracto a 2 líneas
-- [ ] §5.7 Avatar de iniciales
-- [ ] §5.8 Columna lateral fija en trámites
-- [ ] §5.9 Snippet PHP: enlaces de menú y PDFs en pestaña nueva
-- [ ] §5.10 Imagen 21:9 + anillo de foco
-- [ ] §5.11 Patrón crosshatch sobre el hero
+1. [x] Menú **Principal** creado (31 ítems: 6 de primer nivel + subniveles) y asignado a la ubicación `primary` del tema. Estructura real:
+   - Inicio · Trámites (grupos **Matrícula** e **Sistemas**, con ítems etiqueta `mm-group-title` para cada subtítulo) · Normativa (grupos **Marco legal** y **Consulta**) · Novedades · Institucional (un solo grupo) · Contacto
+2. [x] **Max Mega Menu configurado y restyleado — resuelto, con una corrección importante sobre el plan original.** El diseño real de referencia (verificado contra el sitio estático) **no usa columnas**: Trámites y Normativa son un dropdown de una sola columna con subtítulos de grupo separados por una línea — no un mega menú en grilla. Se probó primero en modo "Mega Menu - Grid Layout" (columnas) y no correspondía; se dejó en modo **Flyout** para los dos.
+   - Max Mega Menu (v3.x) trae su propio CSS dinámico bastante agresivo (selectores de 2 IDs: `#mega-menu-wrap-primary #mega-menu-primary ...`), que pisaba tanto el estilo de `theme.json` como las clases `mm-group-title`/`abre-nuevo`. Se sobrescribió todo con selectores calcados de los suyos + `!important` en `wp-content/themes/cipba/style.css`: barra blanca (no el skin oscuro por defecto), panel del dropdown blanco/redondeado/con sombra (no gris plano), fondo transparente por ítem, subtítulos de grupo en mayúsculas/gris con divisor, ícono de enlace externo en los ítems `abre-nuevo` (mismo SVG "externalLink" que traía el prototipo), y el estado de "página actual" (ej. "Inicio" en la home) restyleado a verde-700 + subrayado en vez del highlight oscuro por defecto del plugin.
+   - Verificado visualmente contra capturas reales del admin en varias iteraciones (el primer intento con `mask`+`currentColor` para el ícono no renderizaba — se cambió a un SVG con color fijo, más simple y confiable).
+3. [x] "Honorarios mínimos vigentes" con clase `is-destacado`.
+4. [x] Los 8 ítems que van a PDFs o sistemas externos ya tienen la clase `abre-nuevo` (Visado online, SIGMA, Otros trámites, Incumbencias, Resoluciones ×2, + las mismas 2 repetidas en el pie). Los 4 PDF de normativa no necesitan la clase — el snippet del §5.9 los detecta solo por extensión `.pdf`.
+5. [x] Creados los **5 menús del pie** (no 3 — el diseño real tiene 4 columnas + la barra legal inferior): `Pie - Trámites`, `Pie - Normativa`, `Pie - Institucional`, `Pie - Links de interés`, `Pie - Legal` (este último ya asignado a la ubicación `footer_menu`). **Resuelto por código, no por el Footer Builder:** se descubrió que Astra Free solo admite UN elemento "Footer Menu" en el builder visual, cableado a una única ubicación de menú — no hay forma de poner 4 menús independientes en columnas separadas sin Astra Pro. Se reemplazó la fila "Primary Footer" del builder por `wp-content/themes/cipba/inc/footer.php` (quita el `primary_footer` que registra Astra vía `remove_action` sobre `astra_primary_footer`, y lo sustituye por una grilla propia con `wp_nav_menu()` para cada uno de los 4 menús + el bloque de marca), con el CSS correspondiente en `style.css`. Verificado visualmente.
+6. [x] Breakpoint de hamburguesa en 1160px — configurado en los dos lugares. Astra: `astra-settings[mobile-header-breakpoint] = 1160` (seteado por WP-CLI). Max Mega Menu: campo "Responsive Breakpoint" del tema activo = `1160px` (cargado a mano en *Mega Menu → Menu Themes*, verificado en la opción `megamenu_themes` de la base).
 
-Verificar breakpoints alineados (§6 del handoff): Astra usa 921/544 px por defecto, Elementor 1024/767 px por defecto — el diseño necesita 1160/900/700. Ajustar en Astra Customizer y, si se usa Elementor en alguna plantilla puntual, en *Site Settings → Layout → Breakpoints*.
+**4 PDFs de Normativa subidos a la Media Library** en esta misma fase (Ley 10.416, Ley Previsional 12.490, Código de Ética, Reglamento Interno — attachment IDs 6-9) para que el submenú de Normativa apunte a archivos reales en vez de placeholders.
+
+**Enlaces que quedaron como placeholder `#` porque el diseño original no trae una URL real** (no se inventaron URLs — están así en el propio prototipo o directamente no figuran):
+- [x] "Certificados CAIE" → `http://www.colegioingenieros.org.ar/caie/`
+- [x] Autoridad del Agua (ADA) → `https://www.ada.gba.gov.ar/`
+- [x] Agencia de Recaudación (ARBA) → `https://web.arba.gov.ar/`
+- [x] Caja de Previsión Social → `http://www.caaitba.org.ar/`
+- [x] Colegio de Escribanos PBA → `https://www.colescba.org.ar/portal/`
+- [x] Ministerio de Ambiente → `https://www.ambiente.gba.gob.ar/`
+- [ ] "Vademécum" (Normativa, en el nav y en el pie) — **todavía sin URL real**, sigue en `#`
+
+Los 6 ya cargados quedaron con clase `abre-nuevo` y `target=_blank` (para el ícono de enlace externo + pestaña nueva). Falta solo Vademécum.
+
+**Nota:** todos los enlaces internos (Trámites, Normativa, Institucional, Novedades, Contacto, Honorarios, Subcomisiones) apuntan a las URLs finales previstas (`/tramites/inscripcion/`, `/normativa/`, etc.) aunque esas páginas/CPT todavía no tengan contenido cargado — van a dar 404 hasta que se cree ese contenido, lo cual es esperable en esta fase (menús = estructura, no contenido).
+
+---
+
+## Fase 7 — CSS y snippets del tema hijo — ✅ resuelto
+
+Todo el CSS del §5 del handoff está en `wp-content/themes/cipba/style.css` (no en "CSS adicional" del Personalizador, que no versiona). Los dos snippets PHP quedaron en `wp-content/themes/cipba/inc/navbar.php`, enganchado desde `functions.php`.
+
+- [x] §5.1 Variables puente
+- [x] §5.2 Navbar sticky con sombra/blur al scrollear (CSS en `style.css` + script en `inc/navbar.php` vía `wp_footer`)
+- [x] §5.3 Ítem de menú destacado — igual que con los subtítulos de grupo, hubo que agregar una versión con el selector de Max Mega Menu + `!important` además de la regla tal cual del handoff, porque el CSS dinámico del plugin le ganaba por especificidad
+- [x] §5.4 Elevación de tarjetas en hover — CSS listo, clases (`cipba-card`, `cipba-card__arrow`) todavía sin usar en ningún patrón (eso es contenido, fuera de este plan)
+- [x] §5.5 Color de badge por taxonomía
+- [x] §5.6 Recorte de extracto a 2 líneas
+- [x] §5.7 Avatar de iniciales
+- [x] §5.8 Columna lateral fija en trámites
+- [x] §5.9 Snippet PHP: enlaces de menú y PDFs en pestaña nueva. **Con un matiz importante:** el filtro `nav_menu_link_attributes` del handoff solo corre en menús renderizados por el `wp_nav_menu()` estándar de WordPress — Max Mega Menu usa su propio sistema de renderizado y probablemente no lo respeta. Para el menú Principal (que sí pasa por MMM) se marcó `target=_blank` directo en el campo nativo de cada ítem (`_menu_item_target`, lo mismo que tildar "abrir en pestaña nueva" a mano en el editor clásico) vía WP-CLI, sobre los 8 ítems con clase `abre-nuevo`. El filtro PHP se deja igual, porque si se arman los menús del pie como widgets *Navigation Menu* (Fase 6, pendiente) esos sí pasan por el estándar y lo van a necesitar.
+- [x] §5.10 Imagen 21:9 + anillo de foco
+- [x] §5.11 Patrón crosshatch sobre el hero — el asset `crosshatch.svg` tampoco existía (pendiente desde la Fase 0); se generó un patrón geométrico simple de líneas diagonales en `assets/img/crosshatch.svg`
+
+**Pendiente, no bloqueante:** verificar breakpoints alineados (§6 del handoff) — Astra usa 921/544px por defecto, el diseño necesita 1160/900/700. Se ajusta en Astra Customizer (y en Max Mega Menu para el punto de 1160px del menú — es el mismo pendiente que ya estaba anotado en la Fase 6).
 
 ---
 
