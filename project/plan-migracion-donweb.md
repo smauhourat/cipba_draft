@@ -11,8 +11,8 @@ Separar **código** (tema `cipba`, CPTs, CSS, snippets: viven en git/archivos y 
 ## Fase A — Preparación local (antes de tocar DonWeb)
 1. ✅ **Lentitud arreglada** (2026-09-19, opción 2): `wp-content` ahora es el volumen nativo `wp_content`; solo `themes/cipba` sigue como bind mount desde Windows. Requests de 25–115 s → ~1.5–2.5 s. Backups previos en `D:\Projects\wordpress_docker\backups\` (DB `.sql` + copia de `wp-content`). Ojo: `wp-content/` en `D:\` (salvo el tema) ya NO es la copia viva; plugins/uploads viven en el volumen Docker.
 2. ✅ Fijar permalinks a "Nombre de la entrada" (`/%postname%/`, hecho 2026-09-19 vía WP-CLI; `.htaccess` con reglas de rewrite escrito a mano porque WP-CLI no las genera; CPTs verificados: `/eventos/…`, `/subcomision/…`).
-3. Cerrar pendientes que afectan el deploy: URL de "Vademécum" (placeholder `#`), guardar una vez el tema de Max Mega Menu (breakpoint 1160px).
-4. Commit del estado: `wp-content/themes/cipba` y los plugins con config propia en git. Quitar plugins solo-dev del paquete de deploy (**WP Reset**, y Code Snippets si no se usa en prod).
+3. ✅ Pendientes que afectan el deploy: URL de "Vademécum" se deja como placeholder `#` por ahora (decisión del usuario, 2026-09-19); breakpoint 1160px de Max Mega Menu ya confirmado guardado.
+4. ✅ (parcial: tema, compose, Dockerfile con WP-CLI y `plugins.txt` ya versionados en `wordpress/`; falta definir el paquete de deploy sin WP Reset) Commit del estado: `wp-content/themes/cipba` y los plugins con config propia en git. Quitar plugins solo-dev del paquete de deploy (**WP Reset**, y Code Snippets si no se usa en prod).
 5. Confirmar versiones a pedir en el hosting: **PHP 8.1–8.3** y MySQL/MariaDB compatible (ojo: local usa MySQL 8.4; Ferozo suele ofrecer MariaDB/MySQL 5.7–8.0 → exportar sin features exclusivas de 8.4 y probar el import).
 
 ## Fase B — Preparar DonWeb (Ferozo)

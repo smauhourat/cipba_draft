@@ -19,7 +19,8 @@ services:
       - wp-network
 
   wordpress:
-    image: wordpress:latest
+    build: .
+    image: cipba-wordpress:local
     container_name: wordpress_app
     restart: always
     ports:

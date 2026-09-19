@@ -6,7 +6,7 @@ Entorno Docker de desarrollo + tema hijo `cipba` (sobre Astra).
 ```
 cd wordpress
 cp .env.example .env      # y ajustar credenciales
-docker compose up -d
+docker compose up -d --build   # el Dockerfile agrega WP-CLI (`docker exec wordpress_app wp --allow-root ...`)
 ```
 - Sitio: http://localhost:8080 — phpMyAdmin: http://localhost:8081
 
