@@ -8,4 +8,4 @@ seo-by-rank-math 1.0.278 active
 ultimate-addons-for-gutenberg 2.20.3 active
 updraftplus 1.26.7 active
 wp-reset 2.08 dev
-# instalados pero inactivos (candidatos a borrar): akismet, custom-post-type-ui, hello, mystickymenu, pdf-embedder
+# instalados pero inactivos (se mantienen a proposito): akismet, custom-post-type-ui, mystickymenu, pdf-embedder. Hello Dolly eliminado 2026-09-19.
