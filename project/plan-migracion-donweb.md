@@ -5,6 +5,18 @@ El sitio del Colegio de Ingenieros PBA – Distrito VII se construyó en local (
 
 Estado relevado (solo lectura): PHP 8.3, MySQL 8.4.11, DB de solo 4,3 MB, 16 adjuntos, 4 páginas, 6 posts, 3 eventos, 3 subcomisiones, 52 ítems de menú. `siteurl`/`home` = `http://localhost:8080`. `permalink_structure` **vacía** (enlaces simples, hay que fijarla). Sitio chico: migración liviana.
 
+## Dominios (definido 2026-09-19)
+- **Staging/prueba: `cipba.site`** (en DonWeb). Sirve para ensayar todo el proceso.
+- **Destino final: `cipba.org`**. Todo el proceso (Fases B–D) se repite cuando el sitio local esté más completo; el único cambio es la URL de destino (search-replace `http://localhost:8080` → `https://cipba.org`). Lo aprendido en el ensayo con cipba.site queda como runbook.
+
+## Notas de Duplicator local (Duplicator Lite 5.0.4)
+- Instalado y activo en local. Filtros de archivos ya cargados: excluye `plugins/wp-reset`, `updraft`, `cache`, `upgrade`. Escaneo OK (298 MB de archivos sin comprimir, DB 4,7 MB).
+- **Loopback arreglado (2026-09-19)**: Apache ahora escucha en 8080 dentro del contenedor (Dockerfile + `ports: "8080:8080"`), así el sitio puede llamarse a sí mismo por `http://localhost:8080` (verificado: `wp-cron.php` responde 200 desde 127.0.0.1). Antes el build quedaba en "Initializing" con log vacío.
+- **Problema abierto**: pese a eso, al hacer clic en "Create Backup" el navegador termina en `wp-admin/about.php` (pantalla "Acerca de" tras la actualización automática del núcleo a 7.1.1) y no se genera ningún archivo de build. Pendiente: descartar esa pantalla manualmente en el navegador y reintentar; si no, empaquetar con la opción 3 (mysqldump + zip de wp-content).
+- El núcleo se actualizó solo a 7.1.1 y el idioma pasó a es_AR (verificado con `wp core verify-checksums`). Hay plugins con update disponible (megamenu 3.10.8, akismet, mystickymenu): no actualizar antes de migrar sin probar.
+- `.maintenance` puede aparecer durante auto-updates: no borrar, se levanta solo.
+- No hacer clic en "Subscribe" (email precargado) ni "Allow & Continue" (telemetría); se eligió Skip.
+
 ## Principio clave para repetir deploys
 Separar **código** (tema `cipba`, CPTs, CSS, snippets: viven en git/archivos y se pisan sin riesgo) de **contenido** (DB + uploads). Mientras el sitio local sea la fuente de verdad, cada deploy = copiar tema + reimportar DB. Cuando en producción se cargue contenido real, pasar a "solo subir código" y no volver a pisar la DB.
 
@@ -13,7 +25,7 @@ Separar **código** (tema `cipba`, CPTs, CSS, snippets: viven en git/archivos y 
 2. ✅ Fijar permalinks a "Nombre de la entrada" (`/%postname%/`, hecho 2026-09-19 vía WP-CLI; `.htaccess` con reglas de rewrite escrito a mano porque WP-CLI no las genera; CPTs verificados: `/eventos/…`, `/subcomision/…`).
 3. ✅ Pendientes que afectan el deploy: URL de "Vademécum" se deja como placeholder `#` por ahora (decisión del usuario, 2026-09-19); breakpoint 1160px de Max Mega Menu ya confirmado guardado.
 4. ✅ (parcial: tema, compose, Dockerfile con WP-CLI y `plugins.txt` ya versionados en `wordpress/`; falta definir el paquete de deploy sin WP Reset) Commit del estado: `wp-content/themes/cipba` y los plugins con config propia en git. Quitar plugins solo-dev del paquete de deploy (**WP Reset**, y Code Snippets si no se usa en prod).
-5. Confirmar versiones a pedir en el hosting: **PHP 8.1–8.3** y MySQL/MariaDB compatible (ojo: local usa MySQL 8.4; Ferozo suele ofrecer MariaDB/MySQL 5.7–8.0 → exportar sin features exclusivas de 8.4 y probar el import).
+5. ✅ Versiones/límites confirmados en DonWeb Ferozo (2026-09-19): LiteSpeed, PHP 8.4.23 (lsphp), MySQL 8.0.45 (Percona), `memory_limit` 256M, `max_execution_time` 60 s, `post_max_size`/`upload_max_filesize` 128M, `max_input_vars` 1000. Notas: 60 s alcanza para este sitio (DB de 4 MB) pero probar el import temprano; usar LiteSpeed Cache para caché de página; probar plugins con PHP 8.4 (fallback 8.3). Original: Confirmar versiones a pedir en el hosting: **PHP 8.1–8.3** y MySQL/MariaDB compatible (ojo: local usa MySQL 8.4; Ferozo suele ofrecer MariaDB/MySQL 5.7–8.0 → exportar sin features exclusivas de 8.4 y probar el import).
 
 ## Fase B — Preparar DonWeb (Ferozo)
 1. Crear subdominio de staging (ej. `staging.<dominio>`) y **apuntarlo a una carpeta propia**.
