@@ -1,0 +1,975 @@
+/**
+Theme Name: cipba
+Author: Brainstorm Force
+Author URI: http://wpastra.com/about/
+Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: cipba
+Template: astra
+*/
+
+/* ==========================================================================
+   §4.11 — Contacto por función + grilla de redes (compartida con el pie)
+   ========================================================================== */
+.cipba-contact-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: stretch !important; gap: 18px; margin-bottom: 30px; padding: 0 !important; }
+@media (max-width: 640px) { .cipba-contact-grid { grid-template-columns: 1fr; } }
+/* Bloques Group nativos (soporte de layout de Gutenberg) tienden a
+   traer su propio alto automático / align-self — se fuerza a que
+   ocupen toda la celda de la grilla, si no las tarjetas quedan
+   desalineadas verticalmente entre sí en la fila. */
+.cipba-contact-card { background: #fff; border: 1px solid var(--wp--preset--color--verde-100,#e8f5f1); border-radius: 10px; padding: 22px 24px 24px !important; align-self: stretch !important; height: auto !important; margin: 0 !important; }
+.cipba-contact-card h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 18px; font-weight: 700; color: var(--wp--preset--color--verde-700,#14484a); margin: 0 0 8px; }
+.cipba-contact-card p { font-size: 13.5px; color: var(--wp--preset--color--gris-teal,#607a7c); margin: 0 0 12px; }
+.cipba-contact-card a { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; color: var(--wp--preset--color--verde-600,#008c75); text-decoration: none; }
+.cipba-contact-card a:hover { text-decoration: underline; }
+/* Ícono de sobre por CSS (mask), en vez de SVG inline en el texto del
+   link — así el link queda como texto plano editable en el bloque
+   Párrafo nativo (RichText no preserva SVG crudo de forma confiable). */
+.cipba-contact-card a::before {
+	content: "";
+	width: 15px;
+	height: 15px;
+	flex: none;
+	background-color: currentColor;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22,6 12,13 2,6'/%3E%3C/svg%3E") no-repeat center / contain;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22,6 12,13 2,6'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.cipba-social { display: flex; gap: 10px; }
+.cipba-social a {
+	width: 40px; height: 40px; border-radius: 10px;
+	display: grid; place-items: center;
+	border: 1px solid var(--wp--preset--color--verde-100,#e8f5f1);
+	background: #fff;
+	color: var(--wp--preset--color--verde-700,#14484a);
+	transition: all var(--cipba-fast,.2s) var(--cipba-ease,ease);
+}
+.cipba-social a:hover { border-color: var(--wp--preset--color--verde-600,#008c75); background: var(--wp--preset--color--verde-100,#e8f5f1); color: var(--wp--preset--color--verde-600,#008c75); }
+.cipba-social--dark a { border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.06); color: #fff; }
+.cipba-social--dark a:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.14); color: #fff; }
+
+/* ==========================================================================
+   §4.10 — Preguntas frecuentes. HTML5 <details>/<summary> plano (no el
+   bloque core/details) para mantener el mismo patrón de HTML crudo que
+   el resto de las secciones — evita el padding de 52px que theme.json
+   le pone por defecto a todo core/group.
+   ========================================================================== */
+.cipba-faq {
+	border: 1px solid var(--wp--preset--color--verde-100, #e8f5f1);
+	border-radius: 10px;
+	overflow: hidden;
+}
+.cipba-faq .cipba-faq-item {
+	margin: 0;
+	border-bottom: 1px solid var(--wp--preset--color--verde-100, #e8f5f1);
+	background: #fff;
+}
+.cipba-faq .cipba-faq-item:last-child { border-bottom: none; }
+.cipba-faq .cipba-faq-item[open] { background: var(--wp--preset--color--gris-50, #f7faf9); }
+.cipba-faq summary {
+	list-style: none;
+	cursor: pointer;
+	padding: 17px 22px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--wp--preset--color--verde-700, #14484a);
+}
+.cipba-faq summary::-webkit-details-marker { display: none; }
+.cipba-faq summary::after {
+	content: "";
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23607a7c' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat center / contain;
+	transition: transform var(--cipba-base, .3s) var(--cipba-ease, ease);
+}
+.cipba-faq .cipba-faq-item[open] summary::after { transform: rotate(180deg); }
+.cipba-faq .cipba-faq-item > :not(summary) {
+	padding: 0 22px 20px;
+	font-size: 14px;
+	color: var(--wp--preset--color--gris-teal, #607a7c);
+	line-height: 1.7;
+	max-width: 860px;
+	margin: 0;
+}
+
+/* ==========================================================================
+   §4.9 — El Distrito VII. El selector de partidos + mapa Leaflet queda
+   como placeholder (§4.9 del handoff: 4-8h aparte, se trata como pieza
+   de mantenimiento propia — ver plan-home-cipba.md).
+   ========================================================================== */
+.cipba-dist-grid {
+	display: grid;
+	grid-template-columns: 1.15fr 1fr;
+	gap: 34px;
+	align-items: start;
+}
+@media (max-width: 900px) { .cipba-dist-grid { grid-template-columns: 1fr; } }
+.cipba-dist-figure { border-radius: 12px; overflow: hidden; border: 1px solid var(--wp--preset--color--verde-200,#c0e2ca); margin: 0 0 4px; }
+.cipba-dist-figure img { width: 100%; height: 260px; object-fit: cover; display: block; }
+.cipba-dist-figure figcaption { background: #fff; padding: 10px 14px; font-size: 12.5px; color: var(--wp--preset--color--gris-teal,#607a7c); }
+.cipba-dist-text p { font-size: 14.5px; color: var(--wp--preset--color--gris-teal,#607a7c); line-height: 1.7; margin: 0 0 14px; }
+.cipba-dist-col { display: grid; gap: 18px; align-content: start; }
+.cipba-dist-card { background: #fff; border: 1px solid var(--wp--preset--color--verde-200,#c0e2ca); border-radius: 12px; padding: 22px 24px 24px; }
+.cipba-dist-card h3 { font-size: 15.5px; font-weight: 800; color: var(--wp--preset--color--tinta-900,#373d3e); margin: 0 0 14px; }
+.cipba-dist-placeholder {
+	border: 1.5px dashed var(--wp--preset--color--verde-200,#c0e2ca);
+	border-radius: 8px;
+	padding: 18px;
+	text-align: center;
+	font-size: 13px;
+	color: var(--wp--preset--color--gris-teal,#607a7c);
+	background: var(--wp--preset--color--verde-100,#e8f5f1);
+}
+.cipba-dist-sede {
+	background: var(--wp--preset--color--verde-700,#14484a);
+	border-radius: 12px;
+	padding: 20px 22px 22px;
+	color: #fff;
+}
+.cipba-dist-sede h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 17px; font-weight: 700; color: #fff; margin: 0 0 4px; }
+.cipba-dist-sede .cipba-dist-sede__badge { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--verde-200,#c0e2ca); margin-bottom: 22px; }
+.cipba-dist-sede__row { display: flex; gap: 11px; align-items: flex-start; margin-top: 10px; }
+.cipba-dist-sede__row .ico { width: 26px; height: 26px; border-radius: 6px; background: rgba(255,255,255,.1); display: grid; place-items: center; flex-shrink: 0; }
+.cipba-dist-sede__row .lbl { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+.cipba-dist-sede__row .val { font-size: 13px; color: rgba(255,255,255,.88); line-height: 1.45; }
+.cipba-dist-sede__row .val a { color: inherit; border-bottom: 1px dotted rgba(255,255,255,.4); text-decoration: none; }
+.cipba-sede-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 30px; }
+@media (max-width: 900px) { .cipba-sede-grid { grid-template-columns: 1fr; } }
+.cipba-sede-card { background: #fff; border: 1px solid var(--wp--preset--color--verde-200,#c0e2ca); border-radius: 12px; padding: 18px 20px 20px; }
+.cipba-sede-card h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 17px; font-weight: 700; color: var(--wp--preset--color--verde-700,#14484a); margin: 0 0 4px; }
+.cipba-sede-card__role { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--verde-600,#008c75); margin-bottom: 11px; }
+.cipba-sede-card__line { font-size: 13px; color: var(--wp--preset--color--gris-teal,#607a7c); line-height: 1.6; }
+
+/* ==========================================================================
+   §4.8 — Subcomisiones (tarjeta simple en la home; la versión ampliada
+   con avatar va en la página interna, fuera de este plan)
+   ========================================================================== */
+.cipba-subcom-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 18px;
+}
+@media (max-width: 900px) { .cipba-subcom-grid { grid-template-columns: 1fr; } }
+.cipba-subcom-card {
+	display: block;
+	background: #fff;
+	border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca);
+	border-radius: 12px;
+	padding: 20px 22px 22px;
+	text-decoration: none !important;
+	transition: all var(--cipba-base, .3s) var(--cipba-ease, ease);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+.cipba-subcom-card:hover {
+	border-color: var(--wp--preset--color--verde-500, #00a48a);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, .10);
+}
+.cipba-subcom-card h3 {
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--wp--preset--color--verde-700, #14484a);
+	margin: 0 0 9px;
+}
+.cipba-subcom-card p {
+	font-size: 13.5px;
+	color: var(--wp--preset--color--gris-teal, #607a7c);
+	margin: 0 0 6px;
+}
+.cipba-subcom-card span {
+	font-size: 13px;
+	color: var(--wp--preset--color--verde-600, #008c75);
+	font-weight: 700;
+}
+
+/* ==========================================================================
+   §4.7 — Noticias. El prototipo real (project/index.html) usa 5 tarjetas
+   en 5 columnas, no 4 como dice el handoff — se sigue el diseño real.
+   ========================================================================== */
+.cipba-news-grid {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 14px;
+}
+@media (max-width: 1080px) { .cipba-news-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px)  { .cipba-news-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px)  { .cipba-news-grid { grid-template-columns: 1fr; } }
+.cipba-news-card {
+	display: block;
+	background: #fff;
+	border: 1px solid var(--wp--preset--color--verde-100, #e8f5f1);
+	border-radius: 10px;
+	overflow: hidden;
+	text-decoration: none !important;
+	transition: all var(--cipba-base, .3s) var(--cipba-ease, ease);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+.cipba-news-card:hover {
+	box-shadow: 0 8px 22px rgba(0, 0, 0, .10);
+	transform: translateY(-4px);
+}
+.cipba-news-card__meta {
+	padding: 12px 14px 10px;
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	font-size: 11px;
+	font-weight: 700;
+}
+.cipba-news-card__cat { text-transform: uppercase; letter-spacing: .5px; }
+.cipba-news-card__sep { color: var(--wp--preset--color--gris-400, #9aa8a9); font-weight: 400; }
+.cipba-news-card__img { height: 120px; background: var(--wp--preset--color--gris-100, #eef2f1); }
+.cipba-news-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cipba-news-card__body { padding: 14px 14px 18px; }
+.cipba-news-card__body h3 {
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: 15.5px;
+	font-weight: 700;
+	color: var(--wp--preset--color--verde-700, #14484a);
+	line-height: 1.25;
+	margin: 0 0 8px;
+}
+.cipba-news-card__body p {
+	font-size: 12.5px;
+	color: var(--wp--preset--color--gris-teal, #607a7c);
+	line-height: 1.5;
+	margin: 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* ==========================================================================
+   §4.6 — Eventos (grilla de 3, no carrusel — ver plan-home-cipba.md)
+   ========================================================================== */
+.cipba-ev-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 20px;
+}
+@media (max-width: 900px) { .cipba-ev-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .cipba-ev-grid { grid-template-columns: 1fr; } }
+.cipba-ev-card {
+	display: block;
+	border: 1px solid var(--wp--preset--color--verde-100, #e8f5f1);
+	border-radius: 10px;
+	overflow: hidden;
+	background: #fff;
+	text-decoration: none !important;
+	transition: all var(--cipba-base, .3s) var(--cipba-ease, ease);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+.cipba-ev-card:hover {
+	box-shadow: 0 10px 28px rgba(13, 50, 52, .12);
+	transform: translateY(-3px);
+}
+.cipba-ev-card__img {
+	aspect-ratio: 4 / 5;
+	position: relative;
+	background: var(--wp--preset--color--gris-100, #eef2f1);
+}
+.cipba-ev-card__img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	position: absolute;
+	inset: 0;
+}
+.cipba-ev-card__body { padding: 18px 20px 20px; }
+.cipba-ev-card__body h3 {
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--wp--preset--color--verde-700, #14484a);
+	line-height: 1.25;
+	margin: 0 0 14px;
+}
+.cipba-ev-card__foot {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	border-top: 1px solid var(--wp--preset--color--gris-100, #eef2f1);
+	padding-top: 13px;
+}
+.cipba-ev-card__date { font-size: 12.5px; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-ev-card__more {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--wp--preset--color--verde-600, #008c75);
+}
+
+/* Bandas de sección genéricas (fondo completo + wrap de 1200px adentro) */
+.cipba-section { padding: 46px 0 30px !important; }
+.cipba-section--alt {
+	background: #f2f3f3;
+	border-top: 1px solid var(--wp--preset--color--verde-100, #e8f5f1);
+	padding: 34px 0 46px;
+}
+
+/* Logo del header — Astra Free no tiene un control de alto simple para
+   logo SVG en el Header Builder, así que se fija por CSS. */
+.ast-site-identity .custom-logo,
+.site-logo-img .custom-logo {
+	height: 80px !important;
+	width: auto !important;
+	max-height: 80px;
+}
+
+/* Sangrado completo (edge-to-edge) para secciones que no son bloques
+   nativos alineados — el core/html no participa del sistema de "align:
+   full" de WordPress, así que se hace a mano. Usar junto con un wrapper
+   interno de max-width:1200px (mismo patrón que .cipba-hero-wrap /
+   .cipba-footer-grid) para el contenido. */
+.cipba-full-bleed {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+}
+
+/* Columna de contenido estándar (1200px, padding 24px) para usar DENTRO
+   de una sección de fondo completo (.cipba-hero, .cipba-announcement,
+   futuras secciones de la home). La página "Inicio" corre en modo
+   "Full Width Container" de Astra (§4.4, para que los fondos sangren
+   completos), y ese modo fuerza max-width:100% con !important en el
+   contenido — por eso esta clase también necesita !important para
+   ganarle. Reusar en cada sección nueva en vez de reinventar el wrapper. */
+.cipba-wrap {
+	max-width: 1200px !important;
+	margin: 0 auto !important;
+	padding-left: 24px !important;
+	padding-right: 24px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   Home — §4.3 Barra de anuncio de honorarios.
+   ========================================================================== */
+.cipba-announcement {
+	background: var(--wp--preset--color--verde-100, #e8f5f1);
+	border-bottom: 1px solid var(--wp--preset--color--verde-200, #c0e2ca);
+}
+.cipba-announcement-wrap {
+	max-width: 1200px !important;
+	margin: 0 auto !important;
+	padding: 10px 24px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	font-size: 13.5px;
+	color: var(--wp--preset--color--tinta-900, #373d3e);
+}
+.cipba-announcement-wrap a {
+	color: var(--wp--preset--color--verde-600, #008c75);
+	font-weight: 800;
+	text-decoration: none;
+}
+.cipba-announcement-wrap a:hover {
+	text-decoration: underline;
+}
+
+/* ==========================================================================
+   Home — §4.4 Hero de dos puertas. Colores/gradiente calcados de
+   project/index.html (el prototipo real), no del preset "hero-verde" de
+   theme.json — los stops del gradiente no coinciden entre los dos y se
+   prioriza el diseño de referencia real.
+   ========================================================================== */
+.cipba-hero {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	background: linear-gradient(135deg, #0d3234 0%, #14484a 50%, #1a5f5c 100%);
+}
+.cipba-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	opacity: .05;
+	background: url(assets/img/crosshatch.svg) repeat;
+}
+.cipba-hero-wrap {
+	max-width: 1200px !important;
+	margin: 0 auto !important;
+	padding: 68px 24px 76px;
+	position: relative;
+}
+.cipba-hero-wrap h1 {
+	font-size: clamp(30px, 4.6vw, 50px);
+	font-weight: 900;
+	color: #fff;
+	line-height: 1.12;
+	max-width: 660px;
+	margin: 0;
+	font-family: var(--wp--preset--font-family--condensed);
+}
+.cipba-hero-wrap p {
+	font-size: 17px;
+	color: rgba(255, 255, 255, .78);
+	margin-top: 20px;
+	max-width: 520px;
+	line-height: 1.6;
+}
+.cipba-hero-doors {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+	margin-top: 40px;
+	max-width: 780px;
+}
+.cipba-door,
+.cipba-door:hover,
+.cipba-door * {
+	text-decoration: none !important;
+}
+.cipba-door {
+	display: block;
+	border-radius: 10px;
+	padding: 24px 26px 26px;
+	transition: all var(--cipba-base, .3s) var(--cipba-ease, ease);
+	border: 1.5px solid rgba(255, 255, 255, .4);
+}
+.cipba-door:hover {
+	transform: translateY(-3px);
+	border-color: #7fd9c4;
+}
+.cipba-door--primary {
+	background: var(--wp--preset--color--verde-500, #00a48a);
+	border-color: transparent;
+	box-shadow: 0 8px 26px rgba(0, 164, 138, .28);
+}
+.cipba-door--primary:hover {
+	background: var(--wp--preset--color--verde-600, #008c75);
+	border-color: transparent;
+}
+.cipba-door__eyebrow {
+	display: block;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: #7fd9c4;
+	margin-bottom: 12px;
+}
+.cipba-door--primary .cipba-door__eyebrow {
+	color: rgba(255, 255, 255, .75);
+}
+.cipba-door__title {
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: 21px;
+	font-weight: 700;
+	color: #fff;
+	margin-bottom: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.cipba-door__desc {
+	display: block;
+	font-size: 14px;
+	color: rgba(255, 255, 255, .75);
+}
+.cipba-door--primary .cipba-door__desc {
+	color: rgba(255, 255, 255, .9);
+}
+@media (max-width: 700px) {
+	.cipba-hero-doors { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   Pie de página — grilla de marca + 4 menús (§4.13 del handoff).
+   Reemplaza el "Primary Footer" del Constructor de Astra (ver
+   inc/footer.php — Astra Free no admite varios menús independientes
+   en su builder visual).
+   ========================================================================== */
+.cipba-footer-wrap {
+	background: var(--wp--preset--color--verde-700, #14484a);
+	color: rgba(255, 255, 255, .78);
+	padding: 48px 24px 34px;
+}
+.cipba-footer-grid {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 1.5fr repeat(4, minmax(0, 1fr));
+	gap: 30px;
+}
+.cipba-footer-logo {
+	width: 200px;
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 16px;
+	display: block;
+}
+.cipba-footer-brand p {
+	font-size: 13px;
+	line-height: 1.7;
+	color: rgba(255, 255, 255, .72);
+	max-width: 320px;
+	margin: 0;
+}
+.cipba-footer-col h3 {
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: #fff;
+	margin: 0 0 15px;
+}
+.cipba-footer-links {
+	display: grid;
+	gap: 9px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.cipba-footer-links a {
+	font-size: 13.5px;
+	color: rgba(255, 255, 255, .72);
+	text-decoration: none;
+	transition: color var(--cipba-fast, .2s);
+}
+.cipba-footer-links a:hover {
+	color: var(--wp--preset--color--verde-500, #00a48a);
+}
+@media (max-width: 1000px) {
+	.cipba-footer-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.cipba-footer-brand {
+		grid-column: 1 / -1;
+	}
+}
+@media (max-width: 700px) {
+	.cipba-footer-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* "Below Footer" — copyright + enlaces legales (§4.13). Reemplaza el
+   "Copyright" por defecto de Astra, que traía "Powered by Astra". */
+.cipba-footer-below {
+	background: var(--wp--preset--color--verde-950, #0d3234);
+}
+.cipba-footer-below__inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 16px 24px;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+	font-size: 12.5px;
+	color: rgba(255, 255, 255, .6);
+}
+.cipba-footer-below__links {
+	display: flex;
+	gap: 16px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.cipba-footer-below__links a {
+	color: inherit;
+	text-decoration: none;
+}
+.cipba-footer-below__links a:hover {
+	color: var(--wp--preset--color--verde-500, #00a48a);
+}
+
+/* ==========================================================================
+   §5.1 — Variables puente (handoff §5.1)
+   ========================================================================== */
+:root {
+	--cipba-ease: cubic-bezier(.4, 0, .2, 1);
+	--cipba-fast: .2s;
+	--cipba-base: .3s;
+	--cipba-border-card: #e8f5f1;
+	--cipba-border-input: #dbe6e3;
+}
+
+/* ==========================================================================
+   §5.2 — Navbar sticky con sombra y blur al scrollear
+   (el script que agrega/quita .is-scrolled está en inc/navbar.php)
+   ========================================================================== */
+.ast-main-header-wrap {
+	position: sticky;
+	top: 0;
+	z-index: 99;
+	background: #fff;
+	transition: box-shadow var(--cipba-base) var(--cipba-ease);
+}
+.ast-main-header-wrap.is-scrolled {
+	box-shadow: 0 2px 20px rgba(0, 0, 0, .25);
+	background: rgba(255, 255, 255, .92);
+	backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
+   §5.4 — Elevación de tarjetas en hover + layout completo de tarjeta
+   (§4.5 Autogestión/Trámites, reusado luego para Noticias/Subcomisiones)
+   ========================================================================== */
+.cipba-card {
+	display: block;
+	text-decoration: none !important;
+	border-radius: 10px;
+	padding: 20px 22px 24px;
+	border: 1px solid var(--wp--preset--color--verde-100, #e8f5f1);
+	border-left: 3px solid var(--wp--preset--color--verde-500, #00a48a);
+	background: #f2faf7;
+	transition: transform var(--cipba-base) var(--cipba-ease),
+		box-shadow var(--cipba-base) var(--cipba-ease), border-color var(--cipba-fast);
+	box-shadow: 0 1px 4px rgba(13, 50, 52, .05);
+}
+.cipba-card--purpura {
+	border-left-color: #484586;
+	background: #f6f5fb;
+}
+.cipba-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 24px rgba(0, 112, 94, .20);
+	border-color: #00705e;
+}
+.cipba-card--purpura:hover {
+	box-shadow: 0 8px 24px rgba(48, 46, 92, .20);
+	border-color: #302e5c;
+}
+.cipba-card__head {
+	display: flex;
+	align-items: center;
+	gap: 13px;
+	margin-bottom: 12px;
+}
+.cipba-card__icon {
+	width: 44px;
+	height: 44px;
+	border-radius: 10px;
+	background: #fff;
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	color: var(--wp--preset--color--verde-500, #00a48a);
+}
+.cipba-card--purpura .cipba-card__icon { color: #484586; }
+.cipba-card:hover .cipba-card__icon { color: #00705e; }
+.cipba-card--purpura:hover .cipba-card__icon { color: #302e5c; }
+.cipba-card__title {
+	flex: 1;
+	min-width: 0;
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.15;
+	color: var(--wp--preset--color--tinta-900, #373d3e);
+}
+.cipba-card__arrow {
+	display: flex;
+	flex-shrink: 0;
+	color: var(--wp--preset--color--verde-500, #00a48a);
+	transition: transform var(--cipba-base) var(--cipba-ease);
+}
+.cipba-card--purpura .cipba-card__arrow { color: #484586; }
+.cipba-card:hover .cipba-card__arrow { color: #00705e; transform: translateX(3px); }
+.cipba-card--purpura:hover .cipba-card__arrow { color: #302e5c; }
+.cipba-card__desc {
+	font-size: 13.5px;
+	color: var(--wp--preset--color--gris-teal, #607a7c);
+	line-height: 1.55;
+	margin: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+	.cipba-card, .cipba-card__arrow { transition: none; }
+	.cipba-card:hover { transform: none; }
+}
+
+.cipba-cardgrid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 18px;
+}
+@media (max-width: 900px) {
+	.cipba-cardgrid { grid-template-columns: 1fr; }
+}
+
+.cipba-section-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin-bottom: 26px;
+	padding: 0 !important;
+}
+.cipba-section-head h2 {
+	font-family: var(--wp--preset--font-family--condensed);
+	font-size: clamp(21px, 2.6vw, 28px);
+	font-weight: 900;
+	color: var(--wp--preset--color--verde-700, #14484a);
+	line-height: 1.15;
+	margin: 0;
+}
+.cipba-section-head p {
+	font-size: 14px;
+	color: var(--wp--preset--color--gris-teal, #607a7c);
+	margin-top: 7px;
+	max-width: 680px;
+}
+
+/* ==========================================================================
+   §5.5 — Color de badge por taxonomía (Novedades)
+   ========================================================================== */
+.wp-block-post-terms a { color: #607a7c; }
+.cat-institucional .wp-block-post-terms a,
+.cat-distrito .wp-block-post-terms a { color: #14484a; }
+.cat-capacitacion .wp-block-post-terms a,
+.cat-matricula .wp-block-post-terms a { color: #00a48a; }
+.cat-normativa .wp-block-post-terms a,
+.cat-honorarios .wp-block-post-terms a { color: #8a3a2a; }
+.cat-comisiones .wp-block-post-terms a,
+.cat-eventos .wp-block-post-terms a { color: #484586; }
+
+/* ==========================================================================
+   §5.6 — Recorte de extracto a dos líneas (tarjetas de Noticias)
+   ========================================================================== */
+.cipba-excerpt {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* ==========================================================================
+   §5.7 — Avatar de iniciales (subcomisiones y autoridades)
+   ========================================================================== */
+.cipba-avatar {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	font-family: 'Roboto Condensed', sans-serif;
+	font-weight: 700;
+	font-size: 13px;
+	color: #1a5f5c;
+	background: linear-gradient(135deg, #e8f5f1 0%, #c0e2ca 100%);
+	flex-shrink: 0;
+}
+.cipba-avatar--presidencia {
+	background: linear-gradient(135deg, #c0e2ca 0%, #00a48a 100%);
+	color: #fff;
+}
+
+/* ==========================================================================
+   §5.8 — Columna lateral fija en páginas de trámites
+   ========================================================================== */
+@media (min-width: 901px) {
+	.cipba-aside { position: sticky; top: 88px; align-self: start; }
+}
+@media (max-width: 900px) {
+	.cipba-tramite-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ==========================================================================
+   §5.10 — Imagen destacada en 21:9 y anillo de foco
+   ========================================================================== */
+.cipba-hero-img img {
+	aspect-ratio: 21 / 9;
+	object-fit: cover;
+	width: 100%;
+	display: block;
+}
+a:focus-visible, button:focus-visible, select:focus-visible,
+input:focus-visible, textarea:focus-visible {
+	outline: 2px solid #00a48a;
+	outline-offset: 2px;
+}
+input, select, textarea {
+	border: 1px solid var(--cipba-border-input);
+	border-radius: 6px;
+}
+
+/* ==========================================================================
+   §5.11 — Patrón crosshatch sobre el gradiente del hero
+   ========================================================================== */
+.cipba-hero { position: relative; isolation: isolate; }
+.cipba-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	opacity: .06;
+	background: url(assets/img/crosshatch.svg) repeat;
+}
+
+/* ==========================================================================
+   Ajustes de Max Mega Menu (§4.2 / §5.3 del handoff)
+   Max Mega Menu (v3.x) genera su propio CSS dinámico con selectores de
+   2 IDs (#mega-menu-wrap-primary #mega-menu-primary ...), más específico
+   que cualquier regla simple de clase — de ahí el !important y los
+   selectores calcados de los suyos en todo este bloque.
+   ========================================================================== */
+
+/* Subtítulos de grupo dentro de los desplegables de Trámites/Normativa
+   (Max Mega Menu, modo Flyout). El ítem ya tiene "Disable link" tildado
+   desde el admin; esto solo le da la apariencia de encabezado.
+   Max Mega Menu genera su propio CSS dinámico con selectores de 2 IDs
+   (#mega-menu-wrap-primary #mega-menu-primary ...), así que hace falta
+   !important para ganarle la especificidad en vez de pelear ID contra ID. */
+#mega-menu-wrap-primary li.mm-group-title {
+	margin-top: 10px !important;
+	padding-top: 10px !important;
+	border-top: 1px solid var(--wp--preset--color--verde-100, #e8f5f1) !important;
+}
+#mega-menu-wrap-primary li.mm-group-title:first-child {
+	margin-top: 0 !important;
+	padding-top: 0 !important;
+	border-top: none !important;
+}
+#mega-menu-wrap-primary li.mm-group-title > a.mega-menu-link {
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	letter-spacing: .06em !important;
+	text-transform: uppercase !important;
+	color: var(--wp--preset--color--gris-teal, #607a7c) !important;
+	pointer-events: none;
+	cursor: default;
+	background: none !important;
+}
+
+/* Barra del menú principal: blanco en vez del skin oscuro por defecto
+   de Max Mega Menu. */
+#mega-menu-wrap-primary #mega-menu-primary {
+	background-color: var(--wp--preset--color--blanco, #ffffff) !important;
+}
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item > a.mega-menu-link {
+	color: var(--wp--preset--color--tinta-900, #373d3e) !important;
+}
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item:hover > a.mega-menu-link,
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-toggle-on > a.mega-menu-link {
+	color: var(--wp--preset--color--verde-600, #008c75) !important;
+	background-color: var(--wp--preset--color--verde-100, #e8f5f1) !important;
+}
+/* Página actual (ej. "Inicio" al estar en la home): Max Mega Menu le pone
+   su propio fondo oscuro vía .mega-current-menu-item — lo reemplazamos por
+   el estado de "página actual" que pide el handoff (§6: verde-700 + subrayado). */
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-menu-item > a.mega-menu-link,
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-page-item > a.mega-menu-link {
+	background-color: var(--wp--preset--color--blanco, #ffffff) !important;
+	color: var(--wp--preset--color--verde-700, #14484a) !important;
+	font-weight: 700 !important;
+	box-shadow: inset 0 -2px 0 var(--wp--preset--color--verde-700, #14484a) !important;
+}
+
+/* Panel desplegable: blanco, redondeado, con borde y sombra en vez del
+   gris plano cuadrado por defecto. Selector calcado del que genera el
+   propio Max Mega Menu (visto en DevTools) para poder ganarle con !important. */
+#mega-menu-wrap-primary #mega-menu-primary li.mega-menu-item.mega-toggle-on > ul.mega-sub-menu {
+	background-color: var(--wp--preset--color--blanco, #ffffff) !important;
+	border: 1px solid var(--wp--preset--color--verde-100, #e8f5f1) !important;
+	border-radius: 12px !important;
+	box-shadow: 0 12px 40px rgba(13,45,94,.12) !important;
+	padding: 10px 0 !important;
+	overflow: hidden;
+}
+#mega-menu-wrap-primary #mega-menu-primary ul.mega-sub-menu li.mega-menu-item:not(.mm-group-title) > a.mega-menu-link {
+	color: var(--wp--preset--color--tinta-900, #373d3e) !important;
+	background-color: transparent !important;
+}
+#mega-menu-wrap-primary #mega-menu-primary ul.mega-sub-menu li.mega-menu-item:not(.mm-group-title):hover > a.mega-menu-link {
+	color: var(--wp--preset--color--verde-600, #008c75) !important;
+	background-color: var(--wp--preset--color--verde-100, #e8f5f1) !important;
+}
+
+/* Ícono de enlace externo en ítems que abren PDFs o sistemas externos
+   (clase "abre-nuevo", ver inc/nav-menu-links.php y el snippet §5.9). Mismo
+   ícono "externalLink" (Lucide) que usaba el prototipo original.
+   Regla genérica (sirve para los menús del pie, que no pasan por Max Mega
+   Menu) + una versión con el selector de Max Mega Menu + !important, misma
+   razón que el resto de las reglas de esta sección: sin eso, el CSS dinámico
+   del plugin gana por especificidad y el ícono no se pinta. */
+.abre-nuevo > a::after,
+#mega-menu-wrap-primary #mega-menu-primary li.abre-nuevo > a.mega-menu-link::after {
+	content: "";
+	display: inline-block !important;
+	width: 11px;
+	height: 11px;
+	margin-left: 6px;
+	vertical-align: -1px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23607a7c' stroke-width='2'%3E%3Cpath d='M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E") no-repeat center / contain !important;
+}
+
+/* §5.3 — Ítem de menú destacado ("Honorarios mínimos vigentes") */
+.is-destacado > a::before {
+	content: "";
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #00a48a;
+	flex-shrink: 0;
+}
+#mega-menu-wrap-primary #mega-menu-primary li.is-destacado > a.mega-menu-link {
+	background: #f1faf7 !important;
+	color: #008c75 !important;
+	font-weight: 800 !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: 6px !important;
+}
+
+/* Fix — menú mobile roto: Astra y Max Mega Menu traen CADA UNO su propio
+   sistema de menú responsive para la misma ubicación "Primary". Por
+   debajo de 1160px (breakpoint de ambos), Astra oculta su header
+   "desktop" completo (`.ast-hide-custom-menu-mobile #ast-desktop-header`)
+   — que es justo donde vive el botón hamburguesa real de Max Mega Menu,
+   con Trámites/Normativa/etc. bien armados — y en su lugar muestra su
+   propio `#ast-mobile-header`, que no tiene ningún menú de WordPress
+   asignado a esa ubicación puntual y cae al listado de páginas por
+   defecto (roto, sin los desplegables). Max Mega Menu ya es responsive
+   por sí solo (su propio toggle + colapso, mismo breakpoint 1160px), así
+   que se lo deja a cargo siempre y se apaga el mobile menu propio de
+   Astra en vez de pelear por sincronizar dos menús independientes. */
+@media (max-width: 1160px) {
+	#ast-desktop-header { display: block !important; }
+	#ast-mobile-header { display: none !important; }
+}
+
+/* Fix — el panel del menú mobile abría "pegado" al logo (encerrado en
+   la columna angosta de la derecha del header) en vez de como un panel
+   a todo el ancho debajo. Causa: Max Mega Menu arma el menú mobile
+   expandido como una lista normal en flujo (display:flex en columna,
+   dentro de su propio contenedor `#mega-menu-wrap-primary`) — hereda el
+   ancho acotado de esa columna. Un primer intento con position:absolute
+   anclado a `#ast-desktop-header` tampoco alcanzó: algún contenedor
+   intermedio de Astra entre medio ya tiene su propio position seteado,
+   así que terminaba anclando ahí igual (columna angosta de nuevo) — en
+   vez de perseguir cuál es exactamente, se saca del CSS puro: position
+   fixed (contenedor de posicionamiento = viewport, sin ambigüedad de
+   ancestros) + el "top" exacto se calcula por JS en el momento de abrir
+   (ver cipba_mobile_menu_panel_position_script en inc/navbar.php), así
+   no depende de adivinar la altura del header. */
+@media (max-width: 1160px) {
+	#mega-menu-wrap-primary .mega-menu-toggle.mega-menu-open + #mega-menu-primary {
+		position: fixed !important;
+		left: 0 !important;
+		width: 100% !important;
+		max-height: calc(100vh - 70px);
+		overflow-y: auto;
+		box-shadow: 0 12px 40px rgba(13,45,94,.18) !important;
+		z-index: 9999 !important;
+	}
+}

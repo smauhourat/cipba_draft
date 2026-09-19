@@ -9,8 +9,8 @@ Estado relevado (solo lectura): PHP 8.3, MySQL 8.4.11, DB de solo 4,3 MB, 16 adj
 Separar **código** (tema `cipba`, CPTs, CSS, snippets: viven en git/archivos y se pisan sin riesgo) de **contenido** (DB + uploads). Mientras el sitio local sea la fuente de verdad, cada deploy = copiar tema + reimportar DB. Cuando en producción se cargue contenido real, pasar a "solo subir código" y no volver a pisar la DB.
 
 ## Fase A — Preparación local (antes de tocar DonWeb)
-1. **Arreglar la lentitud** (bind mount 9p en `docker-compose.yml:31`): no bloquea la migración, pero conviene antes para que los exports/pruebas sean rápidos.
-2. Fijar permalinks a "Nombre de la entrada" (Ajustes → Enlaces permanentes) y verificar que el menú y CPTs sigan bien.
+1. ✅ **Lentitud arreglada** (2026-09-19, opción 2): `wp-content` ahora es el volumen nativo `wp_content`; solo `themes/cipba` sigue como bind mount desde Windows. Requests de 25–115 s → ~1.5–2.5 s. Backups previos en `D:\Projects\wordpress_docker\backups\` (DB `.sql` + copia de `wp-content`). Ojo: `wp-content/` en `D:\` (salvo el tema) ya NO es la copia viva; plugins/uploads viven en el volumen Docker.
+2. ✅ Fijar permalinks a "Nombre de la entrada" (`/%postname%/`, hecho 2026-09-19 vía WP-CLI; `.htaccess` con reglas de rewrite escrito a mano porque WP-CLI no las genera; CPTs verificados: `/eventos/…`, `/subcomision/…`).
 3. Cerrar pendientes que afectan el deploy: URL de "Vademécum" (placeholder `#`), guardar una vez el tema de Max Mega Menu (breakpoint 1160px).
 4. Commit del estado: `wp-content/themes/cipba` y los plugins con config propia en git. Quitar plugins solo-dev del paquete de deploy (**WP Reset**, y Code Snippets si no se usa en prod).
 5. Confirmar versiones a pedir en el hosting: **PHP 8.1–8.3** y MySQL/MariaDB compatible (ojo: local usa MySQL 8.4; Ferozo suele ofrecer MariaDB/MySQL 5.7–8.0 → exportar sin features exclusivas de 8.4 y probar el import).

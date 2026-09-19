@@ -1,0 +1,11 @@
+# Plugins del sitio (versiones al 2026-09-19). Los plugins de terceros NO se versionan: se reinstalan.
+# active = necesarios en produccion | dev = solo desarrollo, no subir a DonWeb
+code-snippets 3.10.2 active
+fluentform 6.2.14 active
+megamenu 3.10.6 active
+meta-box 5.15.1 active
+seo-by-rank-math 1.0.278 active
+ultimate-addons-for-gutenberg 2.20.3 active
+updraftplus 1.26.7 active
+wp-reset 2.08 dev
+# instalados pero inactivos (candidatos a borrar): akismet, custom-post-type-ui, hello, mystickymenu, pdf-embedder

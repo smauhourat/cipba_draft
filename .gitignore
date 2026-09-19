@@ -1,2 +1,8 @@
 node_modules/
 dist/
+
+# WordPress local
+wordpress/.env
+wordpress/backups/
+wordpress/scripts/*.local.*
+*.sql

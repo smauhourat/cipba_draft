@@ -1,0 +1,61 @@
+# Entorno local de WordPress (solo desarrollo). Credenciales en .env (ver .env.example).
+# `name` fija el nombre del proyecto para reutilizar los volumenes existentes
+# (wordpress_docker_db_data / _wordpress_data / _wp_content) aunque este archivo viva en otra carpeta.
+name: wordpress_docker
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wp-network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - wordpress_data:/var/www/html
+      - wp_content:/var/www/html/wp-content
+      # Solo el tema propio se edita desde Windows; el resto vive en un volumen nativo
+      # (el bind mount 9p de todo wp-content era ~400x mas lento).
+      - ./themes/cipba:/var/www/html/wp-content/themes/cipba
+    networks:
+      - wp-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: wordpress_pma
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD}
+    networks:
+      - wp-network
+
+volumes:
+  db_data:
+  wordpress_data:
+  wp_content:
+
+networks:
+  wp-network:
+    driver: bridge
