@@ -144,6 +144,13 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 			'placeholder' => 'Ej: Civ',
 		),
 		array(
+			'name'        => 'Email de la subcomisión',
+			'id'          => 'mail',
+			'desc'        => 'Correo institucional de la subcomisión. Se muestra bajo el nombre en el listado y en la tarjeta de la home.',
+			'type'        => 'email',
+			'placeholder' => 'civil@cipba.org',
+		),
+		array(
 			'name' => 'Descripción',
 			'id'   => 'descripcion',
 			'desc' => 'Opcional. Texto corto que se muestra solo en la tarjeta de la home; en el listado de Subcomisiones no aparece.',
@@ -190,6 +197,131 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		'title'      => 'Datos de la subcomisión',
 		'post_types' => 'subcomision',
 		'fields'     => $subcom_fields,
+	);
+
+	// Sede o delegación: formulario plano (mismo criterio que Subcomisión).
+	// Los "contactos directos" solo se muestran en la sede marcada como
+	// Casa Central; los slots vacíos se ignoran.
+	$sede_fields = array(
+		array(
+			'name'        => 'Tipo',
+			'id'          => 'tag',
+			'desc'        => 'Etiqueta que va arriba del nombre. Ej: Sede Central, Delegación Haedo.',
+			'type'        => 'text',
+			'placeholder' => 'Ej: Delegación Haedo',
+		),
+		array(
+			'name' => 'Casa Central',
+			'id'   => 'destacada',
+			'desc' => 'Tildar solo en la sede principal: se muestra como tarjeta grande, con la lista de contactos directos.',
+			'type' => 'checkbox',
+		),
+		array(
+			'name'        => 'Dirección',
+			'id'          => 'direccion',
+			'type'        => 'text',
+			'columns'     => 12,
+			'placeholder' => 'Ej: Almafuerte N° 2868, San Justo (1754) – La Matanza – Bs As',
+		),
+		array(
+			'name'        => 'Teléfono',
+			'id'          => 'telefono',
+			'type'        => 'text',
+			'columns'     => 4,
+			'placeholder' => '(011) 3535-0751',
+		),
+		array(
+			'name'        => 'Email',
+			'id'          => 'email',
+			'type'        => 'email',
+			'columns'     => 4,
+			'placeholder' => 'info@cipba.org',
+		),
+		array(
+			'name'        => 'Visador',
+			'id'          => 'visador',
+			'desc'        => 'Opcional.',
+			'type'        => 'text',
+			'columns'     => 4,
+			'placeholder' => 'Ing. Civil Nombre (Mat. 12345)',
+		),
+		array(
+			'name'        => 'Horario de atención',
+			'id'          => 'horario',
+			'type'        => 'text',
+			'columns'     => 12,
+			'placeholder' => 'Lunes a viernes de 9:00 a 16:00 hs',
+		),
+	);
+	for ( $i = 1; $i <= CIPBA_SEDE_MAX_CONTACTOS; $i++ ) {
+		$sede_fields[] = array(
+			'type' => 'heading',
+			'name' => "Contacto directo $i (solo Casa Central, opcional)",
+		);
+		$sede_fields[] = array(
+			'name'        => 'Área',
+			'id'          => "contacto{$i}_rol",
+			'type'        => 'text',
+			'columns'     => 2,
+			'placeholder' => 'Secretaría',
+		);
+		$sede_fields[] = array(
+			'name'        => 'Nombre',
+			'id'          => "contacto{$i}_nombre",
+			'type'        => 'text',
+			'columns'     => 3,
+			'placeholder' => 'Nombre y apellido',
+		);
+		$sede_fields[] = array(
+			'name'        => 'Teléfono',
+			'id'          => "contacto{$i}_tel",
+			'type'        => 'text',
+			'columns'     => 3,
+			'placeholder' => '(011) 15-2713-3330',
+		);
+		$sede_fields[] = array(
+			'name'        => 'Email',
+			'id'          => "contacto{$i}_email",
+			'type'        => 'email',
+			'columns'     => 4,
+			'placeholder' => 'secretaria@cipba.org',
+		);
+	}
+
+	$meta_boxes[] = array(
+		'title'      => 'Datos de la sede',
+		'post_types' => 'sede',
+		'fields'     => $sede_fields,
+	);
+
+	// Autoridad del Consejo Directivo: el nombre va en el título.
+	$meta_boxes[] = array(
+		'title'      => 'Datos de la autoridad',
+		'post_types' => 'autoridad',
+		'fields'     => array(
+			array(
+				'name'        => 'Cargo',
+				'id'          => 'cargo',
+				'desc'        => 'Ej: Presidente, Secretario, Vocal Titular 1°.',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => 'Ej: Vocal Titular 1°',
+			),
+			array(
+				'name'        => 'Título profesional',
+				'id'          => 'titulo',
+				'desc'        => 'Se muestra en cursiva debajo del nombre.',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => 'Ej: Ing. Civil',
+			),
+			array(
+				'name' => 'Presidencia',
+				'id'   => 'destacado',
+				'desc' => 'Tildar solo en el presidente: se muestra como tarjeta grande y destacada.',
+				'type' => 'checkbox',
+			),
+		),
 	);
 
 	return $meta_boxes;

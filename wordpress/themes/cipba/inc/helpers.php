@@ -186,18 +186,36 @@ function cipba_initials( $nombre ) {
 }
 
 /**
- * Número para href="tel:" a partir de un teléfono tipeado a mano
- * ("(11) 5857-0060" → "+541158570060"). Si ya trae 54 al inicio no lo duplica.
+ * Número para href="tel:" a partir de un teléfono tipeado a mano.
+ * Entiende los formatos habituales de Argentina:
+ *   "15-5181-9336"       → +5491151819336  (celular AMBA: sin 15, con 9 y área 11)
+ *   "02324-15-58-2633"   → +5492324582633  (celular con código de área: sin 0 ni 15, con 9)
+ *   "(11) 4651-0064"     → +541146510064   (fijo: se antepone solo 54)
+ * Si ya trae 54 al inicio no lo duplica.
  */
 function cipba_tel_link( $tel ) {
-	$digits = ltrim( preg_replace( '/\D+/', '', (string) $tel ), '0' );
+	// Se descarta el interno ("… int 5 o 7") — no forma parte del número.
+	$tel    = preg_split( '/\b(?:int|interno|anexo|ext)\b/i', (string) $tel )[0];
+	$digits = ltrim( preg_replace( '/\D+/', '', $tel ), '0' );
 	if ( '' === $digits ) {
 		return '';
 	}
-	if ( 0 !== strpos( $digits, '54' ) ) {
-		$digits = '54' . $digits;
+	if ( 0 === strpos( $digits, '54' ) ) {
+		return '+' . $digits;
 	}
-	return '+' . $digits;
+	// Celular AMBA en formato local: 15 + 8 dígitos.
+	if ( 10 === strlen( $digits ) && 0 === strpos( $digits, '15' ) ) {
+		return '+54911' . substr( $digits, 2 );
+	}
+	// Celular con código de área + 15 + número (12 dígitos en total).
+	if ( 12 === strlen( $digits ) ) {
+		foreach ( array( 4, 3, 2 ) as $area_len ) {
+			if ( '15' === substr( $digits, $area_len, 2 ) ) {
+				return '+549' . substr( $digits, 0, $area_len ) . substr( $digits, $area_len + 2 );
+			}
+		}
+	}
+	return '+54' . $digits;
 }
 
 /**
@@ -229,4 +247,66 @@ function cipba_get_referentes( $post_id = null ) {
 		);
 	}
 	return $out;
+}
+
+/**
+ * Cantidad de slots de "contacto directo" que ofrece el formulario de Sede.
+ */
+define( 'CIPBA_SEDE_MAX_CONTACTOS', 8 );
+
+/**
+ * Contactos directos de una sede (área, nombre, tel, email) — solo los que
+ * tienen nombre cargado.
+ *
+ * @param int|null $post_id ID de la sede (por defecto, el post actual).
+ * @return array[]
+ */
+function cipba_get_sede_contactos( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$out     = array();
+	for ( $i = 1; $i <= CIPBA_SEDE_MAX_CONTACTOS; $i++ ) {
+		$nombre = trim( (string) get_post_meta( $post_id, "contacto{$i}_nombre", true ) );
+		if ( '' === $nombre ) {
+			continue;
+		}
+		$out[] = array(
+			'rol'    => trim( (string) get_post_meta( $post_id, "contacto{$i}_rol", true ) ),
+			'nombre' => $nombre,
+			'tel'    => trim( (string) get_post_meta( $post_id, "contacto{$i}_tel", true ) ),
+			'email'  => trim( (string) get_post_meta( $post_id, "contacto{$i}_email", true ) ),
+		);
+	}
+	return $out;
+}
+
+/**
+ * Íconos SVG inline (trazo, mismos del prototipo) para las tarjetas de sedes.
+ */
+function cipba_icon( $name, $size = 14 ) {
+	$paths = array(
+		'location' => '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+		'phone'    => '<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>',
+		'mail'     => '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+		'clock'    => '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+		'award'    => '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
+		'users'    => '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',
+		'star'     => '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+	);
+	if ( ! isset( $paths[ $name ] ) ) {
+		return '';
+	}
+	return '<svg width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' . $paths[ $name ] . '</svg>';
+}
+
+/**
+ * Iniciales del avatar de una autoridad: primera letra de las dos primeras
+ * palabras del nombre (como en el prototipo de Institucional).
+ */
+function cipba_initials_first_two( $nombre ) {
+	$parts = array_slice( preg_split( '/\s+/', trim( (string) $nombre ) ), 0, 2 );
+	$out   = '';
+	foreach ( $parts as $p ) {
+		$out .= mb_substr( $p, 0, 1 );
+	}
+	return mb_strtoupper( $out );
 }

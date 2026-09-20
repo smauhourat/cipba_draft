@@ -1033,3 +1033,94 @@ input, select, textarea {
 .cipba-cta__btn { background: #fff; color: #008c75 !important; padding: 12px 24px; border-radius: 6px; font-weight: 800; font-size: 14.5px; text-decoration: none !important; transition: transform var(--cipba-fast, .2s); }
 .cipba-cta__btn:hover { transform: translateY(-2px); }
 .cipba-cta__btn--ghost { background: rgba(255,255,255,.15); color: #fff !important; border: 1px solid rgba(255,255,255,.4); font-weight: 700; }
+.cipba-subcom-full__mail { display: inline-block; margin-top: 6px; font-size: 13px; color: var(--wp--preset--color--verde-500, #00a48a); text-decoration: none !important; word-break: break-all; }
+.cipba-subcom-full__mail::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 7px; vertical-align: -1px; background: #9aa8a9; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22,6 12,13 2,6'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22,6 12,13 2,6'/%3E%3C/svg%3E") center / contain no-repeat; }
+.cipba-subcom-full__mail:hover { color: var(--wp--preset--color--verde-700, #14484a); }
+
+/* ==========================================================================
+   Sedes y delegaciones ([cipba_sedes]) — tarjeta ancha oscura para la Casa
+   Central y tarjetas claras para las delegaciones.
+   ========================================================================== */
+.cipba-sedes-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; max-width: 1200px !important; margin: 0 auto !important; }
+@media (max-width: 900px) { .cipba-sedes-grid { grid-template-columns: 1fr; } }
+.cipba-sede { position: relative; overflow: hidden; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 14px; padding: 24px 26px; box-shadow: 0 2px 12px rgba(0,0,0,.05); color: var(--wp--preset--color--tinta-900, #373d3e); }
+.cipba-sede--main { grid-column: 1 / -1; padding: 32px; border: 0; color: #fff; background: linear-gradient(135deg, #14484a 0%, #1a5f5c 100%); box-shadow: 0 12px 40px rgba(20,72,74,.18); }
+.cipba-sede--main::before { content: ""; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(0,164,138,.25) 0%, transparent 70%); pointer-events: none; }
+.cipba-sede__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; position: relative; }
+.cipba-sede__tag { font-size: 11.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--wp--preset--color--verde-500, #00a48a); margin-bottom: 6px; }
+.cipba-sede--main .cipba-sede__tag { color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-sede__head h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 19px; font-weight: 900; line-height: 1.1; color: var(--wp--preset--color--tinta-900, #373d3e); margin: 0; }
+.cipba-sede--main .cipba-sede__head h3 { font-size: 28px; color: #fff; }
+.cipba-sede__badge { display: flex; align-items: center; gap: 5px; background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; }
+.cipba-sede__body { position: relative; display: grid; grid-template-columns: 1fr; }
+.cipba-sede--main .cipba-sede__body { grid-template-columns: 1fr 1fr; gap: 28px; }
+@media (max-width: 900px) { .cipba-sede--main .cipba-sede__body { grid-template-columns: 1fr; } .cipba-sede--main { padding: 24px; } }
+.cipba-sede__row { display: flex; gap: 12px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-sede__row:last-child { border-bottom: 0; margin-bottom: 0; }
+.cipba-sede--main .cipba-sede__row { border-bottom: 1px solid rgba(255,255,255,.1); }
+.cipba-sede--main .cipba-sede__row:last-child { border-bottom: 0; }
+.cipba-sede__ico { width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-sede--main .cipba-sede__ico { background: rgba(255,255,255,.1); color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-sede__lbl { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--gris-400, #9aa8a9); margin-bottom: 3px; }
+.cipba-sede--main .cipba-sede__lbl { color: rgba(255,255,255,.5); }
+.cipba-sede__val { font-size: 14px; line-height: 1.45; min-width: 0; word-break: break-word; }
+.cipba-sede__val.is-strong { font-weight: 600; }
+.cipba-sede__val a { color: inherit !important; text-decoration: none !important; border-bottom: 1px dotted var(--wp--preset--color--gris-teal, #607a7c); }
+.cipba-sede--main .cipba-sede__val a { border-bottom-color: rgba(255,255,255,.75); }
+.cipba-sede__contacts-title { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--wp--preset--color--verde-200, #c0e2ca); margin-bottom: 12px; }
+.cipba-sede__contacts-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.cipba-sede-contact { padding: 12px 14px; border-radius: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); display: flex; flex-direction: column; gap: 4px; }
+.cipba-sede-contact__top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cipba-sede-contact__name { font-size: 13.5px; font-weight: 800; color: #fff; }
+.cipba-sede-contact__rol { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; color: var(--wp--preset--color--verde-200, #c0e2ca); background: rgba(0,164,138,.3); padding: 2px 8px; border-radius: 3px; }
+.cipba-sede-contact__links { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; }
+.cipba-sede-contact__links a { display: inline-flex; align-items: center; gap: 4px; color: rgba(255,255,255,.7) !important; text-decoration: none !important; }
+.cipba-sede-contact__links a:hover { color: #fff !important; }
+
+/* ==========================================================================
+   Autoridades ([cipba_autoridades]) — tarjeta con avatar de iniciales; la
+   Presidencia va destacada y de doble ancho.
+   ========================================================================== */
+.cipba-autoridades-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; max-width: 1200px !important; margin: 0 auto !important; }
+.cipba-autoridad { position: relative; overflow: hidden; display: flex; gap: 16px; align-items: flex-start; padding: 24px 22px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04); color: var(--wp--preset--color--tinta-900, #373d3e); transition: transform var(--cipba-base, .3s) var(--cipba-ease, ease), box-shadow var(--cipba-base, .3s) var(--cipba-ease, ease), border-color var(--cipba-base, .3s); }
+.cipba-autoridad:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.08); border-color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-autoridad--main { grid-column: span 2; border: 0; color: #fff; background: linear-gradient(135deg, #14484a 0%, #1a5f5c 100%); box-shadow: 0 8px 24px rgba(20,72,74,.18); }
+.cipba-autoridad--main:hover { transform: none; box-shadow: 0 8px 24px rgba(20,72,74,.18); }
+@media (max-width: 640px) { .cipba-autoridad--main { grid-column: auto; } }
+.cipba-autoridad__badge { position: absolute; top: 14px; right: 14px; display: flex; align-items: center; gap: 5px; background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; border-radius: 20px; padding: 4px 10px; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; }
+.cipba-autoridad__avatar { flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-family: var(--wp--preset--font-family--condensed); font-weight: 900; font-size: 18px; color: var(--wp--preset--color--verde-700, #14484a); background: linear-gradient(135deg, #e8f5f1, #c0e2ca); }
+.cipba-autoridad--main .cipba-autoridad__avatar { width: 72px; height: 72px; font-size: 22px; color: #fff; background: linear-gradient(135deg, #00a48a, #008c75); border: 3px solid rgba(255,255,255,.2); }
+.cipba-autoridad__body { min-width: 0; flex: 1; }
+.cipba-autoridad__cargo { font-size: 11.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--verde-500, #00a48a); margin-bottom: 4px; }
+.cipba-autoridad--main .cipba-autoridad__cargo { color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-autoridad__nombre { font-size: 15.5px; font-weight: 800; line-height: 1.3; margin-bottom: 4px; text-wrap: pretty; }
+.cipba-autoridad--main .cipba-autoridad__nombre { font-size: 19px; color: #fff; }
+.cipba-autoridad__titulo { font-size: 13px; font-style: italic; color: var(--wp--preset--color--gris-teal, #607a7c); }
+.cipba-autoridad--main .cipba-autoridad__titulo { color: rgba(255,255,255,.7); }
+@media (prefers-reduced-motion: reduce) { .cipba-autoridad { transition: none; } .cipba-autoridad:hover { transform: none; } }
+
+/* ==========================================================================
+   Página Institucional — hero oscuro con navegación rápida y cabeceras de
+   sección centradas (Autoridades, Sedes).
+   ========================================================================== */
+.cipba-inst-hero { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(135deg, #14484a 0%, #1a5f5c 60%, #00a48a 100%); }
+.cipba-inst-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .06; background: url(assets/img/crosshatch.svg) repeat; }
+.cipba-inst-hero__inner { max-width: 1200px !important; margin: 0 auto !important; padding: 48px 24px 56px !important; position: relative; }
+.cipba-inst-hero__crumbs { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; font-size: 13px; color: rgba(255,255,255,.65); }
+.cipba-inst-hero__crumbs a { color: inherit; text-decoration: none; }
+.cipba-inst-hero__crumbs a:hover { color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-inst-hero__crumbs strong { color: #fff; }
+.cipba-inst-hero__badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,164,138,.22); border: 1px solid rgba(0,164,138,.4); border-radius: 20px; padding: 5px 14px; margin-bottom: 16px; color: var(--wp--preset--color--verde-200, #c0e2ca); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.cipba-inst-hero__badge i { width: 6px; height: 6px; border-radius: 50%; background: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-inst-hero h1 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.1; letter-spacing: -.5px; color: #fff; margin: 0 0 18px; }
+.cipba-inst-hero p { font-size: 17px; line-height: 1.6; max-width: 720px; margin: 0 0 24px; color: rgba(255,255,255,.82); }
+.cipba-inst-hero__nav { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.cipba-inst-hero__nav a { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: #fff !important; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 6px; text-decoration: none !important; transition: background var(--cipba-fast, .2s), border-color var(--cipba-fast, .2s); }
+.cipba-inst-hero__nav a:hover { background: rgba(0,164,138,.4); border-color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-inst-section { background: #fff; padding: 64px 0; scroll-margin-top: 88px; }
+.cipba-inst-section--alt { background: var(--wp--preset--color--gris-100, #eef2f1); }
+.cipba-inst-head { text-align: center; margin-bottom: 36px; }
+.cipba-inst-head__eyebrow { color: var(--wp--preset--color--verde-500, #00a48a); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.cipba-inst-head h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(24px, 3.4vw, 34px); font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 10px; }
+.cipba-inst-head p { color: var(--wp--preset--color--gris-teal, #607a7c); font-size: 15px; line-height: 1.6; max-width: 580px; margin: 0 auto; }
+.cipba-inst-head__pill { display: inline-block; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); font-size: 13px; font-weight: 700; padding: 5px 14px; border-radius: 20px; }

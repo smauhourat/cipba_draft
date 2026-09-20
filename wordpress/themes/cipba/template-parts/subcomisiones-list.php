@@ -31,6 +31,7 @@ while ( $query->have_posts() ) {
 	$items[] = array(
 		'nombre' => get_the_title(),
 		'tag'    => $tag ? $tag : mb_substr( get_the_title(), 0, 3 ),
+		'mail'   => trim( (string) get_post_meta( get_the_ID(), 'mail', true ) ),
 		'refs'   => $refs,
 	);
 	$total_ref += count( $refs );
@@ -56,7 +57,7 @@ $count = count( $items );
 
 	<div class="cipba-subcom-full-grid">
 		<?php foreach ( $items as $s ) :
-			$haystack = $s['nombre'] . ' ' . $s['tag'] . ' ' . implode( ' ', wp_list_pluck( $s['refs'], 'nombre' ) ) . ' ' . implode( ' ', wp_list_pluck( $s['refs'], 'mail' ) );
+			$haystack = $s['nombre'] . ' ' . $s['tag'] . ' ' . $s['mail'] . ' ' . implode( ' ', wp_list_pluck( $s['refs'], 'nombre' ) ) . ' ' . implode( ' ', wp_list_pluck( $s['refs'], 'mail' ) );
 			?>
 			<article class="cipba-subcom-full" data-search="<?php echo esc_attr( mb_strtolower( $haystack ) ); ?>">
 				<header class="cipba-subcom-full__head">
@@ -64,6 +65,9 @@ $count = count( $items );
 					<div>
 						<div class="cipba-subcom-full__eyebrow">Subcomisión</div>
 						<h3><?php echo esc_html( $s['nombre'] ); ?></h3>
+						<?php if ( $s['mail'] ) : ?>
+							<a class="cipba-subcom-full__mail" href="mailto:<?php echo esc_attr( antispambot( $s['mail'] ) ); ?>"><?php echo esc_html( $s['mail'] ); ?></a>
+						<?php endif; ?>
 					</div>
 				</header>
 				<div class="cipba-subcom-full__refs">

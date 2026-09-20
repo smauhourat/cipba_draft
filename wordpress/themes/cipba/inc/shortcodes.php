@@ -135,7 +135,7 @@ add_shortcode( 'cipba_noticias', 'cipba_noticias_shortcode' );
 
 /**
  * [cipba_subcomisiones] — 3 subcomisiones (CPT subcomision), tarjeta
- * simple: título, descripción (si está cargada), mail del primer referente. Todas enlazan al
+ * simple: título, descripción (si está cargada) y mail de la subcomisión. Todas enlazan al
  * listado completo (así lo hace el prototipo, no a fichas individuales).
  */
 function cipba_subcomisiones_shortcode() {
@@ -154,8 +154,7 @@ function cipba_subcomisiones_shortcode() {
 	?>
 	<div class="cipba-subcom-grid">
 		<?php while ( $query->have_posts() ) : $query->the_post();
-			$referentes = cipba_get_referentes();
-			$mail       = ! empty( $referentes[0]['mail'] ) ? $referentes[0]['mail'] : '';
+			$mail = trim( (string) get_post_meta( get_the_ID(), 'mail', true ) );
 			?>
 			<a href="/subcomisiones/" class="cipba-subcom-card">
 				<h3><?php the_title(); ?></h3>
@@ -187,3 +186,124 @@ function cipba_subcomisiones_listado_shortcode() {
 	return ob_get_clean();
 }
 add_shortcode( 'cipba_subcomisiones_listado', 'cipba_subcomisiones_listado_shortcode' );
+
+/**
+ * [cipba_sedes] — sedes y delegaciones (CPT `sede`): la Casa Central como
+ * tarjeta ancha con contactos directos y el resto en grilla de 3 columnas.
+ * El markup vive en template-parts/sedes-list.php.
+ */
+function cipba_sedes_shortcode() {
+	ob_start();
+	get_template_part( 'template-parts/sedes-list' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_sedes', 'cipba_sedes_shortcode' );
+
+/**
+ * Sedes en la home ("El Distrito VII"): mismos datos que la página de
+ * Institucional (CPT `sede`), en dos piezas porque el diseño las separa.
+ *
+ * [cipba_sede_principal] — tarjeta oscura con la sede marcada como Casa
+ *   Central: dirección, teléfono, correo y horario.
+ * [cipba_delegaciones]   — grilla con el resto de las sedes: tipo, nombre,
+ *   dirección y horario.
+ */
+function cipba_get_sedes() {
+	return get_posts( array(
+		'post_type'   => 'sede',
+		'numberposts' => -1,
+		'orderby'     => 'menu_order title',
+		'order'       => 'ASC',
+	) );
+}
+
+function cipba_sede_principal_shortcode() {
+	$principal = null;
+	foreach ( cipba_get_sedes() as $sede ) {
+		if ( get_post_meta( $sede->ID, 'destacada', true ) ) {
+			$principal = $sede;
+			break;
+		}
+	}
+	if ( ! $principal ) {
+		return '';
+	}
+
+	$id   = $principal->ID;
+	$rows = array(
+		array( 'location', 'Dirección', trim( (string) get_post_meta( $id, 'direccion', true ) ), false ),
+		array( 'phone', 'Teléfono', trim( (string) get_post_meta( $id, 'telefono', true ) ), false ),
+		array( 'mail', 'Correo electrónico', trim( (string) get_post_meta( $id, 'email', true ) ), true ),
+		array( 'clock', 'Horario de atención', trim( (string) get_post_meta( $id, 'horario', true ) ), false ),
+	);
+
+	ob_start();
+	?>
+	<div class="cipba-dist-sede">
+		<h3><?php echo esc_html( get_the_title( $id ) ); ?></h3>
+		<div class="cipba-dist-sede__badge"><?php echo esc_html( get_post_meta( $id, 'tag', true ) ); ?></div>
+		<?php foreach ( $rows as $r ) :
+			if ( '' === $r[2] ) {
+				continue;
+			}
+			?>
+			<div class="cipba-dist-sede__row"><span class="ico"><?php echo cipba_icon( $r[0], 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span><div><div class="lbl"><?php echo esc_html( $r[1] ); ?></div><div class="val"><?php
+				if ( $r[3] ) {
+					echo '<a href="mailto:' . esc_attr( antispambot( $r[2] ) ) . '">' . esc_html( $r[2] ) . '</a>';
+				} else {
+					echo esc_html( $r[2] );
+				}
+			?></div></div></div>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_sede_principal', 'cipba_sede_principal_shortcode' );
+
+function cipba_delegaciones_shortcode() {
+	$cards = array();
+	foreach ( cipba_get_sedes() as $sede ) {
+		if ( get_post_meta( $sede->ID, 'destacada', true ) ) {
+			continue;
+		}
+		$cards[] = $sede;
+	}
+	if ( ! $cards ) {
+		return '';
+	}
+
+	ob_start();
+	?>
+	<div class="cipba-sede-grid">
+		<?php foreach ( $cards as $sede ) :
+			$lines = array_filter( array(
+				trim( (string) get_post_meta( $sede->ID, 'direccion', true ) ),
+				trim( (string) get_post_meta( $sede->ID, 'horario', true ) ),
+			) );
+			?>
+			<div class="cipba-sede-card">
+				<h3><?php echo esc_html( get_the_title( $sede ) ); ?></h3>
+				<div class="cipba-sede-card__role"><?php echo esc_html( get_post_meta( $sede->ID, 'tag', true ) ); ?></div>
+				<?php foreach ( $lines as $line ) : ?>
+					<div class="cipba-sede-card__line"><?php echo esc_html( $line ); ?></div>
+				<?php endforeach; ?>
+			</div>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_delegaciones', 'cipba_delegaciones_shortcode' );
+
+/**
+ * [cipba_autoridades] — autoridades del Consejo Directivo (CPT `autoridad`):
+ * el presidente como tarjeta destacada de doble ancho y el resto en grilla.
+ * El markup vive en template-parts/autoridades-list.php.
+ */
+function cipba_autoridades_shortcode() {
+	ob_start();
+	get_template_part( 'template-parts/autoridades-list' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_autoridades', 'cipba_autoridades_shortcode' );
