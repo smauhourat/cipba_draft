@@ -191,6 +191,46 @@ function cipba_datos_fields() {
 			'placeholder' => 'CRE-2024',
 			'default'     => 'CRE-2024',
 		),
+
+		// — Datos bancarios (ventana "Transferencia bancaria" de Medios de pago) —
+		'banco_cta_cte'       => array(
+			'section'     => 'Datos bancarios (transferencia)',
+			'label'       => 'Cuenta corriente N°',
+			'desc'        => 'Se muestran en la ventana "Datos de la cuenta" de la página Medios de pago.',
+			'placeholder' => '20190/8',
+			'default'     => '20190/8',
+		),
+		'banco_sucursal'      => array(
+			'section'     => 'Datos bancarios (transferencia)',
+			'label'       => 'Sucursal',
+			'placeholder' => '5120 (San Justo)',
+			'default'     => '5120 (San Justo)',
+		),
+		'banco_titular'       => array(
+			'section'     => 'Datos bancarios (transferencia)',
+			'label'       => 'Titular',
+			'placeholder' => 'Colegio de Ingenieros',
+			'default'     => 'Colegio de Ingenieros',
+		),
+		'banco_cbu'           => array(
+			'section'     => 'Datos bancarios (transferencia)',
+			'label'       => 'C.B.U.',
+			'desc'        => 'Se muestra tal como lo escribas (podés separarlo en dos bloques). El botón "Copiar" copia solo los números.',
+			'placeholder' => '01400427 – 01512002019081',
+			'default'     => '01400427 – 01512002019081',
+		),
+		'banco_alias'         => array(
+			'section'     => 'Datos bancarios (transferencia)',
+			'label'       => 'Alias',
+			'placeholder' => 'BASTO.RAYO.MEDICO',
+			'default'     => 'BASTO.RAYO.MEDICO',
+		),
+		'banco_cuit'          => array(
+			'section'     => 'Datos bancarios (transferencia)',
+			'label'       => 'C.U.I.T.',
+			'placeholder' => '30-62383417-0',
+			'default'     => '30-62383417-0',
+		),
 	);
 }
 

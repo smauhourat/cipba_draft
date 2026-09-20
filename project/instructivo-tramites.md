@@ -138,7 +138,37 @@ Por cada documento:
 
 ---
 
-## 5. Tareas frecuentes
+## 5. Página Medios de pago
+
+Es un trámite más (**Trámites → Medios de pago**, dirección `/tramites/pago-matricula/`), pero con su propio diseño: cuatro tarjetas (transferencia bancaria, débito automático, Red Link y Pagomiscuentas) y tres ventanas emergentes. Su formulario de edición es distinto al de los otros trámites, y se llama **Datos de la página de pago**.
+
+### 5.1 Datos bancarios (Modalidad 1)
+
+Se cargan en **Datos del Distrito → Datos bancarios (transferencia)**: cuenta corriente, sucursal, titular, C.B.U., alias y C.U.I.T. Se muestran en la ventana **"Datos de la cuenta"**.
+
+- El botón **Copiar** del C.B.U. copia **solo los números** (sin espacios ni guiones); el del alias copia el alias tal cual.
+- Si dejás un dato vacío, esa fila desaparece de la ventana.
+- Los mismos datos se pueden usar en cualquier texto con los marcadores `{{banco_cta_cte}}`, `{{banco_sucursal}}`, `{{banco_titular}}`, `{{banco_cbu}}`, `{{banco_alias}}` y `{{banco_cuit}}`.
+
+### 5.2 Documentos de descarga (Modalidades 2 y 4)
+
+1. En **Documentos (Normativa)** se sube cada archivo una sola vez (por ejemplo, el formulario de adhesión al débito automático en `.xlsx` y el instructivo de Pagomiscuentas en `.pdf`).
+2. En **Trámites → Medios de pago**, dentro de *Modalidad 2* y *Modalidad 4*, se elige el documento en el desplegable.
+3. **Modalidad 2:** el botón de la tarjeta descarga ese archivo. **Modalidad 4:** el archivo aparece como enlace "Descargar instructivo" al pie de la ventana del instructivo.
+
+Para reemplazar el formulario por uno nuevo, subí el archivo nuevo al documento existente (Documentos → editar → archivo) y guardá: la página queda actualizada sin tocar nada más.
+
+### 5.3 Resto de los textos
+
+En **Datos de la página de pago** se editan el título y la bajada, la sección "Antes de pagar" (texto y lista "tené a mano"), y para cada modalidad: título, descripción, pasos (**uno por línea**; los correos y enlaces se vuelven clickeables) y texto del botón. También el texto al pie de los datos bancarios, la dirección de la consulta de Red Link y el mensaje final. Todos admiten marcadores.
+
+> **Ventana de Red Link:** muestra una página del Consejo Superior que se sirve sin conexión segura (`http`). En un sitio con `https` los navegadores pueden bloquearla; la ventana avisa al usuario y ofrece abrirla en una pestaña nueva.
+>
+> **Ventana del instructivo de Pagomiscuentas:** por ahora su contenido (tabla de datos y pasos por internet y cajeros) es fijo en el tema y no se edita desde el panel.
+
+---
+
+## 6. Tareas frecuentes
 
 ### Cambió la resolución de matriculación
 1. **Datos del Distrito** → *Resolución vigente* → escribí la nueva (ej.: `1600/26`) → **Guardar cambios**.
@@ -152,6 +182,12 @@ Por cada documento:
 2. En **Documentos**, subí el PDF nuevo al documento correspondiente.
 3. No hace falta tocar los textos de los trámites: usan el marcador.
 
+### Cambió la cuenta bancaria (C.B.U., alias, etc.)
+**Datos del Distrito → Datos bancarios (transferencia):** modificá el dato → **Guardar cambios**. La ventana "Datos de la cuenta" de Medios de pago se actualiza sola.
+
+### Cambió el formulario de débito automático (o el instructivo de Pagomiscuentas)
+**Documentos (Normativa)** → abrí el documento → subí el archivo nuevo → **Actualizar**. Medios de pago usa siempre el archivo vigente de ese documento.
+
 ### Agregar o quitar un requisito
 Editá el trámite → bloque de la lista → agregá o borrá un ítem de la lista numerada → **Actualizar**.
 
@@ -162,7 +198,7 @@ Editá el trámite → bloque de la lista → agregá o borrá un ítem de la li
 
 ---
 
-## 6. Preguntas y problemas comunes
+## 7. Preguntas y problemas comunes
 
 **Veo `{{algo}}` en la página con las llaves.**
 El marcador está mal escrito o no existe. Compará con la lista de la sección 2.2 o con la cajita lateral del trámite.
@@ -184,10 +220,12 @@ No. El sitio arma el diseño; quien edita solo carga texto y listas. El contenid
 
 ---
 
-## 7. Notas técnicas (para quien mantiene el tema)
+## 8. Notas técnicas (para quien mantiene el tema)
 
 - Plantilla: `single-tramite.php`. Lógica: `inc/tramites.php`. Formulario de campos: `inc/meta-boxes.php` (caja "Datos del trámite").
 - Datos y marcadores: `inc/settings.php` (`cipba_datos_fields()`, `cipba_tokens()`, `cipba_dato_display()`). Para sumar un dato nuevo (y su marcador) alcanza con agregar una entrada en `cipba_datos_fields()`.
 - Los documentos se leen con `cipba_get_documento_file_meta()` (`inc/helpers.php`): archivo subido primero, enlace externo como respaldo.
 - Estilos: al final de `style.css`, bloque "Trámites (single-tramite.php)".
 - Al guardar un trámite, `cipba_tramite_layout_defaults()` fija el layout de Astra (ancho completo, sin barra lateral, sin título automático), aunque Astra guarde su valor "default".
+- Medios de pago: plantilla `single-tramite-pago-matricula.php` (WordPress la elige por el nombre `single-{tipo}-{slug}.php`), script `assets/js/pago-matricula.js` (ventanas y botón Copiar) y estilos en `style.css` (bloque "Medios de pago"). Los datos bancarios son campos de `cipba_datos_fields()` (`banco_*`).
+- Formulario de edición de esa página: caja "Datos de la página de pago" en `inc/meta-boxes.php`. Cada trámite muestra **solo** su caja (común o de pago): la decide `cipba_admin_editando_pago()` (`inc/tramites.php`), porque las dos comparten nombres de campo y, si aparecieran juntas, una pisaría a la otra al guardar.

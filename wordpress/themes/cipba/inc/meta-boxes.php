@@ -522,11 +522,182 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		);
 	}
 
-	$meta_boxes[] = array(
-		'title'      => 'Datos del trámite',
-		'post_types' => 'tramite',
-		'fields'     => $tramite_fields,
+	if ( ! cipba_admin_editando_pago() ) {
+		$meta_boxes[] = array(
+			'title'      => 'Datos del trámite',
+			'post_types' => 'tramite',
+			'fields'     => $tramite_fields,
+		);
+	}
+
+	// Página "Medios de pago" (trámite con slug pago-matricula): formulario propio.
+	// Los datos bancarios NO están acá: se cargan en Datos del Distrito.
+	$pago_fields = array(
+		array( 'type' => 'heading', 'name' => 'Encabezado' ),
+		array(
+			'name'        => 'Título de la página',
+			'id'          => 'pago_h1',
+			'desc'        => 'El nombre del trámite (arriba, en el título de esta pantalla) es el que se usa en el menú y en "Otros trámites".',
+			'type'        => 'text',
+			'placeholder' => 'Pagar Matrícula',
+		),
+		array(
+			'name'        => 'Etiqueta superior',
+			'id'          => 'eyebrow',
+			'type'        => 'text',
+			'columns'     => 6,
+			'placeholder' => 'Matrícula profesional',
+		),
+		array(
+			'name'        => 'Nombre corto (ruta de navegación)',
+			'id'          => 'breadcrumb',
+			'type'        => 'text',
+			'columns'     => 6,
+			'placeholder' => 'Pagar Matrícula',
+		),
+		array(
+			'name' => 'Bajada',
+			'id'   => 'intro',
+			'type' => 'textarea',
+			'rows' => 3,
+		),
+		array( 'type' => 'heading', 'name' => 'Antes de pagar' ),
+		array(
+			'name' => 'Título',
+			'id'   => 'pago_antes_titulo',
+			'type' => 'text',
+		),
+		array(
+			'name'    => 'Texto',
+			'id'      => 'pago_antes_texto',
+			'type'    => 'wysiwyg',
+			'raw'     => true,
+			'options' => array( 'textarea_rows' => 8, 'teeny' => true, 'media_buttons' => false ),
+		),
+		array(
+			'name' => 'Título del recuadro "tené a mano"',
+			'id'   => 'pago_antes_lista_titulo',
+			'type' => 'text',
+		),
+		array(
+			'name' => 'Elementos del recuadro',
+			'id'   => 'pago_antes_lista',
+			'desc' => 'Uno por línea.',
+			'type' => 'textarea',
+			'rows' => 4,
+		),
+		array( 'type' => 'heading', 'name' => 'Formas de pago' ),
+		array(
+			'name'    => 'Etiqueta superior',
+			'id'      => 'pago_mod_eyebrow',
+			'type'    => 'text',
+			'columns' => 4,
+		),
+		array(
+			'name'    => 'Título',
+			'id'      => 'pago_mod_titulo',
+			'type'    => 'text',
+			'columns' => 8,
+		),
 	);
+	$pago_mod_extra = array(
+		1 => array(
+			array(
+				'name' => 'Texto al pie de la ventana de datos bancarios',
+				'id'   => 'mod1_pie',
+				'desc' => 'Los datos de la cuenta se cargan en Datos del Distrito → Datos bancarios.',
+				'type' => 'textarea',
+				'rows' => 2,
+			),
+		),
+		2 => array(
+			array(
+				'name'        => 'Documento a descargar (formulario de adhesión)',
+				'id'          => 'mod2_doc',
+				'desc'        => 'Se elige de la biblioteca Documentos (allí se sube el archivo).',
+				'type'        => 'post',
+				'post_type'   => 'documento',
+				'field_type'  => 'select_advanced',
+				'placeholder' => '— Elegí un documento —',
+				'query_args'  => array( 'post_status' => 'publish', 'posts_per_page' => -1 ),
+			),
+		),
+		3 => array(
+			array(
+				'name'        => 'Dirección de la consulta del código de pago',
+				'id'          => 'mod3_url',
+				'desc'        => 'Página del Consejo Superior que se muestra en la ventana emergente.',
+				'type'        => 'url',
+				'placeholder' => 'http://www.colegioingenieros.org.ar/link/',
+			),
+		),
+		4 => array(
+			array(
+				'name'        => 'Documento a descargar (instructivo)',
+				'id'          => 'mod4_doc',
+				'desc'        => 'Aparece como enlace de descarga al pie de la ventana del instructivo.',
+				'type'        => 'post',
+				'post_type'   => 'documento',
+				'field_type'  => 'select_advanced',
+				'placeholder' => '— Elegí un documento —',
+				'query_args'  => array( 'post_status' => 'publish', 'posts_per_page' => -1 ),
+			),
+		),
+	);
+	for ( $n = 1; $n <= 4; $n++ ) {
+		$pago_fields[] = array( 'type' => 'heading', 'name' => "Modalidad $n" );
+		$pago_fields[] = array(
+			'name'    => 'Título',
+			'id'      => "mod{$n}_titulo",
+			'type'    => 'text',
+			'columns' => 6,
+		);
+		$pago_fields[] = array(
+			'name'    => 'Texto del botón',
+			'id'      => "mod{$n}_boton",
+			'type'    => 'text',
+			'columns' => 6,
+		);
+		$pago_fields[] = array(
+			'name' => 'Descripción',
+			'id'   => "mod{$n}_desc",
+			'type' => 'textarea',
+			'rows' => 3,
+		);
+		$pago_fields[] = array(
+			'name' => 'Pasos',
+			'id'   => "mod{$n}_pasos",
+			'desc' => 'Un paso por línea. Los correos y enlaces se vuelven clickeables.',
+			'type' => 'textarea',
+			'rows' => 4,
+		);
+		foreach ( $pago_mod_extra[ $n ] as $extra ) {
+			$pago_fields[] = $extra;
+		}
+	}
+	$pago_fields[] = array( 'type' => 'heading', 'name' => 'Cierre de la página' );
+	$pago_fields[] = array(
+		'name' => 'Título',
+		'id'   => 'pago_cta_titulo',
+		'type' => 'text',
+	);
+	$pago_fields[] = array(
+		'name' => 'Texto',
+		'id'   => 'pago_cta_texto',
+		'type' => 'textarea',
+		'rows' => 3,
+	);
+
+	// Cada trámite muestra SOLO su formulario: el de pago (slug pago-matricula) tiene
+	// campos con los mismos nombres que el común, y si aparecieran los dos, al guardar
+	// uno pisaría al otro. Meta Box no filtra por slug, así que se decide acá.
+	if ( cipba_admin_editando_pago() ) {
+		$meta_boxes[] = array(
+			'title'      => 'Datos de la página de pago',
+			'post_types' => 'tramite',
+			'fields'     => $pago_fields,
+		);
+	}
 
 	return $meta_boxes;
 }

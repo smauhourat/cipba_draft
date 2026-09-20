@@ -173,3 +173,31 @@ function cipba_tramite_admin_default_order( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'cipba_tramite_admin_default_order' );
+
+/**
+ * Página Medios de pago: script de las ventanas emergentes y del botón
+ * "Copiar". Solo se carga en el trámite con slug pago-matricula.
+ */
+function cipba_enqueue_pago_script() {
+	if ( is_singular( 'tramite' ) && 'pago-matricula' === get_post_field( 'post_name', get_queried_object_id() ) ) {
+		wp_enqueue_script( 'cipba-pago-matricula', get_stylesheet_directory_uri() . '/assets/js/pago-matricula.js', array(), CHILD_THEME_CIPBA_VERSION, true );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'cipba_enqueue_pago_script' );
+
+/**
+ * ¿La pantalla de edición (o el guardado) es de la página "Medios de pago"?
+ * Se usa para registrar el formulario que corresponde (ver meta-boxes.php).
+ */
+function cipba_admin_editando_pago() {
+	if ( ! is_admin() ) {
+		return false;
+	}
+	$post_id = 0;
+	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$post_id = (int) $_GET['post']; // phpcs:ignore WordPress.Security.NonceVerification
+	} elseif ( isset( $_POST['post_ID'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$post_id = (int) $_POST['post_ID']; // phpcs:ignore WordPress.Security.NonceVerification
+	}
+	return $post_id && 'tramite' === get_post_type( $post_id ) && 'pago-matricula' === get_post_field( 'post_name', $post_id );
+}
