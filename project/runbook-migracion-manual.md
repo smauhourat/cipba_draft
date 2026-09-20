@@ -81,7 +81,10 @@ tar -a -c -f wp-content.zip -C pkg wp-content
 2. **Renombrar** el `wp-content` existente a `wp-content-vacio` (no borrarlo todavía).
 3. Extraer el zip: debe quedar `<raíz>/wp-content/...`.
 4. Verificar que existan `wp-content/themes/cipba/`, `wp-content/plugins/` y `wp-content/uploads/`.
-5. Permisos: carpetas 755, archivos 644 (que WordPress pueda escribir en `uploads`).
+5. Permisos: carpetas 755, archivos 644 (que WordPress pueda escribir en `uploads`). Se hace en el hosting, no hay SSH:
+   - **Administrador de archivos de Ferozo:** clic derecho sobre `wp-content` → "Permisos"/"Cambiar permisos". Si deja poner un valor numérico con opción "recursivo", usar `755`. Ojo: si el panel aplica ese valor por igual a carpetas y archivos (sin distinguir), no alcanza — pasar a la opción de FTP.
+   - **FTP (FileZilla), más preciso:** clic derecho sobre `wp-content` → "Permisos de archivo..." → `755`, tildar "Recurse into subdirectories" → "Apply to directories only". Repetir con `644` → "Apply to files only". Así carpetas y archivos quedan cada uno con su valor.
+   - Verificar en `wp-content/uploads/`: la carpeta en `755`, un archivo cualquiera adentro en `644`.
 6. Borrar `wp-content.zip` y `wp-content-vacio` cuando todo funcione.
 
 ## Fase 6 — Importar la base de datos
