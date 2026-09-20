@@ -100,7 +100,7 @@ tar -a -c -f wp-content.zip -C pkg wp-content
 - [ ] Buscar referencias residuales a `localhost` en el código fuente de páginas clave (Ver código fuente).
 - [ ] **Correo:** configurar SMTP del hosting (plugin WP Mail SMTP o similar) y probar un formulario de Fluent Forms.
 - [ ] **Seguridad:** cambiar contraseñas de los usuarios `admin` y `cipbaadmin` (vienen de local); revisar usuarios; `WP_DEBUG` en false; claves/salts nuevas en `wp-config.php`.
-- [ ] **Caché:** activar LiteSpeed Cache (el hosting usa LiteSpeed).
+- [ ] **Caché:** activar LiteSpeed Cache (el hosting usa LiteSpeed) **y purgarla** después de importar la base — el hosting ya venía cacheando la instalación default de WP desde antes de migrar, así que a los visitantes sin login (logueado en el wp-admin no se nota, esa vista no usa caché) les sigue apareciendo la versión vieja hasta que se purga. LiteSpeed Cache → Toolbox → Purge All (o el ícono del tacho en la barra de admin). Repetir cada vez que se reimporte la base o se suba un cambio de tema/contenido en el ciclo de re-deploy.
 - [ ] **Plugins:** verificar que ninguno tire errores con PHP 8.4 (fallback: bajar a 8.3 desde el panel).
 - [ ] Backups programados de UpdraftPlus a almacenamiento externo.
 - [ ] Indexación: staging → bloqueada; producción final → permitir y enviar sitemap (Rank Math) a Search Console.
@@ -115,6 +115,7 @@ tar -a -c -f wp-content.zip -C pkg wp-content
 | Contenido mixto / sin estilos | Quedaron URLs `http://localhost:8080` | Repetir Fase 1 buscando restos; o agregar temporalmente en `wp-config.php`: `define('WP_HOME','https://<DOMINIO>'); define('WP_SITEURL','https://<DOMINIO>');` |
 | 404 en todas las páginas menos la home | `.htaccess` sin reglas de rewrite | Guardar Enlaces permanentes de nuevo |
 | Menú sin estilos / distinto | CSS dinámico de Max Mega Menu | Mega Menu → Menu Themes → guardar una vez (regenera el CSS) |
+| Logueado en el wp-admin se ve bien, pero de incógnito/otro dispositivo se ve la instalación vieja de WP | Caché de LiteSpeed sirviendo una copia vieja a visitantes sin login (el logueado no pasa por caché) | LiteSpeed Cache → Toolbox → Purge All. Repetir después de cada reimportación de base o cambio de contenido/tema |
 
 ## Ciclo de re-deploy (mientras se sigue desarrollando en local)
 - **Solo cambió el tema (CSS/PHP):** subir por FTP `wordpress/themes/cipba/` completo. Antes, subir la constante `CHILD_THEME_CIPBA_VERSION` en `functions.php` para que el navegador no use CSS cacheado.
