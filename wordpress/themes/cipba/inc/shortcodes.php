@@ -135,7 +135,7 @@ add_shortcode( 'cipba_noticias', 'cipba_noticias_shortcode' );
 
 /**
  * [cipba_subcomisiones] — 3 subcomisiones (CPT subcomision), tarjeta
- * simple: título, extracto, mail del primer referente. Todas enlazan al
+ * simple: título, descripción (si está cargada), mail del primer referente. Todas enlazan al
  * listado completo (así lo hace el prototipo, no a fichas individuales).
  */
 function cipba_subcomisiones_shortcode() {
@@ -154,12 +154,13 @@ function cipba_subcomisiones_shortcode() {
 	?>
 	<div class="cipba-subcom-grid">
 		<?php while ( $query->have_posts() ) : $query->the_post();
-			$referentes = rwmb_meta( 'referentes' );
+			$referentes = cipba_get_referentes();
 			$mail       = ! empty( $referentes[0]['mail'] ) ? $referentes[0]['mail'] : '';
 			?>
 			<a href="/subcomisiones/" class="cipba-subcom-card">
 				<h3><?php the_title(); ?></h3>
-				<p><?php echo esc_html( get_the_excerpt() ); ?></p>
+				<?php $descripcion = trim( (string) get_post_meta( get_the_ID(), 'descripcion', true ) ); ?>
+				<?php if ( $descripcion ) : ?><p><?php echo esc_html( $descripcion ); ?></p><?php endif; ?>
 				<?php if ( $mail ) : ?>
 					<span><?php echo esc_html( $mail ); ?></span>
 				<?php endif; ?>
@@ -171,3 +172,18 @@ function cipba_subcomisiones_shortcode() {
 	return ob_get_clean();
 }
 add_shortcode( 'cipba_subcomisiones', 'cipba_subcomisiones_shortcode' );
+
+/**
+ * [cipba_subcomisiones_listado] — página /subcomisiones/: contador, buscador
+ * (filtra en el navegador por especialidad, sigla, referente o mail) y grilla
+ * de tarjetas con todos los referentes. El markup vive en
+ * template-parts/subcomisiones-list.php. Todo sale del CPT `subcomision`.
+ */
+function cipba_subcomisiones_listado_shortcode() {
+	wp_enqueue_script( 'cipba-subcomisiones', get_stylesheet_directory_uri() . '/assets/js/subcomisiones.js', array(), CHILD_THEME_CIPBA_VERSION, true );
+
+	ob_start();
+	get_template_part( 'template-parts/subcomisiones-list' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_subcomisiones_listado', 'cipba_subcomisiones_listado_shortcode' );

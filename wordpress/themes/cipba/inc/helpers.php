@@ -172,3 +172,61 @@ function cipba_social_icons( $dark = false ) {
 	$out .= '</div>';
 	return $out;
 }
+
+/**
+ * Iniciales para el avatar de un referente: primera letra del nombre +
+ * primera del apellido (última palabra), como en el prototipo.
+ */
+function cipba_initials( $nombre ) {
+	$parts = preg_split( '/\s+/', trim( (string) $nombre ) );
+	if ( ! $parts || '' === $parts[0] ) {
+		return '';
+	}
+	return mb_strtoupper( mb_substr( $parts[0], 0, 1 ) . mb_substr( end( $parts ), 0, 1 ) );
+}
+
+/**
+ * Número para href="tel:" a partir de un teléfono tipeado a mano
+ * ("(11) 5857-0060" → "+541158570060"). Si ya trae 54 al inicio no lo duplica.
+ */
+function cipba_tel_link( $tel ) {
+	$digits = ltrim( preg_replace( '/\D+/', '', (string) $tel ), '0' );
+	if ( '' === $digits ) {
+		return '';
+	}
+	if ( 0 !== strpos( $digits, '54' ) ) {
+		$digits = '54' . $digits;
+	}
+	return '+' . $digits;
+}
+
+/**
+ * Cantidad de slots de referente que ofrece el formulario de Subcomisión.
+ * Para permitir más, subir este número (los campos se generan en un loop).
+ */
+define( 'CIPBA_SUBCOM_MAX_REFS', 4 );
+
+/**
+ * Referentes de una subcomisión, leídos de los campos planos refN_*.
+ * Devuelve solo los que tienen nombre cargado.
+ *
+ * @param int|null $post_id ID de la subcomisión (por defecto, el post actual).
+ * @return array[] Cada item: nombre, matricula, telefono, mail.
+ */
+function cipba_get_referentes( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$out     = array();
+	for ( $i = 1; $i <= CIPBA_SUBCOM_MAX_REFS; $i++ ) {
+		$nombre = trim( (string) get_post_meta( $post_id, "ref{$i}_nombre", true ) );
+		if ( '' === $nombre ) {
+			continue;
+		}
+		$out[] = array(
+			'nombre'    => $nombre,
+			'matricula' => trim( (string) get_post_meta( $post_id, "ref{$i}_matricula", true ) ),
+			'telefono'  => trim( (string) get_post_meta( $post_id, "ref{$i}_telefono", true ) ),
+			'mail'      => trim( (string) get_post_meta( $post_id, "ref{$i}_mail", true ) ),
+		);
+	}
+	return $out;
+}

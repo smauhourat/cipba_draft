@@ -11,7 +11,7 @@
 /**
  * Define Constants
  */
-define( 'CHILD_THEME_CIPBA_VERSION', '1.0.29' );
+define( 'CHILD_THEME_CIPBA_VERSION', '1.0.34' );
 
 /**
  * Enqueue styles

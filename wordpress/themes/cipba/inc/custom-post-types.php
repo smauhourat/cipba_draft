@@ -76,7 +76,7 @@ function cipba_register_post_types() {
 		'show_in_rest' => true,
 		'has_archive'  => false,
 		'menu_icon'    => 'dashicons-groups',
-		'supports'     => array( 'title', 'editor' ),
+		'supports'     => array( 'title', 'page-attributes' ),
 	) );
 
 	register_post_type( 'tramite', array(
@@ -119,3 +119,52 @@ function cipba_seed_novedades_categories() {
 	}
 }
 add_action( 'after_switch_theme', 'cipba_seed_novedades_categories' );
+
+/**
+ * Subcomisiones — listado del admin: sigla, referentes y orden a la vista.
+ * El orden se edita en "Atributos > Orden" (menu_order) de cada subcomisión.
+ */
+function cipba_subcomision_admin_columns( $cols ) {
+	return array(
+		'cb'         => $cols['cb'],
+		'title'      => 'Subcomisión',
+		'sigla'      => 'Sigla',
+		'referentes' => 'Referentes',
+		'orden'      => 'Orden',
+	);
+}
+add_filter( 'manage_subcomision_posts_columns', 'cipba_subcomision_admin_columns' );
+
+function cipba_subcomision_admin_column_content( $col, $post_id ) {
+	if ( 'sigla' === $col ) {
+		echo esc_html( rwmb_meta( 'tag', array(), $post_id ) );
+	} elseif ( 'referentes' === $col ) {
+		$refs = cipba_get_referentes( $post_id );
+		echo esc_html( implode( ' · ', array_filter( wp_list_pluck( $refs, 'nombre' ) ) ) );
+	} elseif ( 'orden' === $col ) {
+		echo (int) get_post_field( 'menu_order', $post_id );
+	}
+}
+add_action( 'manage_subcomision_posts_custom_column', 'cipba_subcomision_admin_column_content', 10, 2 );
+
+function cipba_subcomision_admin_default_order( $query ) {
+	if ( is_admin() && $query->is_main_query() && 'subcomision' === $query->get( 'post_type' ) && ! $query->get( 'orderby' ) ) {
+		$query->set( 'orderby', 'menu_order title' );
+		$query->set( 'order', 'ASC' );
+	}
+}
+add_action( 'pre_get_posts', 'cipba_subcomision_admin_default_order' );
+
+/**
+ * Subcomisión: pantalla de edición clásica (un formulario simple: título +
+ * cajas de campos), sin el editor de bloques que no aporta nada acá.
+ */
+function cipba_subcomision_classic_editor( $use_block_editor, $post_type ) {
+	return 'subcomision' === $post_type ? false : $use_block_editor;
+}
+add_filter( 'use_block_editor_for_post_type', 'cipba_subcomision_classic_editor', 10, 2 );
+
+function cipba_subcomision_title_placeholder( $text, $post ) {
+	return 'subcomision' === $post->post_type ? 'Nombre de la subcomisión (ej: Ingeniería Civil)' : $text;
+}
+add_filter( 'enter_title_here', 'cipba_subcomision_title_placeholder', 10, 2 );

@@ -131,47 +131,65 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		),
 	);
 
-	// Subcomisión.
+	// Subcomisión: formulario plano (sin repeater — el grupo clonable
+	// requiere una extensión de pago). Hasta CIPBA_SUBCOM_MAX_REFS referentes;
+	// los que se dejan vacíos no se muestran en el sitio.
+	$subcom_fields = array(
+		array(
+			'name'        => 'Sigla',
+			'id'          => 'tag',
+			'desc'        => 'Abreviatura corta que se muestra en el recuadro de la tarjeta. Ej: HyS, Elec, Civ.',
+			'type'        => 'text',
+			'size'        => 10,
+			'placeholder' => 'Ej: Civ',
+		),
+		array(
+			'name' => 'Descripción',
+			'id'   => 'descripcion',
+			'desc' => 'Opcional. Texto corto que se muestra solo en la tarjeta de la home; en el listado de Subcomisiones no aparece.',
+			'type' => 'textarea',
+			'rows' => 3,
+		),
+	);
+	for ( $i = 1; $i <= CIPBA_SUBCOM_MAX_REFS; $i++ ) {
+		$subcom_fields[] = array(
+			'type' => 'heading',
+			'name' => 1 === $i ? 'Referente 1 (principal)' : "Referente $i (opcional)",
+		);
+		$subcom_fields[] = array(
+			'name'        => 'Nombre y apellido',
+			'id'          => "ref{$i}_nombre",
+			'type'        => 'text',
+			'columns'     => 4,
+			'placeholder' => 'Ej: Maria Claudia FILIPUZZI',
+		);
+		$subcom_fields[] = array(
+			'name'        => 'Matrícula',
+			'id'          => "ref{$i}_matricula",
+			'type'        => 'text',
+			'columns'     => 2,
+			'placeholder' => '53.929',
+		);
+		$subcom_fields[] = array(
+			'name'        => 'Teléfono',
+			'id'          => "ref{$i}_telefono",
+			'type'        => 'text',
+			'columns'     => 3,
+			'placeholder' => '(11) 5857-0060',
+		);
+		$subcom_fields[] = array(
+			'name'        => 'Email',
+			'id'          => "ref{$i}_mail",
+			'type'        => 'email',
+			'columns'     => 3,
+			'placeholder' => 'nombre@cipba.org',
+		);
+	}
+
 	$meta_boxes[] = array(
 		'title'      => 'Datos de la subcomisión',
 		'post_types' => 'subcomision',
-		'fields'     => array(
-			array(
-				'name' => 'Sigla (tag)',
-				'id'   => 'tag',
-				'desc' => 'Ej: "CAT" — se muestra como badge corto en las tarjetas.',
-				'type' => 'text',
-			),
-			array(
-				'name'   => 'Referentes',
-				'id'     => 'referentes',
-				'type'   => 'group',
-				'clone'  => true,
-				'sort_clone' => true,
-				'fields' => array(
-					array(
-						'name' => 'Nombre',
-						'id'   => 'nombre',
-						'type' => 'text',
-					),
-					array(
-						'name' => 'Matrícula',
-						'id'   => 'matricula',
-						'type' => 'text',
-					),
-					array(
-						'name' => 'Teléfono',
-						'id'   => 'telefono',
-						'type' => 'text',
-					),
-					array(
-						'name' => 'Email',
-						'id'   => 'mail',
-						'type' => 'text',
-					),
-				),
-			),
-		),
+		'fields'     => $subcom_fields,
 	);
 
 	return $meta_boxes;

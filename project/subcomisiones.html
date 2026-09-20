@@ -71,7 +71,7 @@ const TopBar = () => (
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 5, opacity: .8 }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.8}>
           <Icon name="whatsapp" size={13} color="white"/> WhatsApp
         </a>
-        <a href="http://www.colegioingenieros.org.ar/" target="_blank" className="tb-cs" style={{ display: 'flex', alignItems: 'center', gap: 4, opacity: .8 }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.8}>
+        <a href="https://colegioingenieros.org.ar" target="_blank" className="tb-cs" style={{ display: 'flex', alignItems: 'center', gap: 4, opacity: .8 }} onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=.8}>
           Consejo Superior <Icon name="externalLink" size={11} color="white"/>
         </a>
       </div>
@@ -194,7 +194,7 @@ const Navbar = ({ scrolled }) => {
                   onMouseEnter={e => e.currentTarget.style.background = '#e8f5f1'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <Icon name="search" size={17} color="#14484a"/>
                 </button>}
-            <a href="inscripcion.html" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
+            <a href="index.html#tramites" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#14484a', color: 'white', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 6, transition: 'background .2s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.background = '#0d3234'} onMouseLeave={e => e.currentTarget.style.background = '#14484a'}>
               Matricularse <Icon name="externalLink" size={12} color="white"/>
             </a>
@@ -224,7 +224,7 @@ const Navbar = ({ scrolled }) => {
               ))}
             </div>
           ))}
-          <a href="inscripcion.html" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
+          <a href="index.html#tramites" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, margin: '16px 24px 0', background: '#14484a', color: 'white', fontSize: 14.5, fontWeight: 700, padding: '13px', borderRadius: 6 }}>
             Matricularse <Icon name="externalLink" size={13} color="white"/>
           </a>
         </div>
@@ -236,29 +236,24 @@ const Navbar = ({ scrolled }) => {
 /* ─── ANNOUNCEMENT BAR ─── */
 const AnnouncementBar = () => (
   <div style={{ background: '#e8f5f1', borderBottom: '1px solid #c0e2ca' }}>
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', lineHeight: 1.7 }}>
-      <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 8 }}><Icon name="scale" size={14} color="#14484a"/></span>
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+      <Icon name="scale" size={14} color="#14484a"/>
       <span style={{ fontSize: 13.5, color: '#373d3e', fontWeight: 600 }}>Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553</span>
-      {' '}
-      <a href="honorarios.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'inline-flex', alignItems: 'center', gap: 3, verticalAlign: 'middle' }}>
+      <a href="honorarios.html" style={{ fontSize: 13.5, fontWeight: 800, color: '#008c75', display: 'flex', alignItems: 'center', gap: 3 }}>
         Ver tabla <Icon name="chevronRight" size={13} color="#008c75"/>
       </a>
     </div>
   </div>
 );
+
 /* ─── PAGE HEAD (sin gradiente) ─── */
 const PageHero = ({ count }) => (
   <>
     <div style={{ background: 'white', borderBottom: '1px solid #e8f5f1' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '11px 24px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: '#9aa8a9', flexWrap: 'wrap' }}>
-																																	  
         <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="home" size={12}/> Inicio</a>
-																																		 
-											  
-			
         <Icon name="chevronRight" size={11} color="#c3d2d1"/>
         <a href="institucional.html">Institucional</a>
-																																						  
         <Icon name="chevronRight" size={11} color="#c3d2d1"/>
         <span style={{ color: '#4a6062', fontWeight: 700 }}>Subcomisiones</span>
       </div>
@@ -266,19 +261,10 @@ const PageHero = ({ count }) => (
     <header style={{ background: 'white', borderBottom: '1px solid #eef2f1' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '34px 24px 30px' }}>
         <div style={{ color: '#00705e', fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12 }}>Participación profesional</div>
-			
         <h1 style={{ color: '#14484a', fontFamily: "'Roboto Condensed', sans-serif", fontSize: 'clamp(26px, 6vw, 46px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.5 }}>Subcomisiones</h1>
-					 
-		   
-																																		 
-        <p style={{ marginTop: 12, color: '#607a7c', fontSize: 'clamp(14.5px, 3.4vw, 16.5px)', lineHeight: 1.6, maxWidth: 780, textWrap: 'pretty' }}>Espacios técnicos de trabajo organizados por especialidad. Funcionan como ámbito de consulta, formación entre pares y elaboración de criterios para la práctica profesional en el distrito. Si querés sumarte, contactá directamente al referente.</p>
-		  
+        <p style={{ marginTop: 12, color: '#607a7c', fontSize: 'clamp(14.5px, 3.4vw, 16.5px)', lineHeight: 1.6, maxWidth: 780, textWrap: 'pretty' }}>Espacios técnicos de trabajo organizados por especialidad. Funcionan como ámbito de consulta, formación entre pares y elaboración de criterios para la práctica profesional en el distrito. Cada subcomisión tiene su propio correo institucional; también podés escribirle directamente a un referente.</p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 22 }}>
-					 
-															   
-																						  
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#e8f5f1', border: '1px solid #c0e2ca', color: '#14484a', fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 6 }}>
-		   
             <Icon name="layers" size={14} color="#00705e"/>
             <span style={{ fontFamily: "'Roboto Condensed', sans-serif", fontWeight: 700, color: '#00705e' }}>{count}</span>
             subcomisiones activas
@@ -289,54 +275,47 @@ const PageHero = ({ count }) => (
             Ver listado <Icon name="chevronRight" size={13} color="white"/>
           </a>
         </div>
-								   
-																									
-																											   
-		  
-																	
-																	 
-																		 
-			
       </div>
     </header>
   </>
 );
+
 /* ─── DATA ─── */
 const subcomisiones = [
-  { tag: 'HyS', nombre: 'Higiene y Seguridad en el trabajo', referentes: [
-    { nombre: 'Maria Claudia FILIPUZZI', mat: '53.929', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'cfilipuzzi@cipba.org' },
+  { tag: 'HyS', nombre: 'Higiene y Seguridad en el trabajo', mail: 'higieneyseguridad@cipba.org', referentes: [
+    { nombre: 'Maria Claudia FILIPUZZI', mat: '53.929', tel: '15-5181-9336', telLink: '+5491151819336', email: 'cfilipuzzi@hotmail.com' },
   ]},
-  { tag: 'Mec', nombre: 'Ingeniería Mecánica', referentes: [
-    { nombre: 'Javier Victor Manuel TORRES', mat: '55.905', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'jt.ingenieriayservicios@cipba.org' },
+  { tag: 'Mec', nombre: 'Ingeniería Mecánica', mail: 'mecanica@cipba.org', referentes: [
+    { nombre: 'Javier Victor Manuel TORRES', mat: '55.905', tel: '15-5024-8414', telLink: '+5491150248414', email: 'jt.ingenieriayservicios@gmail.com' },
   ]},
-  { tag: 'PAJ', nombre: 'Peritos Auxiliares de la Justicia', referentes: [
-    { nombre: 'Juan José URANGA', mat: '55.133', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'juanjoseuranga@cipba.org' },
+  { tag: 'PAJ', nombre: 'Peritos Auxiliares de la Justicia', mail: 'peritos@cipba.org', referentes: [
+    { nombre: 'Juan José URANGA', mat: '55.133', tel: '15-6711-8199', telLink: '+5491167118199', email: 'juanjoseuranga@gmail.com' },
   ]},
-  { tag: 'Elec', nombre: 'Ingeniería Eléctrica', referentes: [
-    { nombre: 'Edgardo LEIBER', mat: '54.032', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'edgardoleiber@cipba.org' },
-    { nombre: 'Juan Pablo MAZZA', mat: '49.294', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'epaim@cipba.org' },
+  { tag: 'Elec', nombre: 'Ingeniería Eléctrica', mail: 'electrica@cipba.org', referentes: [
+    { nombre: 'Edgardo LEIBER', mat: '54.032', tel: '15-4498-4624', telLink: '+5491144984624', email: 'edgardoleiber@hotmail.com' },
+    { nombre: 'Juan Pablo MAZZA', mat: '49.294', tel: '15-6123-7995', telLink: '+5491161237995', email: 'epaim@epaim.com.ar' },
   ]},
-  { tag: 'Agr', nombre: 'Agrimensura', referentes: [
-    { nombre: 'Jenaro Antonio STINGA', mat: '31.544', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'jastinga@cipba.org' },
-    { nombre: 'Ismael Alberto CONTE', mat: '39.198', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'alberto@cipba.org' },
+  { tag: 'Agr', nombre: 'Agrimensura', mail: 'agrimensura@cipba.org', referentes: [
+    { nombre: 'Jenaro Antonio STINGA', mat: '31.544', tel: '15-3104-3010', telLink: '+5491131043010', email: 'jastinga@gmail.com' },
+    { nombre: 'Ismael Alberto CONTE', mat: '39.198', tel: '02324-15-58-2633', telLink: '+542324155826​33', email: 'alberto@estudiodc.net' },
   ]},
-  { tag: 'Alim', nombre: 'Ingeniería en Alimentos', referentes: [
-    { nombre: 'Gabriel Esteban BUSNARDO', mat: '55.336', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'gbusnardo1970@cipba.org' },
-    { nombre: 'Yanina Valeria CENTURION', mat: '56.004', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'yvcenturion@cipba.org' },
+  { tag: 'Alim', nombre: 'Ingeniería en Alimentos', mail: 'alimentos@cipba.org', referentes: [
+    { nombre: 'Gabriel Esteban BUSNARDO', mat: '55.336', tel: '15-4938-9842', telLink: '+5491149389842', email: 'gbusnardo1970@gmail.com' },
+    { nombre: 'Yanina Valeria CENTURION', mat: '56.004', tel: '15-5379-3030', telLink: '+5491153793030', email: 'yvcenturion@gmail.com' },
   ]},
-  { tag: 'Civ', nombre: 'Ingeniería Civil', referentes: [
-    { nombre: 'Perla Beatriz ARMAGNAC', mat: '53.929', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'parmagnac@gmaingenieria.com.ar' },
+  { tag: 'Civ', nombre: 'Ingeniería Civil', mail: 'civil@cipba.org', referentes: [
+    { nombre: 'Perla Beatriz ARMAGNAC', mat: '53.929', tel: '15-3428-4268', telLink: '+5491134284268', email: 'parmagnac@gmaingenieria.com.ar' },
   ]},
-  { tag: 'Amb', nombre: 'Ingeniería Ambiental', referentes: [
-    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'lca1srl.cal@cipba.org' },
-    { nombre: 'Roberto Emilio BASSO', mat: '32.285', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'roberto@cipba.org' },
+  { tag: 'Amb', nombre: 'Ingeniería Ambiental', mail: 'ambiental@cipba.org', referentes: [
+    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '15-5644-0200', telLink: '+5491156440200', email: 'lca1srl.cal@gmail.com' },
+    { nombre: 'Roberto Emilio BASSO', mat: '32.285', tel: '15-6208-0586', telLink: '+5491162080586', email: 'roberto@ingenieriabasso.com.ar' },
   ]},
-  { tag: 'OPDS', nombre: 'Profesionales ante Ministerio de Ambiente (OPDS)', referentes: [
-    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '(11) 3535-0751', telLink: '+541135350751', email: 'lca1srl.cal@cipba.org' },
-    { nombre: 'Jose Luis GUEVARA', mat: '34.956', tel: '(11) 5857-0060', telLink: '+541158570060', email: 'ingguevara@cipba.org' },
+  { tag: 'OPDS', nombre: 'Profesionales ante Ministerio de Ambiente (OPDS)', mail: 'opds@cipba.org', referentes: [
+    { nombre: 'Carlos Alberto LOSI', mat: '48.892', tel: '15-5644-0200', telLink: '+5491156440200', email: 'lca1srl.cal@gmail.com' },
+    { nombre: 'Jose Luis GUEVARA', mat: '34.956', tel: '15-4532-6499', telLink: '+5491145326499', email: 'ingguevara@gmail.com' },
   ]},
-  { tag: 'JP', nombre: 'Jóvenes Profesionales de CAAITBA', referentes: [
-    { nombre: 'Dario Miguel KUBAR', mat: '51.785', tel: '(11) 2713-4055', telLink: '+541127134055', email: 'dariokubar@cipba.org.ar' },
+  { tag: 'JP', nombre: 'Jóvenes Profesionales de CAAITBA', mail: 'jovenes@cipba.org', referentes: [
+    { nombre: 'Dario Miguel KUBAR', mat: '51.785', tel: '15-5644-0200', telLink: '+5491156440200', email: 'dariokubar@hotmail.com.ar' },
   ]},
 ];
 
@@ -356,6 +335,7 @@ const Listado = () => {
     return subcomisiones.filter(s =>
       s.nombre.toLowerCase().includes(query) ||
       s.tag.toLowerCase().includes(query) ||
+      (s.mail || '').toLowerCase().includes(query) ||
       s.referentes.some(r => r.nombre.toLowerCase().includes(query) || r.email.toLowerCase().includes(query))
     );
   }, [query]);
@@ -373,7 +353,7 @@ const Listado = () => {
               {subcomisiones.length} subcomisiones · {totalRef} referentes
             </h2>
             <p style={{ fontSize: 14, color: '#4a6062', maxWidth: 540 }}>
-              Buscá por especialidad o por apellido del referente. Los datos de contacto son los oficiales informados al colegio.
+              Buscá por especialidad, correo o apellido del referente. Los datos de contacto son los oficiales informados al colegio.
             </p>
           </div>
           <div style={{
@@ -454,11 +434,20 @@ const SubcomisionCard = ({ sub }) => (
           fontSize: 16, fontWeight: 800, color: '#14484a',
           fontFamily: "'Roboto Condensed', sans-serif", lineHeight: 1.25, textWrap: 'balance',
         }}>{sub.nombre}</div>
+        <a href={`mailto:${sub.mail}`} style={{
+          marginTop: 6, fontSize: 13, color: '#00a48a', display: 'inline-flex', alignItems: 'center', gap: 7,
+          transition: 'color 0.2s', wordBreak: 'break-all',
+        }}
+        onMouseEnter={e=>e.currentTarget.style.color='#14484a'}
+        onMouseLeave={e=>e.currentTarget.style.color='#00a48a'}>
+          <Icon name="mail" size={12} color="#9aa8a9"/> {sub.mail}
+        </a>
       </div>
     </div>
 
+
     {/* Referentes */}
-    <div style={{ padding: '6px 22px 20px', flex: 1, display: 'flex', flexDirection: 'column', gap: 0 }}>
+    <div style={{ padding: '10px 22px 20px', flex: 1, display: 'flex', flexDirection: 'column', gap: 0 }}>
       {sub.referentes.map((r, idx) => (
         <div key={idx} style={{
           padding: '14px 0',
@@ -515,7 +504,7 @@ const CTAFinal = () => (
         ¿Querés sumarte a una subcomisión?
       </h3>
       <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.92)', marginBottom: 22, maxWidth: 640, marginLeft: 'auto', marginRight: 'auto', textWrap: 'pretty' }}>
-        Las subcomisiones están abiertas a matriculados/as activos/as del distrito. Escribile al referente de tu especialidad o contactanos por los canales generales.
+        Las subcomisiones están abiertas a matriculados/as activos/as del distrito. Escribí al correo de la subcomisión que te interese o contactanos por los canales generales.
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <a href="contacto.html" style={{
@@ -527,7 +516,7 @@ const CTAFinal = () => (
         onMouseLeave={e=>e.currentTarget.style.transform='none'}>
           Formulario de contacto <Icon name="chevronRight" size={14} color="#008c75"/>
         </a>
-        <a href="https://wa.me/5491127133330" target="_blank" style={{
+        <a href="https://wa.me/541138293041" target="_blank" style={{
           background: 'rgba(255,255,255,0.15)', color: 'white', padding: '12px 24px',
           borderRadius: 6, fontWeight: 700, fontSize: 14.5, border: '1px solid rgba(255,255,255,0.4)',
           display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s',
@@ -543,10 +532,10 @@ const CTAFinal = () => (
 
 /* ─── REDES ─── */
 const redes = [
-  { icon: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/cipba7/' },
+  { icon: 'instagram', label: 'Instagram', href: '#' },
   { icon: 'facebook', label: 'Facebook', href: '#' },
   { icon: 'linkedin', label: 'LinkedIn', href: '#' },
-  { icon: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/5491127133330' },
+  { icon: 'whatsapp', label: 'WhatsApp', href: '#' },
 ];
 
 const SocialIcons = ({ size = 17 }) => {

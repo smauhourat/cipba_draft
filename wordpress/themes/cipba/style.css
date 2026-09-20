@@ -973,3 +973,63 @@ input, select, textarea {
 		z-index: 9999 !important;
 	}
 }
+/* ==========================================================================
+   Subcomisiones — listado completo (página interna, [cipba_subcomisiones_listado])
+   ========================================================================== */
+.cipba-subcom-list { max-width: 1200px !important; margin: 0 auto !important; padding: 56px 24px 72px !important; }
+.cipba-subcom-toolbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+.cipba-subcom-eyebrow { color: var(--wp--preset--color--verde-500, #00a48a); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.cipba-subcom-toolbar h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(22px, 3vw, 30px); font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 6px; }
+.cipba-subcom-toolbar p { font-size: 14px; color: #4a6062; max-width: 540px; margin: 0; }
+.cipba-subcom-search { display: flex; align-items: center; gap: 10px; min-width: 280px; background: #fff; border: 1.5px solid var(--cipba-border-input, #dbe6e3); border-radius: 8px; padding: 10px 14px; color: var(--wp--preset--color--gris-400, #9aa8a9); transition: border-color var(--cipba-fast, .2s); }
+.cipba-subcom-search:focus-within { border-color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-subcom-search input { flex: 1; border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent; padding: 0 !important; font-size: 14px; color: var(--wp--preset--color--tinta-900, #373d3e); }
+.cipba-subcom-status { font-size: 13px; color: #4a6062; margin-bottom: 16px; }
+.cipba-subcom-status:empty { display: none; }
+.cipba-subcom-full-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; }
+@media (max-width: 640px) { .cipba-subcom-full-grid { grid-template-columns: 1fr; } .cipba-subcom-search { min-width: 0; width: 100%; } }
+.cipba-subcom-full { background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,.04); transition: transform var(--cipba-base, .3s) var(--cipba-ease, ease), box-shadow var(--cipba-base, .3s) var(--cipba-ease, ease), border-color var(--cipba-base, .3s); }
+.cipba-subcom-full[hidden] { display: none; }
+.cipba-subcom-full:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(20,72,74,.10); border-color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-subcom-full__head { display: flex; gap: 12px; align-items: flex-start; padding: 18px 22px 16px; border-bottom: 1px solid var(--wp--preset--color--gris-100, #eef2f1); background: linear-gradient(135deg, #f7faf9 0%, #fff 100%); }
+.cipba-subcom-full__tag { flex-shrink: 0; width: 44px; height: 44px; border-radius: 8px; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); display: grid; place-items: center; font-family: var(--wp--preset--font-family--condensed); font-weight: 700; font-size: 13px; letter-spacing: .5px; }
+.cipba-subcom-full__tag.is-long { font-size: 11px; }
+.cipba-subcom-full__eyebrow { color: var(--wp--preset--color--verde-500, #00a48a); font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 4px; }
+.cipba-subcom-full__head h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 16px; font-weight: 800; color: var(--wp--preset--color--verde-700, #14484a); line-height: 1.25; margin: 0; text-wrap: balance; }
+.cipba-subcom-full__refs { padding: 6px 22px 20px; flex: 1; }
+.cipba-subcom-ref { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; }
+.cipba-subcom-ref + .cipba-subcom-ref { border-top: 1px dashed var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-subcom-ref .cipba-avatar { border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-subcom-ref__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.cipba-subcom-ref__name { font-size: 13.5px; font-weight: 800; color: var(--wp--preset--color--tinta-900, #373d3e); }
+.cipba-subcom-ref__mat { font-family: var(--wp--preset--font-family--condensed); font-size: 11.5px; letter-spacing: .5px; color: var(--wp--preset--color--gris-400, #9aa8a9); margin-bottom: 4px; }
+.cipba-subcom-ref__tel, .cipba-subcom-ref__mail { font-size: 13px; word-break: break-all; text-decoration: none !important; }
+.cipba-subcom-ref__tel { color: #4a6062; }
+.cipba-subcom-ref__mail { color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-subcom-ref__tel:hover { color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-subcom-ref__mail:hover { color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-subcom-empty { background: #fff; border: 1px dashed var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 12px; padding: 48px 24px; text-align: center; color: #4a6062; font-size: 13.5px; }
+.cipba-subcom-empty[hidden] { display: none; }
+.cipba-subcom-empty strong { display: block; font-size: 15px; color: var(--wp--preset--color--verde-700, #14484a); margin-bottom: 6px; }
+@media (prefers-reduced-motion: reduce) { .cipba-subcom-full { transition: none; } .cipba-subcom-full:hover { transform: none; } }
+
+/* ==========================================================================
+   Cabecera de página interna (breadcrumb + título) y CTA final verde
+   ========================================================================== */
+.cipba-pagehead__crumbs { background: #fff; border-bottom: 1px solid var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-pagehead__inner { max-width: 1200px !important; margin: 0 auto !important; padding: 11px 24px !important; font-size: 12.5px; color: var(--wp--preset--color--gris-400, #9aa8a9); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cipba-pagehead__inner a { color: inherit; text-decoration: none; }
+.cipba-pagehead__inner strong { color: #4a6062; }
+.cipba-pagehead__title { background: #fff; border-bottom: 1px solid var(--wp--preset--color--gris-100, #eef2f1); }
+.cipba-pagehead__title .cipba-pagehead__inner { display: block; padding: 34px 24px 30px !important; font-size: inherit; }
+.cipba-pagehead__eyebrow { color: #00705e; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.cipba-pagehead__title h1 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(26px, 6vw, 46px); font-weight: 900; line-height: 1.1; letter-spacing: -.5px; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; }
+.cipba-pagehead__title p { margin: 12px 0 0; color: var(--wp--preset--color--gris-teal, #607a7c); font-size: clamp(14.5px, 3.4vw, 16.5px); line-height: 1.6; max-width: 780px; }
+.cipba-cta { background: linear-gradient(135deg, #00a48a 0%, #008c75 100%); padding: 48px 24px; }
+.cipba-cta__inner { max-width: 900px !important; margin: 0 auto !important; text-align: center; color: #fff; }
+.cipba-cta__inner h3 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: #fff; margin: 0 0 10px; }
+.cipba-cta__inner p { font-size: 15px; color: rgba(255,255,255,.92); max-width: 640px; margin: 0 auto 22px; }
+.cipba-cta__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cipba-cta__btn { background: #fff; color: #008c75 !important; padding: 12px 24px; border-radius: 6px; font-weight: 800; font-size: 14.5px; text-decoration: none !important; transition: transform var(--cipba-fast, .2s); }
+.cipba-cta__btn:hover { transform: translateY(-2px); }
+.cipba-cta__btn--ghost { background: rgba(255,255,255,.15); color: #fff !important; border: 1px solid rgba(255,255,255,.4); font-weight: 700; }
