@@ -143,7 +143,7 @@ function cipba_register_post_types() {
 		'show_in_rest' => true,
 		'has_archive'  => false,
 		'menu_icon'    => 'dashicons-portfolio',
-		'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+		'supports'     => array( 'title', 'page-attributes' ),
 		'rewrite'      => array( 'slug' => 'tramites' ),
 	) );
 }
@@ -211,13 +211,16 @@ add_action( 'pre_get_posts', 'cipba_subcomision_admin_default_order' );
  * cajas de campos), sin el editor de bloques que no aporta nada acá.
  */
 function cipba_subcomision_classic_editor( $use_block_editor, $post_type ) {
-	return in_array( $post_type, array( 'subcomision', 'sede', 'autoridad', 'area_contacto' ), true ) ? false : $use_block_editor;
+	return in_array( $post_type, array( 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite' ), true ) ? false : $use_block_editor;
 }
 add_filter( 'use_block_editor_for_post_type', 'cipba_subcomision_classic_editor', 10, 2 );
 
 function cipba_subcomision_title_placeholder( $text, $post ) {
 	if ( 'subcomision' === $post->post_type ) {
 		return 'Nombre de la subcomisión (ej: Ingeniería Civil)';
+	}
+	if ( 'tramite' === $post->post_type ) {
+		return 'Nombre del trámite (ej: Inscripción)';
 	}
 	if ( 'area_contacto' === $post->post_type ) {
 		return 'Nombre del área (ej: Área Administrativa)';
@@ -336,3 +339,19 @@ function cipba_area_admin_default_order( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'cipba_area_admin_default_order' );
+
+/**
+ * Pantallas de edición más limpias: fuera las cajas técnicas que no le sirven
+ * a quien carga contenido (ajustes de Astra, campos personalizados, slug) en
+ * los tipos de contenido del tema. En Trámites, el layout de Astra lo fija
+ * cipba_tramite_layout_defaults() en cada guardado.
+ */
+function cipba_limpiar_metaboxes_cpt() {
+	$tipos = array( 'evento', 'documento', 'resolucion', 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite' );
+	foreach ( $tipos as $tipo ) {
+		remove_meta_box( 'astra_settings_meta_box', $tipo, 'side' );
+		remove_meta_box( 'postcustom', $tipo, 'normal' );
+		remove_meta_box( 'slugdiv', $tipo, 'normal' );
+	}
+}
+add_action( 'add_meta_boxes', 'cipba_limpiar_metaboxes_cpt', 99 );

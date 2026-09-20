@@ -1245,3 +1245,76 @@ input, select, textarea {
 .cipba-contact-form .ff-errors-in-stack { background: #fdecea; color: #a93226; }
 .cipba-contact-form .ff-message-success.is-hiding,
 .cipba-contact-form .ff-errors-in-stack.is-hiding { opacity: 0; }
+
+/* ==========================================================================
+   Trámites (single-tramite.php): requisitos, avisos, documentos, costo, ayuda
+   y "Otros trámites". Mismo diseño que tramites-shell.jsx del prototipo.
+   ========================================================================== */
+.cipba-tramite-main { background: var(--wp--preset--color--gris-50, #f7faf9); padding: 48px 0 56px; }
+.cipba-tramite-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 34px; align-items: start; }
+@media (max-width: 900px) { .cipba-tramite-grid { grid-template-columns: 1fr; } }
+.cipba-tramite-col { display: grid; gap: 28px; min-width: 0; }
+.cipba-tramite-aside { display: grid; gap: 16px; }
+@media (min-width: 901px) {
+	.cipba-tramite-aside { position: sticky; top: 132px; }
+	.admin-bar .cipba-tramite-aside { top: 164px; }
+}
+
+/* Requisitos: lista numerada en tarjetas (el contenido es una lista del editor) */
+.cipba-req h2, .cipba-docs h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(20px, 2.6vw, 26px); font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 18px; }
+.cipba-req h2.has-sub { margin-bottom: 8px; }
+.cipba-req__sub, .cipba-docs__intro { font-size: 14.5px; line-height: 1.65; color: var(--wp--preset--color--gris-teal, #607a7c); margin: 0 0 18px; text-wrap: pretty; }
+.cipba-req__list ol, .cipba-req__list ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: req; }
+.cipba-req__list li { counter-increment: req; position: relative; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; padding: 14px 16px 14px 52px; font-size: 14px; line-height: 1.6; color: #4a6062; margin: 0; text-wrap: pretty; }
+.cipba-req__list li::before { content: counter(req); position: absolute; left: 16px; top: 14px; width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); font-family: var(--wp--preset--font-family--condensed); font-size: 12.5px; font-weight: 800; }
+.cipba-req__list ul li::before { content: ""; width: 8px; height: 8px; left: 24px; top: 22px; border-radius: 2px; background: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-req__list li strong, .cipba-req__list li b { color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-req__list p { font-size: 14px; line-height: 1.6; color: #4a6062; margin: 0 0 10px; }
+
+/* Avisos */
+.cipba-aviso { display: flex; gap: 12px; background: var(--wp--preset--color--verde-100, #e8f5f1); border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 10px; padding: 16px 18px; color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-aviso__ico { flex-shrink: 0; color: var(--wp--preset--color--verde-500, #00a48a); padding-top: 1px; }
+.cipba-aviso--ambar { background: #fff8e6; border-color: #f0d79a; color: #6b5417; }
+.cipba-aviso--ambar .cipba-aviso__ico { color: #b98a1a; }
+.cipba-aviso__body { flex: 1; min-width: 0; }
+.cipba-aviso__title { font-family: var(--wp--preset--font-family--condensed); font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.cipba-aviso__text, .cipba-aviso__text p { font-size: 13.5px; line-height: 1.65; margin: 0 0 8px; text-wrap: pretty; }
+.cipba-aviso__text > *:last-child { margin-bottom: 0; }
+.cipba-aviso__text a { color: #00705e; font-weight: 700; }
+
+/* Documentos */
+.cipba-docs__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 640px) { .cipba-docs__grid { grid-template-columns: 1fr; } }
+.cipba-doc { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; padding: 15px 17px; text-decoration: none !important; transition: border-color var(--cipba-fast, .2s), box-shadow var(--cipba-fast, .2s); }
+.cipba-doc:hover { border-color: var(--wp--preset--color--verde-500, #00a48a); box-shadow: 0 8px 22px rgba(20,72,74,.10); }
+.cipba-doc__ico { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); }
+.cipba-doc__body { flex: 1; min-width: 0; display: block; }
+.cipba-doc__title { display: block; font-size: 14px; font-weight: 700; line-height: 1.35; color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-doc__meta { display: block; margin-top: 2px; font-size: 11.5px; letter-spacing: .6px; text-transform: uppercase; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-doc__go { color: var(--wp--preset--color--verde-500, #00a48a); display: flex; }
+
+/* Cuadro de costo y ayuda (columna lateral) */
+.cipba-costo { background: var(--wp--preset--color--verde-700, #14484a); color: #fff; border-radius: 12px; padding: 22px 24px 24px; }
+.cipba-costo h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 19px; font-weight: 900; color: #fff; margin: 0 0 16px; }
+.cipba-costo__row { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,.18); }
+.cipba-costo__row:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.cipba-costo__label { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 3px; }
+.cipba-costo__value { font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.88); }
+.cipba-ayuda { background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; padding: 22px 24px 24px; }
+.cipba-ayuda h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 18px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 8px; }
+.cipba-ayuda p { font-size: 13.5px; line-height: 1.6; color: var(--wp--preset--color--gris-teal, #607a7c); margin: 0 0 16px; }
+.cipba-ayuda a { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; font-size: 13.5px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; word-break: break-all; }
+.cipba-ayuda a:last-child { margin-bottom: 0; }
+.cipba-ayuda .ico { color: var(--wp--preset--color--verde-500, #00a48a); display: flex; }
+.cipba-ayuda .ico--wa { color: #25d366; }
+
+/* Otros trámites */
+.cipba-otros { background: var(--wp--preset--color--gris-100, #eef2f1); border-top: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); padding: 44px 0 52px; }
+.cipba-otros h2 { font-family: var(--wp--preset--font-family--condensed); font-size: 20px; font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 16px; }
+.cipba-otros__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 900px) { .cipba-otros__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .cipba-otros__grid { grid-template-columns: 1fr; } }
+.cipba-otros__grid a { display: flex; align-items: center; gap: 11px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; padding: 16px 18px; font-size: 14px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; transition: border-color var(--cipba-fast, .2s), transform var(--cipba-fast, .2s); }
+.cipba-otros__grid a:hover { border-color: var(--wp--preset--color--verde-500, #00a48a); transform: translateY(-2px); }
+.cipba-otros__ico { width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); }
+@media (prefers-reduced-motion: reduce) { .cipba-otros__grid a { transition: none; } .cipba-otros__grid a:hover { transform: none; } }

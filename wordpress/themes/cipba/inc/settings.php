@@ -22,7 +22,7 @@ const CIPBA_DATOS_OPTION = 'cipba_distrito';
  * Definición de los datos generales.
  *
  * @return array[] clave => array( section, label, desc, placeholder, default, type, required )
- *   type: text (por defecto) | url | email
+ *   type: text (por defecto) | url | email | monto (número, se muestra "$ 1.234") | fecha (calendario, se muestra dd/mm/aaaa)
  */
 function cipba_datos_fields() {
 	return array(
@@ -117,6 +117,80 @@ function cipba_datos_fields() {
 			'placeholder' => '1553',
 			'default'     => '1553',
 		),
+
+		// — Matrícula y trámites (se usan como marcadores {{clave}} en los textos de los trámites) —
+		'resolucion'          => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Resolución vigente',
+			'desc'        => 'Tal como debe leerse en los textos. Ej: 1489/24. Marcador: {{resolucion}}',
+			'placeholder' => '1489/24',
+			'default'     => '1489/24',
+		),
+		'modulo_1'            => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Módulo por incumplimiento (hasta la fecha límite)',
+			'desc'        => 'Solo números, sin puntos ni signo $. Ej: 395000. Marcador: {{modulo_1}}',
+			'placeholder' => '395000',
+			'default'     => '395000',
+			'type'        => 'monto',
+		),
+		'modulo_fecha'        => array(
+			'section' => 'Matrícula y trámites',
+			'label'   => 'Fecha límite de ese valor',
+			'desc'    => 'Marcador: {{modulo_fecha}}',
+			'default' => '2026-03-31',
+			'type'    => 'fecha',
+		),
+		'modulo_2'            => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Módulo por incumplimiento (vencida la fecha límite)',
+			'desc'        => 'Solo números. Ej: 564000. Marcador: {{modulo_2}}',
+			'placeholder' => '564000',
+			'default'     => '564000',
+			'type'        => 'monto',
+		),
+		'form_inscripcion'    => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de inscripción',
+			'desc'        => 'Código del formulario. Marcador: {{form_inscripcion}}',
+			'placeholder' => 'I-2024',
+			'default'     => 'I-2024',
+		),
+		'form_registros'      => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de registros especiales',
+			'desc'        => 'Marcador: {{form_registros}}',
+			'placeholder' => 'I.R.-2026',
+			'default'     => 'I.R.-2026',
+		),
+		'form_rehabilitacion' => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de rehabilitación',
+			'desc'        => 'Marcador: {{form_rehabilitacion}}',
+			'placeholder' => 'R-2024',
+			'default'     => 'R-2024',
+		),
+		'form_baja'           => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de baja',
+			'desc'        => 'Marcador: {{form_baja}}',
+			'placeholder' => 'B-2024',
+			'default'     => 'B-2024',
+		),
+		'form_baja_fallecimiento' => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de baja por fallecimiento',
+			'desc'        => 'Marcador: {{form_baja_fallecimiento}}',
+			'placeholder' => 'BF-2024',
+			'default'     => 'BF-2024',
+		),
+		'form_credencial'     => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de credenciales',
+			'desc'        => 'Marcador: {{form_credencial}}',
+			'placeholder' => 'CRE-2024',
+			'default'     => 'CRE-2024',
+		),
 	);
 }
 
@@ -159,6 +233,43 @@ function cipba_dato_url( $key ) {
 }
 
 /**
+ * Valor de un dato listo para mostrar: los montos como "$ 395.000" y las
+ * fechas como dd/mm/aaaa; el resto, tal cual.
+ */
+function cipba_dato_display( $key ) {
+	$fields = cipba_datos_fields();
+	if ( ! isset( $fields[ $key ] ) ) {
+		return '';
+	}
+	$value = trim( cipba_dato( $key ) );
+	$type  = isset( $fields[ $key ]['type'] ) ? $fields[ $key ]['type'] : 'text';
+	if ( '' === $value ) {
+		return '';
+	}
+	if ( 'monto' === $type ) {
+		return '$ ' . number_format( (float) $value, 0, ',', '.' );
+	}
+	if ( 'fecha' === $type ) {
+		$ts = strtotime( $value );
+		return $ts ? gmdate( 'd/m/Y', $ts ) : '';
+	}
+	return $value;
+}
+
+/**
+ * Reemplaza los marcadores {{clave}} de un texto por el valor actual del dato
+ * (ver "Datos del Distrito"). Un marcador que no existe se deja como está, así
+ * quien edita nota el error de tipeo en la vista previa.
+ */
+function cipba_tokens( $text ) {
+	return preg_replace_callback( '/\{\{\s*([a-z0-9_]+)\s*\}\}/i', function ( $m ) {
+		$key    = strtolower( $m[1] );
+		$fields = cipba_datos_fields();
+		return isset( $fields[ $key ] ) ? esc_html( cipba_dato_display( $key ) ) : $m[0];
+	}, (string) $text );
+}
+
+/**
  * [cipba_dato campo="periodo_autoridades"] — imprime un dato general.
  * [cipba_dato campo="whatsapp" formato="url"] — imprime el enlace (para href).
  */
@@ -167,9 +278,17 @@ function cipba_dato_shortcode( $atts ) {
 	if ( 'url' === $atts['formato'] ) {
 		return esc_url( cipba_dato_url( $atts['campo'] ) );
 	}
-	return esc_html( cipba_dato( $atts['campo'] ) );
+	return esc_html( cipba_dato_display( $atts['campo'] ) );
 }
 add_shortcode( 'cipba_dato', 'cipba_dato_shortcode' );
+
+/**
+ * Tipo de <input> HTML para cada tipo de dato del formulario.
+ */
+function cipba_dato_input_type( $type ) {
+	$map = array( 'monto' => 'number', 'fecha' => 'date' );
+	return isset( $map[ $type ] ) ? $map[ $type ] : $type;
+}
 
 /**
  * Pantalla del admin.
@@ -214,6 +333,11 @@ function cipba_datos_sanitize( $input ) {
 			$out[ $key ] = esc_url_raw( trim( $raw ) );
 		} elseif ( 'email' === $type ) {
 			$out[ $key ] = sanitize_email( $raw );
+		} elseif ( 'monto' === $type ) {
+			$out[ $key ] = preg_replace( '/\D+/', '', (string) $raw );
+		} elseif ( 'fecha' === $type ) {
+			$ok          = preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', trim( (string) $raw ), $d ) && checkdate( (int) $d[2], (int) $d[3], (int) $d[1] );
+			$out[ $key ] = $ok ? trim( $raw ) : '';
 		} else {
 			$out[ $key ] = sanitize_text_field( $raw );
 		}
@@ -240,7 +364,7 @@ function cipba_datos_render_page() {
 						<tr>
 							<th scope="row"><label for="cipba-dato-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $f['label'] ); ?></label></th>
 							<td>
-								<input type="<?php echo esc_attr( isset( $f['type'] ) ? $f['type'] : 'text' ); ?>" class="regular-text" id="cipba-dato-<?php echo esc_attr( $key ); ?>"
+								<input type="<?php echo esc_attr( cipba_dato_input_type( isset( $f['type'] ) ? $f['type'] : 'text' ) ); ?>" <?php echo isset( $f['type'] ) && 'monto' === $f['type'] ? 'min="0" step="1"' : ''; ?> class="regular-text" id="cipba-dato-<?php echo esc_attr( $key ); ?>"
 									name="<?php echo esc_attr( CIPBA_DATOS_OPTION . '[' . $key . ']' ); ?>"
 									value="<?php echo esc_attr( cipba_dato( $key ) ); ?>"
 									placeholder="<?php echo esc_attr( $f['placeholder'] ); ?>"

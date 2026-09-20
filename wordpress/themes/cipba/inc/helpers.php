@@ -14,32 +14,40 @@ if ( ! defined( 'ABSPATH' ) ) {
  * subido (no se tipean a mano — así lo pide el handoff en §4.14).
  *
  * @param int $post_id ID del post `documento`.
- * @return array{formato: string, peso: string, url: string}|null
+ * @return array{formato: string, peso: string, url: string}|null (archivo subido, o enlace externo si no hay archivo)
  */
 function cipba_get_documento_file_meta( $post_id ) {
-	$attachment_id = rwmb_meta( 'archivo', array(), $post_id );
+	// El campo file_advanced de Meta Box guarda el ID del adjunto (una fila de
+	// meta por archivo); se lee el ID directo, no el arreglo enriquecido de rwmb_meta().
+	$ids           = get_post_meta( $post_id, 'archivo', false );
+	$attachment_id = $ids ? (int) reset( $ids ) : 0;
 
-	// El campo file_advanced de Meta Box guarda un array de IDs de adjunto.
-	if ( is_array( $attachment_id ) ) {
-		$attachment_id = reset( $attachment_id );
+	if ( $attachment_id ) {
+		$path = get_attached_file( $attachment_id );
+		$url  = wp_get_attachment_url( $attachment_id );
+
+		if ( $path && file_exists( $path ) ) {
+			return array(
+				'formato' => strtoupper( pathinfo( $path, PATHINFO_EXTENSION ) ),
+				'peso'    => size_format( filesize( $path ) ),
+				'url'     => $url,
+			);
+		}
 	}
 
-	if ( ! $attachment_id ) {
-		return null;
+	// Sin archivo subido: se usa el enlace externo (si se cargó), con el
+	// formato deducido de la extensión de la dirección.
+	$externo = trim( (string) get_post_meta( $post_id, 'enlace_externo', true ) );
+	if ( $externo ) {
+		$ext = strtoupper( pathinfo( (string) wp_parse_url( $externo, PHP_URL_PATH ), PATHINFO_EXTENSION ) );
+		return array(
+			'formato' => $ext ? $ext : 'ENLACE',
+			'peso'    => '',
+			'url'     => $externo,
+		);
 	}
 
-	$path = get_attached_file( $attachment_id );
-	$url  = wp_get_attachment_url( $attachment_id );
-
-	if ( ! $path || ! file_exists( $path ) ) {
-		return null;
-	}
-
-	return array(
-		'formato' => strtoupper( pathinfo( $path, PATHINFO_EXTENSION ) ),
-		'peso'    => size_format( filesize( $path ) ),
-		'url'     => $url,
-	);
+	return null;
 }
 
 /**
@@ -294,6 +302,11 @@ function cipba_icon( $name, $size = 14 ) {
 		'award'    => '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
 		'users'    => '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',
 		'star'     => '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+		'check'    => '<polyline points="20 6 9 17 4 12"/>',
+		'shield'   => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+		'dollar'   => '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>',
+		'chevron'  => '<polyline points="9 18 15 12 9 6"/>',
+		'home'     => '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
 		'building' => '<rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>',
 		'file'     => '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
 		'external' => '<path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',

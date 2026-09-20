@@ -50,15 +50,22 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 	// del archivo subido (ver cipba_get_documento_file_meta en helpers.php),
 	// tal como pide el handoff.
 	$meta_boxes[] = array(
-		'title'      => 'Archivo de normativa',
+		'title'      => 'Archivo del documento',
 		'post_types' => 'documento',
 		'fields'     => array(
 			array(
-				'name'     => 'Archivo (PDF)',
+				'name'     => 'Archivo (PDF, Word, Excel…)',
 				'id'       => 'archivo',
+				'desc'     => 'El tipo (PDF, DOCX…) y el peso se leen solos del archivo.',
 				'type'     => 'file_advanced',
 				'max_file_uploads' => 1,
-				'mime_type' => 'application/pdf',
+				'mime_type' => 'application',
+			),
+			array(
+				'name' => 'Enlace externo (opcional)',
+				'id'   => 'enlace_externo',
+				'desc' => 'Solo si el archivo NO está en este sitio: pegá la dirección completa. Si subiste un archivo arriba, este campo se ignora.',
+				'type' => 'url',
 			),
 			array(
 				'name' => 'Origen',
@@ -371,6 +378,154 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		'title'      => 'Datos del área',
 		'post_types' => 'area_contacto',
 		'fields'     => $area_fields,
+	);
+
+	// Trámite (Inscripción, Rehabilitación, Baja…): el nombre va en el título.
+	// Los textos admiten marcadores {{clave}} (ver la cajita "Datos que podés insertar").
+	$tramite_fields = array(
+		array(
+			'name'    => 'Ícono',
+			'id'      => 'icono',
+			'desc'    => 'Ícono con el que aparece en "Otros trámites".',
+			'type'    => 'select',
+			'options' => array(
+				'award'  => 'Medalla',
+				'check'  => 'Tilde',
+				'file'   => 'Documento',
+				'shield' => 'Escudo',
+				'dollar' => 'Pesos',
+			),
+			'std'     => 'file',
+		),
+		array(
+			'name'        => 'Etiqueta superior',
+			'id'          => 'eyebrow',
+			'type'        => 'text',
+			'columns'     => 6,
+			'placeholder' => 'Matrícula profesional',
+		),
+		array(
+			'name'        => 'Nombre corto (opcional)',
+			'id'          => 'breadcrumb',
+			'desc'        => 'Solo si el título es largo: se usa en la ruta de navegación (Inicio › Trámites › …).',
+			'type'        => 'text',
+			'columns'     => 6,
+			'placeholder' => 'Credenciales',
+		),
+		array(
+			'name' => 'Bajada',
+			'id'   => 'intro',
+			'desc' => 'Texto que va bajo el título, en el encabezado.',
+			'type' => 'textarea',
+			'rows' => 3,
+		),
+		array(
+			'type' => 'heading',
+			'name' => 'Cuadro lateral (costos y condiciones)',
+		),
+		array(
+			'name'        => 'Título del cuadro',
+			'id'          => 'costo_titulo',
+			'type'        => 'text',
+			'placeholder' => 'Costo del trámite',
+		),
+	);
+	for ( $i = 1; $i <= CIPBA_TRAMITE_COSTOS; $i++ ) {
+		$tramite_fields[] = array(
+			'name'        => "Fila $i: etiqueta",
+			'id'          => "costo{$i}_label",
+			'type'        => 'text',
+			'columns'     => 4,
+			'placeholder' => 'Ej: Costo del trámite',
+		);
+		$tramite_fields[] = array(
+			'name'    => "Fila $i: texto",
+			'id'      => "costo{$i}_value",
+			'type'    => 'textarea',
+			'columns' => 8,
+			'rows'    => 2,
+		);
+	}
+	$tramite_fields[] = array(
+		'type' => 'heading',
+		'name' => 'Contenido de la página (se muestra en este orden)',
+	);
+	for ( $i = 1; $i <= CIPBA_TRAMITE_BLOQUES; $i++ ) {
+		$tramite_fields[] = array(
+			'type' => 'heading',
+			'name' => "Bloque $i",
+		);
+		$tramite_fields[] = array(
+			'name'        => 'Tipo',
+			'id'          => "bloque{$i}_tipo",
+			'type'        => 'select',
+			'columns'     => 4,
+			'placeholder' => '— No usar este bloque —',
+			'options'     => array(
+				'requisitos'  => 'Lista de requisitos',
+				'aviso'       => 'Aviso (verde)',
+				'aviso_ambar' => 'Aviso importante (ámbar)',
+			),
+		);
+		$tramite_fields[] = array(
+			'name'    => 'Título',
+			'id'      => "bloque{$i}_titulo",
+			'type'    => 'text',
+			'columns' => 8,
+		);
+		$tramite_fields[] = array(
+			'name' => 'Texto introductorio (opcional, solo listas)',
+			'id'   => "bloque{$i}_sub",
+			'type' => 'textarea',
+			'rows' => 2,
+		);
+		$tramite_fields[] = array(
+			'name'    => 'Contenido',
+			'id'      => "bloque{$i}_contenido",
+			'desc'    => 'En las listas de requisitos, usá una lista numerada: cada ítem con el nombre en negrita y el detalle a continuación.',
+			'type'    => 'wysiwyg',
+			'raw'     => true,
+			'options' => array(
+				'textarea_rows' => 8,
+				'teeny'         => true,
+				'media_buttons' => false,
+			),
+		);
+	}
+	$tramite_fields[] = array(
+		'type' => 'heading',
+		'name' => 'Formularios y documentación',
+	);
+	$tramite_fields[] = array(
+		'name'        => 'Título de la sección',
+		'id'          => 'docs_titulo',
+		'type'        => 'text',
+		'placeholder' => 'Formularios y documentación',
+	);
+	$tramite_fields[] = array(
+		'name' => 'Texto introductorio',
+		'id'   => 'docs_intro',
+		'type' => 'textarea',
+		'rows' => 2,
+	);
+	for ( $i = 1; $i <= CIPBA_TRAMITE_DOCS; $i++ ) {
+		$tramite_fields[] = array(
+			'name'        => "Documento $i",
+			'id'          => "doc{$i}",
+			'desc'        => 1 === $i ? 'Se eligen de la biblioteca de Documentos (allí se sube el archivo una sola vez).' : '',
+			'type'        => 'post',
+			'post_type'   => 'documento',
+			'field_type'  => 'select_advanced',
+			'placeholder' => '— Elegí un documento —',
+			'query_args'  => array( 'post_status' => 'publish', 'posts_per_page' => -1 ),
+			'columns'     => 6,
+		);
+	}
+
+	$meta_boxes[] = array(
+		'title'      => 'Datos del trámite',
+		'post_types' => 'tramite',
+		'fields'     => $tramite_fields,
 	);
 
 	return $meta_boxes;
