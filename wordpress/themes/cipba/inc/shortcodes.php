@@ -307,3 +307,129 @@ function cipba_autoridades_shortcode() {
 	return ob_get_clean();
 }
 add_shortcode( 'cipba_autoridades', 'cipba_autoridades_shortcode' );
+
+/**
+ * Página Contacto.
+ *
+ * [cipba_areas_contacto]  — tarjetas de área (CPT `area_contacto`): personas
+ *   con teléfono y correo del área.
+ * [cipba_boton_whatsapp texto="…"] — botón verde de WhatsApp (dato general);
+ *   no muestra nada si el WhatsApp está vacío en "Datos del Distrito".
+ * [cipba_sedes_contacto]  — sedes y delegaciones en tarjetas compactas (CPT
+ *   `sede`), la Casa Central destacada.
+ */
+function cipba_areas_contacto_shortcode() {
+	$areas = get_posts( array(
+		'post_type'   => 'area_contacto',
+		'numberposts' => -1,
+		'orderby'     => 'menu_order title',
+		'order'       => 'ASC',
+	) );
+	if ( ! $areas ) {
+		return '';
+	}
+
+	ob_start();
+	?>
+	<div class="cipba-areas">
+		<?php foreach ( $areas as $area ) :
+			$icono    = get_post_meta( $area->ID, 'icono', true );
+			$icono    = $icono ? $icono : 'users';
+			$email    = trim( (string) get_post_meta( $area->ID, 'email', true ) );
+			$personas = cipba_get_area_personas( $area->ID );
+			?>
+			<article class="cipba-area">
+				<header class="cipba-area__head">
+					<span class="cipba-area__ico"><?php echo cipba_icon( $icono, 18 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+					<h3><?php echo esc_html( get_the_title( $area ) ); ?></h3>
+				</header>
+				<?php if ( $personas ) : ?>
+					<div class="cipba-area__people">
+						<?php foreach ( $personas as $p ) : ?>
+							<div class="cipba-area__person">
+								<span class="cipba-area__name"><?php echo esc_html( $p['nombre'] ); ?></span>
+								<?php if ( $p['tel'] ) : ?>
+									<a href="tel:<?php echo esc_attr( cipba_tel_link( $p['tel'] ) ); ?>"><?php echo esc_html( $p['tel'] ); ?></a>
+								<?php endif; ?>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+				<?php if ( $email ) : ?>
+					<a class="cipba-area__mail" href="mailto:<?php echo esc_attr( antispambot( $email ) ); ?>"><?php echo cipba_icon( 'mail', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $email ); ?></a>
+				<?php endif; ?>
+			</article>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_areas_contacto', 'cipba_areas_contacto_shortcode' );
+
+function cipba_boton_whatsapp_shortcode( $atts ) {
+	$atts = shortcode_atts( array( 'texto' => 'Consultar por WhatsApp' ), $atts, 'cipba_boton_whatsapp' );
+	$url  = cipba_dato_url( 'whatsapp' );
+	if ( ! $url ) {
+		return '';
+	}
+	return '<a class="cipba-wa-btn" href="' . esc_url( $url ) . '" target="_blank" rel="noopener">' . cipba_icon( 'whatsapp', 20 ) . ' ' . esc_html( $atts['texto'] ) . '</a>';
+}
+add_shortcode( 'cipba_boton_whatsapp', 'cipba_boton_whatsapp_shortcode' );
+
+function cipba_sedes_contacto_shortcode() {
+	$sedes = cipba_get_sedes();
+	if ( ! $sedes ) {
+		return '';
+	}
+
+	ob_start();
+	?>
+	<div class="cipba-sedes-mini">
+		<?php foreach ( $sedes as $sede ) :
+			$id   = $sede->ID;
+			$main = (bool) get_post_meta( $id, 'destacada', true );
+			$rows = array(
+				array( 'location', trim( (string) get_post_meta( $id, 'direccion', true ) ), false ),
+				array( 'phone', trim( (string) get_post_meta( $id, 'telefono', true ) ), false ),
+				array( 'mail', trim( (string) get_post_meta( $id, 'email', true ) ), true ),
+				array( 'clock', trim( (string) get_post_meta( $id, 'horario', true ) ), false ),
+			);
+			?>
+			<article class="cipba-sede-mini<?php echo $main ? ' cipba-sede-mini--main' : ''; ?>">
+				<div class="cipba-sede-mini__tag"><?php echo esc_html( get_post_meta( $id, 'tag', true ) ); ?></div>
+				<h4><?php echo esc_html( get_the_title( $sede ) ); ?></h4>
+				<div class="cipba-sede-mini__rows">
+					<?php foreach ( $rows as $r ) :
+						if ( '' === $r[1] ) {
+							continue;
+						}
+						?>
+						<div class="cipba-sede-mini__row"><?php echo cipba_icon( $r[0], 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <span><?php
+							if ( $r[2] ) {
+								echo '<a href="mailto:' . esc_attr( antispambot( $r[1] ) ) . '">' . esc_html( $r[1] ) . '</a>';
+							} else {
+								echo esc_html( $r[1] );
+							}
+						?></span></div>
+					<?php endforeach; ?>
+				</div>
+			</article>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_sedes_contacto', 'cipba_sedes_contacto_shortcode' );
+
+/**
+ * Formulario de Contacto: script que hace desaparecer solo el mensaje de
+ * éxito/error del envío. Se carga solo en páginas que muestran un
+ * formulario de Fluent Forms.
+ */
+function cipba_enqueue_contact_form_script() {
+	$post = get_post();
+	if ( is_singular() && $post && has_shortcode( $post->post_content, 'fluentform' ) ) {
+		wp_enqueue_script( 'cipba-contact-form', get_stylesheet_directory_uri() . '/assets/js/contact-form.js', array(), CHILD_THEME_CIPBA_VERSION, true );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'cipba_enqueue_contact_form_script' );

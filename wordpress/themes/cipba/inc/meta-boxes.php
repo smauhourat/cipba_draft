@@ -324,6 +324,55 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		),
 	);
 
+	// Área de contacto (página Contacto): el nombre del área va en el título.
+	$area_fields = array(
+		array(
+			'name'    => 'Ícono',
+			'id'      => 'icono',
+			'desc'    => 'Ícono que acompaña al nombre del área.',
+			'type'    => 'select',
+			'options' => array(
+				'users'    => 'Personas',
+				'building' => 'Edificio',
+				'file'     => 'Documento',
+			),
+			'std'     => 'users',
+		),
+		array(
+			'name'        => 'Correo del área',
+			'id'          => 'email',
+			'desc'        => 'Se muestra al pie de la tarjeta.',
+			'type'        => 'email',
+			'placeholder' => 'administracion@cipba.org',
+		),
+	);
+	for ( $i = 1; $i <= CIPBA_AREA_MAX_PERSONAS; $i++ ) {
+		$area_fields[] = array(
+			'type' => 'heading',
+			'name' => 1 === $i ? 'Persona 1' : "Persona $i (opcional)",
+		);
+		$area_fields[] = array(
+			'name'        => 'Nombre',
+			'id'          => "persona{$i}_nombre",
+			'type'        => 'text',
+			'columns'     => 6,
+			'placeholder' => 'Ej: Rolando Menna',
+		);
+		$area_fields[] = array(
+			'name'        => 'Teléfono',
+			'id'          => "persona{$i}_tel",
+			'type'        => 'text',
+			'columns'     => 6,
+			'placeholder' => '(011) 15-5857-0060',
+		);
+	}
+
+	$meta_boxes[] = array(
+		'title'      => 'Datos del área',
+		'post_types' => 'area_contacto',
+		'fields'     => $area_fields,
+	);
+
 	return $meta_boxes;
 }
 add_filter( 'rwmb_meta_boxes', 'cipba_register_meta_boxes' );

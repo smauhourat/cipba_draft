@@ -113,6 +113,23 @@ function cipba_register_post_types() {
 		'supports'     => array( 'title', 'page-attributes' ),
 	) );
 
+	register_post_type( 'area_contacto', array(
+		'label'        => 'Áreas de contacto',
+		'labels'       => array(
+			'name'          => 'Áreas de contacto',
+			'singular_name' => 'Área de contacto',
+			'add_new_item'  => 'Agregar área de contacto',
+			'edit_item'     => 'Editar área de contacto',
+			'all_items'     => 'Todas las áreas de contacto',
+		),
+		'public'       => false,
+		'show_ui'      => true,
+		'show_in_rest' => true,
+		'has_archive'  => false,
+		'menu_icon'    => 'dashicons-phone',
+		'supports'     => array( 'title', 'page-attributes' ),
+	) );
+
 	register_post_type( 'tramite', array(
 		'label'        => 'Trámites',
 		'labels'       => array(
@@ -194,13 +211,16 @@ add_action( 'pre_get_posts', 'cipba_subcomision_admin_default_order' );
  * cajas de campos), sin el editor de bloques que no aporta nada acá.
  */
 function cipba_subcomision_classic_editor( $use_block_editor, $post_type ) {
-	return in_array( $post_type, array( 'subcomision', 'sede', 'autoridad' ), true ) ? false : $use_block_editor;
+	return in_array( $post_type, array( 'subcomision', 'sede', 'autoridad', 'area_contacto' ), true ) ? false : $use_block_editor;
 }
 add_filter( 'use_block_editor_for_post_type', 'cipba_subcomision_classic_editor', 10, 2 );
 
 function cipba_subcomision_title_placeholder( $text, $post ) {
 	if ( 'subcomision' === $post->post_type ) {
 		return 'Nombre de la subcomisión (ej: Ingeniería Civil)';
+	}
+	if ( 'area_contacto' === $post->post_type ) {
+		return 'Nombre del área (ej: Área Administrativa)';
 	}
 	if ( 'autoridad' === $post->post_type ) {
 		return 'Nombre y apellido (ej: Daniel Héctor PALACIOS)';
@@ -283,3 +303,36 @@ function cipba_autoridad_admin_default_order( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'cipba_autoridad_admin_default_order' );
+
+/**
+ * Áreas de contacto — listado del admin: personas, correo y orden a la vista.
+ */
+function cipba_area_admin_columns( $cols ) {
+	return array(
+		'cb'       => $cols['cb'],
+		'title'    => 'Área',
+		'personas' => 'Personas',
+		'email'    => 'Correo',
+		'orden'    => 'Orden',
+	);
+}
+add_filter( 'manage_area_contacto_posts_columns', 'cipba_area_admin_columns' );
+
+function cipba_area_admin_column_content( $col, $post_id ) {
+	if ( 'personas' === $col ) {
+		echo esc_html( implode( ' · ', wp_list_pluck( cipba_get_area_personas( $post_id ), 'nombre' ) ) );
+	} elseif ( 'email' === $col ) {
+		echo esc_html( get_post_meta( $post_id, 'email', true ) );
+	} elseif ( 'orden' === $col ) {
+		echo (int) get_post_field( 'menu_order', $post_id );
+	}
+}
+add_action( 'manage_area_contacto_posts_custom_column', 'cipba_area_admin_column_content', 10, 2 );
+
+function cipba_area_admin_default_order( $query ) {
+	if ( is_admin() && $query->is_main_query() && 'area_contacto' === $query->get( 'post_type' ) && ! $query->get( 'orderby' ) ) {
+		$query->set( 'orderby', 'menu_order title' );
+		$query->set( 'order', 'ASC' );
+	}
+}
+add_action( 'pre_get_posts', 'cipba_area_admin_default_order' );

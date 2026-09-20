@@ -608,12 +608,23 @@ Template: astra
    (el script que agrega/quita .is-scrolled está en inc/navbar.php)
    ========================================================================== */
 .ast-main-header-wrap {
-	position: sticky;
-	top: 0;
-	z-index: 99;
 	background: #fff;
 	transition: box-shadow var(--cipba-base) var(--cipba-ease);
 }
+
+/* Header sticky: el que queda fijo es el #masthead completo (su contenedor,
+   #page, mide toda la página). Antes el sticky estaba en .ast-main-header-wrap,
+   cuyo contenedor mide lo mismo que el header, así que nunca llegaba a
+   quedarse fijo. La barra superior (.cipba-topbar) va ANTES del #masthead y
+   scrollea normalmente, como en el prototipo. */
+#masthead {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+.admin-bar #masthead { top: 32px; }
+@media (max-width: 782px) { .admin-bar #masthead { top: 46px; } }
+@media (max-width: 600px) { .admin-bar #masthead { top: 0; } }
 .ast-main-header-wrap.is-scrolled {
 	box-shadow: 0 2px 20px rgba(0, 0, 0, .25);
 	background: rgba(255, 255, 255, .92);
@@ -866,9 +877,17 @@ input, select, textarea {
 }
 /* Página actual (ej. "Inicio" al estar en la home): Max Mega Menu le pone
    su propio fondo oscuro vía .mega-current-menu-item — lo reemplazamos por
-   el estado de "página actual" que pide el handoff (§6: verde-700 + subrayado). */
+   el estado de "página actual" que pide el handoff (§6: verde-700 + subrayado).
+   También aplica a ancestro/padre: al estar en una subpágina (ej. Subcomisiones)
+   Max Mega Menu marca el ítem de arriba (Institucional) con
+   .mega-current-menu-ancestor / -parent y le pone el mismo fondo oscuro, que
+   con el texto oscuro se veía como un rectángulo negro. */
 #mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-menu-item > a.mega-menu-link,
-#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-page-item > a.mega-menu-link {
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-page-item > a.mega-menu-link,
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-menu-ancestor > a.mega-menu-link,
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-menu-parent > a.mega-menu-link,
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-page-ancestor > a.mega-menu-link,
+#mega-menu-wrap-primary #mega-menu-primary > li.mega-menu-item.mega-current-page-parent > a.mega-menu-link {
 	background-color: var(--wp--preset--color--blanco, #ffffff) !important;
 	color: var(--wp--preset--color--verde-700, #14484a) !important;
 	font-weight: 700 !important;
@@ -1124,3 +1143,105 @@ input, select, textarea {
 .cipba-inst-head h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(24px, 3.4vw, 34px); font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 10px; }
 .cipba-inst-head p { color: var(--wp--preset--color--gris-teal, #607a7c); font-size: 15px; line-height: 1.6; max-width: 580px; margin: 0 auto; }
 .cipba-inst-head__pill { display: inline-block; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); font-size: 13px; font-weight: 700; padding: 5px 14px; border-radius: 20px; }
+
+/* Scroll de "Áreas y contactos directos": mismo estilo que el prototipo
+   (barra de 6px, pista #eef2f1, pulgar #1a5f5c redondeado). */
+.cipba-sede__contacts-list { scrollbar-width: thin; scrollbar-color: #1a5f5c #eef2f1; }
+.cipba-sede__contacts-list::-webkit-scrollbar { width: 6px; }
+.cipba-sede__contacts-list::-webkit-scrollbar-track { background: #eef2f1; }
+.cipba-sede__contacts-list::-webkit-scrollbar-thumb { background: #1a5f5c; border-radius: 3px; }
+
+/* ==========================================================================
+   Barra superior — se imprime antes del #masthead y scrollea con la página
+   (no es sticky; el sticky es el #masthead, ver "Header sticky" arriba).
+   ========================================================================== */
+.cipba-topbar { background: var(--wp--preset--color--verde-700, #14484a); color: rgba(255,255,255,.85); font-size: 12.5px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.cipba-topbar__inner { max-width: 1200px; margin: 0 auto; padding: 7px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.cipba-topbar__group { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; }
+.cipba-topbar__group--right { gap: 18px; }
+.cipba-topbar__item, .cipba-topbar__link { display: inline-flex; align-items: center; gap: 6px; color: inherit !important; text-decoration: none !important; }
+.cipba-topbar__link { gap: 5px; opacity: .8; transition: opacity var(--cipba-fast, .2s); }
+.cipba-topbar__cs { gap: 4px; }
+.cipba-topbar__link:hover { opacity: 1; }
+.cipba-topbar svg { flex-shrink: 0; }
+@media (max-width: 700px) { .cipba-topbar__hours, .cipba-topbar__cs { display: none !important; } }
+
+/* ==========================================================================
+   Página Contacto — hero con botón, áreas, formulario (Fluent Forms) y sedes
+   ========================================================================== */
+.cipba-inst-hero__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--wp--preset--color--verde-500, #00a48a); color: #fff !important; font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: 6px; text-decoration: none !important; transition: background var(--cipba-fast, .2s); }
+.cipba-inst-hero__cta:hover { background: var(--wp--preset--color--verde-600, #008c75); }
+
+.cipba-contact { background: var(--wp--preset--color--gris-100, #eef2f1); padding: 56px 0 64px; scroll-margin-top: 88px; }
+.cipba-contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 34px; align-items: stretch; }
+@media (max-width: 900px) { .cipba-contact-grid { grid-template-columns: 1fr; } }
+.cipba-contact-side { display: grid; gap: 16px; align-content: start; }
+
+/* Áreas */
+.cipba-areas { display: grid; gap: 16px; }
+.cipba-area { background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; padding: 22px 24px; }
+.cipba-area__head { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+.cipba-area__ico { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-800, #1a5f5c); }
+.cipba-area__head h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 17px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; }
+.cipba-area__people { display: grid; gap: 9px; }
+.cipba-area__person { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cipba-area__name { font-size: 13.5px; font-weight: 700; color: #4a6062; }
+.cipba-area__person a { font-size: 13.5px; color: #00705e; white-space: nowrap; text-decoration: none !important; }
+.cipba-area__person a:hover { text-decoration: underline !important; }
+.cipba-area__mail { display: inline-flex; align-items: center; gap: 6px; width: 100%; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--wp--preset--color--verde-100, #e8f5f1); font-size: 13px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; word-break: break-all; }
+.cipba-area__mail svg { color: var(--wp--preset--color--verde-500, #00a48a); flex-shrink: 0; }
+
+/* Botón WhatsApp */
+.cipba-wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: #fff !important; padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 15px; text-decoration: none !important; transition: background var(--cipba-fast, .2s); }
+.cipba-wa-btn:hover { background: #1da851; }
+
+/* Tarjeta del formulario */
+.cipba-contact-form { background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; padding: 28px 30px 30px; }
+@media (max-width: 600px) { .cipba-contact-form { padding: 22px 18px 24px; } }
+.cipba-contact-form__eyebrow { color: var(--wp--preset--color--verde-500, #00a48a); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.cipba-contact-form h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(21px, 2.6vw, 27px); font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 18px; }
+
+/* Fluent Forms con la apariencia del prototipo */
+.cipba-contact-form .fluentform .ff-el-group { margin-bottom: 16px; }
+.cipba-contact-form .fluentform .ff-t-container { gap: 16px; }
+.cipba-contact-form .fluentform .ff-t-cell { padding: 0; }
+.cipba-contact-form .fluentform .ff-el-input--label label { font-size: 13.5px; font-weight: 700; color: #4a6062; margin-bottom: 6px; }
+.cipba-contact-form .fluentform .ff-el-form-control { width: 100%; padding: 10px 14px; border: 1.5px solid var(--cipba-border-input, #dbe6e3); border-radius: 6px; font-family: inherit; font-size: 14px; color: var(--wp--preset--color--tinta-900, #373d3e); background: #fff; box-shadow: none; transition: border-color var(--cipba-fast, .2s); }
+.cipba-contact-form .fluentform .ff-el-form-control::placeholder { color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-contact-form .fluentform .ff-el-form-control:focus { border-color: var(--wp--preset--color--verde-500, #00a48a); outline: 0; box-shadow: none; }
+.cipba-contact-form .fluentform textarea.ff-el-form-control { min-height: 130px; resize: vertical; }
+.cipba-contact-form .fluentform .ff-el-is-error .ff-el-form-control { border-color: #c0392b; }
+.cipba-contact-form .fluentform .text-danger, .cipba-contact-form .fluentform .error { color: #c0392b; font-size: 12px; margin-top: 4px; }
+.cipba-contact-form .fluentform .ff-btn-submit { width: 100%; padding: 13px; border: 0; border-radius: 6px; background: var(--wp--preset--color--verde-700, #14484a) !important; color: #fff !important; font-size: 15px; font-weight: 700; transition: background var(--cipba-fast, .2s); }
+.cipba-contact-form .fluentform .ff-btn-submit:hover { background: var(--wp--preset--color--verde-800, #1a5f5c) !important; opacity: 1; }
+.cipba-contact-form .fluentform .ff_submit_btn_wrapper { margin-bottom: 0; }
+.cipba-contact-form .ff-message-success { border: 0; border-radius: 10px; padding: 32px; text-align: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-700, #14484a); font-size: 15px; box-shadow: none; }
+@media (max-width: 600px) { .cipba-contact-form .fluentform .ff-t-container { flex-direction: column; gap: 0; } }
+
+/* Sedes y delegaciones (compactas) */
+.cipba-contact-sedes { margin-top: 34px; padding-top: 28px; border-top: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-contact-sedes h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 20px; font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 16px; }
+.cipba-sedes-mini { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .cipba-sedes-mini { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .cipba-sedes-mini { grid-template-columns: 1fr; } }
+.cipba-sede-mini { background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; padding: 20px 22px 22px; }
+.cipba-sede-mini--main { background: var(--wp--preset--color--verde-700, #14484a); border: 0; box-shadow: 0 10px 28px rgba(20,72,74,.18); color: rgba(255,255,255,.88); }
+.cipba-sede-mini__tag { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--verde-500, #00a48a); margin-bottom: 4px; }
+.cipba-sede-mini--main .cipba-sede-mini__tag { color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-sede-mini h4 { font-family: var(--wp--preset--font-family--condensed); font-size: 17px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 12px; }
+.cipba-sede-mini--main h4 { color: #fff; }
+.cipba-sede-mini__rows { display: grid; gap: 8px; font-size: 13.5px; color: #4a6062; }
+.cipba-sede-mini--main .cipba-sede-mini__rows { color: rgba(255,255,255,.88); }
+.cipba-sede-mini__row { display: flex; gap: 8px; }
+.cipba-sede-mini__row svg { flex-shrink: 0; margin-top: 3px; color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-sede-mini--main .cipba-sede-mini__row svg { color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-sede-mini__row a { color: inherit !important; text-decoration: none !important; border-bottom: 1px dotted rgba(96,122,124,.6); word-break: break-all; }
+.cipba-sede-mini--main .cipba-sede-mini__row a { border-bottom-color: rgba(255,255,255,.4); }
+
+/* Mensaje del envío, debajo del botón; se desvanece solo (ver assets/js/contact-form.js). */
+.cipba-contact-form .ff-message-success,
+.cipba-contact-form .ff-errors-in-stack { margin: 14px 0 0; padding: 13px 16px; border: 0; border-radius: 6px; font-size: 14px; line-height: 1.5; text-align: center; box-shadow: none; opacity: 1; transition: opacity .4s ease; }
+.cipba-contact-form .ff-message-success { background: var(--wp--preset--color--verde-100, #e8f5f1); color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-contact-form .ff-errors-in-stack { background: #fdecea; color: #a93226; }
+.cipba-contact-form .ff-message-success.is-hiding,
+.cipba-contact-form .ff-errors-in-stack.is-hiding { opacity: 0; }

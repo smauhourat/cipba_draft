@@ -11,7 +11,7 @@
 /**
  * Define Constants
  */
-define( 'CHILD_THEME_CIPBA_VERSION', '1.0.39' );
+define( 'CHILD_THEME_CIPBA_VERSION', '1.0.47' );
 
 /**
  * Enqueue styles
@@ -30,6 +30,8 @@ add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
 require_once get_stylesheet_directory() . '/inc/custom-post-types.php';
 require_once get_stylesheet_directory() . '/inc/image-sizes.php';
 require_once get_stylesheet_directory() . '/inc/helpers.php';
+require_once get_stylesheet_directory() . '/inc/settings.php';
+require_once get_stylesheet_directory() . '/inc/topbar.php';
 require_once get_stylesheet_directory() . '/inc/navbar.php';
 require_once get_stylesheet_directory() . '/inc/footer.php';
 require_once get_stylesheet_directory() . '/inc/shortcodes.php';
