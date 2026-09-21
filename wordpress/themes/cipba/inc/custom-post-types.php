@@ -42,7 +42,7 @@ function cipba_register_post_types() {
 		'show_in_rest' => true,
 		'has_archive'  => false,
 		'menu_icon'    => 'dashicons-media-spreadsheet',
-		'supports'     => array( 'title', 'editor' ),
+		'supports'     => false, // Sin título ni editor: el título se arma solo desde el código (inc/honorarios.php).
 	) );
 
 	register_post_type( 'subcomision', array(

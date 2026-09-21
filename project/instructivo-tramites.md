@@ -47,7 +47,6 @@ Un **marcador** es el nombre del dato entre dos llaves. Donde lo escribas se ree
 | `{{form_baja_fallecimiento}}` | Formulario de baja por fallecimiento | BF-2024 | BF-2024 |
 | `{{form_credencial}}` | Formulario de credenciales | CRE-2024 | CRE-2024 |
 | `{{email}}`, `{{telefono}}`, `{{horario}}` | Contacto general del Distrito | — | Tal cual |
-| `{{honorarios_desde}}`, `{{honorarios_resolucion}}` | Datos del aviso de honorarios | — | Tal cual |
 | `{{periodo_autoridades}}` | Período del Consejo Directivo | 2024 – 2027 | Tal cual |
 
 Al editar un trámite, la cajita lateral **"Datos que podés insertar en los textos"** muestra esta misma lista con los valores actuales, para copiar y pegar.
@@ -208,7 +207,40 @@ Los botones de compartir (WhatsApp, LinkedIn, Facebook, correo, copiar enlace), 
 
 ---
 
-## 7. Tareas frecuentes
+## 7. Honorarios mínimos
+
+La página **`/honorarios/`** muestra la **resolución vigente** con sus dos documentos y una lista de **resoluciones anteriores**. Cada resolución del Consejo Superior es un ítem de **Resoluciones (Honorarios)** en el panel.
+
+### 7.1 Cargar una resolución
+
+**Resoluciones (Honorarios) → Agregar resolución.** No hay campo de título: se arma solo con el código (*1553/2026* → **"Resolución CS 1553/2026"**).
+
+| Campo | Para qué sirve |
+|---|---|
+| **Código** | Número y año (ej.: `1553/2026`). |
+| **Fecha de publicación** | Se muestra como *"Publicada el 27 de febrero de 2026"* (en la vigente) o *"Publicada 27/02/2026"* (en las anteriores). |
+| **Vigencia desde** | En la vigente, el recuadro grande *"Vigente desde"*. |
+| **Vigencia hasta** *(opcional)* | En las anteriores con rango, se muestra *"Vigente 01/10/2025 – 31/03/2026"*. |
+| **Es la resolución vigente** | La que se muestra arriba, con sus documentos. **Solo puede haber una**: al tildarla, la que estaba vigente se destilda sola. |
+| **Descripción** | En la vigente, el resumen bajo el título; en las anteriores, la nota de la lista. |
+| **Resolución (documento)** y **Anexos (documento)** | Los dos archivos de la vigente, **subidos a este sitio** (botón *Add Media*). El tipo (PDF) y el peso se leen solos. |
+| **Enlace de descarga (Consejo Superior)** | Para las anteriores: dirección donde el Consejo Superior publica la resolución. |
+
+### 7.2 Cómo se ordena y cuánto se muestra
+
+- Las anteriores se listan de la **más nueva a la más vieja** (por fecha de publicación o, si no la tiene, por inicio de vigencia).
+- Se muestran las **6 más recientes**. Ese número se cambia en **Datos del Distrito → Página de honorarios mínimos → Resoluciones anteriores a mostrar** (0 = todas).
+- El enlace del aviso *"listado de honorarios del Consejo Superior"* también se edita ahí.
+
+- La **barra de aviso de la página de inicio** ("Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553", con enlace a esta página) se arma sola con la resolución vigente: toma su **código** y su **vigencia desde**. Si no hay ninguna vigente, la barra no se muestra.
+---
+
+## 8. Tareas frecuentes
+
+### Salió una nueva resolución de honorarios
+1. **Resoluciones (Honorarios) → Agregar resolución**: cargá el código, la fecha de publicación, la vigencia desde, la descripción y subí los dos documentos (resolución y anexos). Tildá **Es la resolución vigente**.
+2. La resolución que estaba vigente pasa sola a *Resoluciones anteriores*. Abrila y cargale el **Enlace de descarga (Consejo Superior)** (y, si tiene, la *Vigencia hasta*).
+3. La **barra de aviso de la home** ("Honorarios mínimos vigentes desde … — Res. …") se actualiza sola con la nueva vigente: no hay nada más que cargar.
 
 ### Cambió la resolución de matriculación
 1. **Datos del Distrito** → *Resolución vigente* → escribí la nueva (ej.: `1600/26`) → **Guardar cambios**.
@@ -238,7 +270,7 @@ Editá el trámite → bloque de la lista → agregá o borrá un ítem de la li
 
 ---
 
-## 8. Preguntas y problemas comunes
+## 9. Preguntas y problemas comunes
 
 **Veo `{{algo}}` en la página con las llaves.**
 El marcador está mal escrito o no existe. Compará con la lista de la sección 2.2 o con la cajita lateral del trámite.
@@ -260,7 +292,7 @@ No. El sitio arma el diseño; quien edita solo carga texto y listas. El contenid
 
 ---
 
-## 9. Notas técnicas (para quien mantiene el tema)
+## 10. Notas técnicas (para quien mantiene el tema)
 
 - Plantilla: `single-tramite.php`. Lógica: `inc/tramites.php`. Formulario de campos: `inc/meta-boxes.php` (caja "Datos del trámite").
 - Datos y marcadores: `inc/settings.php` (`cipba_datos_fields()`, `cipba_tokens()`, `cipba_dato_display()`). Para sumar un dato nuevo (y su marcador) alcanza con agregar una entrada en `cipba_datos_fields()`.
@@ -270,3 +302,4 @@ No. El sitio arma el diseño; quien edita solo carga texto y listas. El contenid
 - Medios de pago: plantilla `single-tramite-pago-matricula.php` (WordPress la elige por el nombre `single-{tipo}-{slug}.php`), script `assets/js/pago-matricula.js` (ventanas y botón Copiar) y estilos en `style.css` (bloque "Medios de pago"). Los datos bancarios son campos de `cipba_datos_fields()` (`banco_*`).
 - Formulario de edición de esa página: caja "Datos de la página de pago" en `inc/meta-boxes.php`. Cada trámite muestra **solo** su caja (común o de pago): la decide `cipba_admin_editando_pago()` (`inc/tramites.php`), porque las dos comparten nombres de campo y, si aparecieran juntas, una pisaría a la otra al guardar.
 - Eventos y novedades: entradas nativas (`single.php`, listado `[cipba_novedades]` en `template-parts/novedades-list.php`, lógica y colores de categoría en `inc/novedades.php`, filtros en `assets/js/novedades.js`). Los campos están en `inc/meta-boxes.php` (cajas *Datos de la publicación* y *Datos de la actividad*; esta última se muestra u oculta con `assets/js/admin-novedad.js`). El tipo de contenido anterior `evento` se retiró y sus eventos se migraron a entradas.
+- Honorarios mínimos: lógica en `inc/honorarios.php` (título automático, una sola vigente, listados), página en `template-parts/honorarios.php` ([cipba_honorarios]), campos en `inc/meta-boxes.php` (caja *Datos de la resolución*). El tipo `resolucion` no tiene título ni editor.

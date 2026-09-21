@@ -22,7 +22,7 @@ const CIPBA_DATOS_OPTION = 'cipba_distrito';
  * Definición de los datos generales.
  *
  * @return array[] clave => array( section, label, desc, placeholder, default, type, required )
- *   type: text (por defecto) | url | email | monto (número, se muestra "$ 1.234") | fecha (calendario, se muestra dd/mm/aaaa)
+ *   type: text (por defecto) | url | email | numero (entero) | monto (número, se muestra "$ 1.234") | fecha (calendario, se muestra dd/mm/aaaa)
  */
 function cipba_datos_fields() {
 	return array(
@@ -102,20 +102,22 @@ function cipba_datos_fields() {
 			'type'        => 'url',
 		),
 
-		// — Aviso de honorarios (barra de la home) —
-		'honorarios_desde'    => array(
-			'section'     => 'Aviso de honorarios (barra de la home)',
-			'label'       => 'Vigentes desde',
-			'desc'        => 'Fecha de vigencia de los honorarios mínimos. Ej: 01/04/2026.',
-			'placeholder' => '01/04/2026',
-			'default'     => '01/04/2026',
+		// — Página de honorarios mínimos —
+		'honorarios_cs_url'   => array(
+			'section'     => 'Página de honorarios mínimos',
+			'label'       => 'Listado de honorarios del Consejo Superior',
+			'desc'        => 'Enlace del aviso "podés consultar el listado de honorarios del Consejo Superior". Vacío = no se muestra el aviso.',
+			'placeholder' => 'http://www.colegioingenieros.org.ar/category/honorarios/',
+			'default'     => 'http://www.colegioingenieros.org.ar/category/honorarios/',
+			'type'        => 'url',
 		),
-		'honorarios_resolucion' => array(
-			'section'     => 'Aviso de honorarios (barra de la home)',
-			'label'       => 'Resolución',
-			'desc'        => 'Solo el número, sin "Res.". Ej: 1553.',
-			'placeholder' => '1553',
-			'default'     => '1553',
+		'honorarios_anteriores_max' => array(
+			'section'     => 'Página de honorarios mínimos',
+			'label'       => 'Resoluciones anteriores a mostrar',
+			'desc'        => 'Cuántas resoluciones anteriores se listan (las más nuevas primero). 0 = todas.',
+			'placeholder' => '6',
+			'default'     => '6',
+			'type'        => 'numero',
 		),
 
 		// — Matrícula y trámites (se usan como marcadores {{clave}} en los textos de los trámites) —
@@ -326,7 +328,7 @@ add_shortcode( 'cipba_dato', 'cipba_dato_shortcode' );
  * Tipo de <input> HTML para cada tipo de dato del formulario.
  */
 function cipba_dato_input_type( $type ) {
-	$map = array( 'monto' => 'number', 'fecha' => 'date' );
+	$map = array( 'monto' => 'number', 'numero' => 'number', 'fecha' => 'date' );
 	return isset( $map[ $type ] ) ? $map[ $type ] : $type;
 }
 
@@ -373,6 +375,8 @@ function cipba_datos_sanitize( $input ) {
 			$out[ $key ] = esc_url_raw( trim( $raw ) );
 		} elseif ( 'email' === $type ) {
 			$out[ $key ] = sanitize_email( $raw );
+		} elseif ( 'numero' === $type ) {
+			$out[ $key ] = preg_replace( '/D+/', '', (string) $raw );
 		} elseif ( 'monto' === $type ) {
 			$out[ $key ] = preg_replace( '/\D+/', '', (string) $raw );
 		} elseif ( 'fecha' === $type ) {

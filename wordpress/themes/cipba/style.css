@@ -1524,3 +1524,71 @@ body.cipba-modal-open { overflow: hidden; }
 .cipba-nota__otras-head h2 { font-family: var(--wp--preset--font-family--condensed); font-size: 24px; font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; }
 .cipba-nota__otras-head a { display: inline-flex; align-items: center; gap: 4px; font-size: 13.5px; font-weight: 800; color: #00705e !important; text-decoration: none !important; }
 @media (prefers-reduced-motion: reduce) { .cipba-nov-card, .cipba-nov-dest { transition: none; } .cipba-nov-card:hover { transform: none; } }
+
+/* ==========================================================================
+   Honorarios mínimos ([cipba_honorarios]): resolución vigente, aviso y
+   resoluciones anteriores. Mismo diseño que honorarios.html del prototipo.
+   ========================================================================== */
+.cipba-hon-section { background: var(--wp--preset--color--gris-50, #f7faf9); border-top: 1px solid var(--wp--preset--color--gris-100, #eef2f1); padding: 34px 24px 60px; }
+.cipba-hon { max-width: 900px !important; margin: 0 auto !important; }
+
+/* Resolución vigente */
+.cipba-hon-vig { overflow: hidden; background: #fff; border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+.cipba-hon-vig__head { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 22px 26px; background: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-hon-vig__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 9px; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,.6); }
+.cipba-hon-vig__badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 20px; background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.cipba-hon-vig h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(22px, 3.4vw, 28px); font-weight: 900; line-height: 1.15; color: #fff; margin: 0; }
+.cipba-hon-vig__head p { max-width: 480px; margin: 8px 0 0; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,.8); text-wrap: pretty; }
+.cipba-hon-vig__date { text-align: right; padding-left: 24px; border-left: 1px solid rgba(255,255,255,.15); }
+.cipba-hon-vig__lbl { margin-bottom: 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.cipba-hon-vig__val { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(20px, 3vw, 26px); font-weight: 900; line-height: 1.15; color: #7fd8c5; }
+.cipba-hon-vig__piezas { display: grid; gap: 12px; padding: 18px 20px 20px; }
+.cipba-hon-doc { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 18px 22px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-decoration: none !important; transition: all .22s ease; }
+.cipba-hon-doc:hover { border-color: var(--wp--preset--color--verde-500, #00a48a); box-shadow: 0 8px 24px rgba(20,72,74,.10); }
+.cipba-hon-doc__ico { width: 42px; height: 42px; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; background: var(--wp--preset--color--verde-100, #e8f5f1); color: #00705e; transition: background .22s, color .22s; }
+.cipba-hon-doc:hover .cipba-hon-doc__ico { background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; }
+.cipba-hon-doc__body { min-width: 0; display: block; }
+.cipba-hon-doc__top { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-bottom: 4px; }
+.cipba-hon-doc__top strong { font-family: var(--wp--preset--font-family--condensed); font-size: 18.5px; font-weight: 700; line-height: 1.25; color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-hon-doc__top em { padding: 3px 8px; border-radius: 20px; background: var(--wp--preset--color--gris-100, #eef2f1); color: #4a6062; font-size: 10.5px; font-style: normal; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; }
+.cipba-hon-doc__desc { display: block; margin-bottom: 6px; font-size: 14px; line-height: 1.6; color: var(--wp--preset--color--gris-teal, #607a7c); text-wrap: pretty; }
+.cipba-hon-doc__meta { display: block; font-size: 12px; font-weight: 700; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-hon-doc__go { display: inline-flex; align-items: center; gap: 6px; justify-self: end; white-space: nowrap; font-size: 13.5px; font-weight: 800; color: var(--wp--preset--color--verde-700, #14484a); transition: color .2s; }
+.cipba-hon-doc:hover .cipba-hon-doc__go { color: #00705e; }
+.cipba-hon-empty { padding: 34px 24px; text-align: center; background: #fff; border: 1px dashed var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 12px; color: var(--wp--preset--color--gris-teal, #607a7c); }
+@media (max-width: 640px) {
+	.cipba-hon-vig__head { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+	.cipba-hon-vig__date { text-align: left; padding: 14px 0 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.15); }
+	.cipba-hon-doc { grid-template-columns: auto 1fr; padding: 16px; }
+	.cipba-hon-doc__go { display: none; }
+}
+
+/* Aviso al listado del Consejo Superior */
+.cipba-hon-aviso { display: flex; align-items: flex-start; gap: 11px; margin-top: 16px; padding: 15px 18px; background: var(--wp--preset--color--gris-100, #eef2f1); border: 1px solid #dfe9e7; border-radius: 10px; }
+.cipba-hon-aviso > span { flex-shrink: 0; margin-top: 1px; color: var(--wp--preset--color--gris-teal, #607a7c); display: flex; }
+.cipba-hon-aviso p { margin: 0; font-size: 13.5px; line-height: 1.6; color: #4a6062; text-wrap: pretty; }
+.cipba-hon-aviso a { color: #00705e; font-weight: 700; }
+
+/* Resoluciones anteriores (acordeón nativo <details>) */
+.cipba-hon-hist { margin-top: 34px; }
+.cipba-hon-hist > summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; list-style: none; cursor: pointer; }
+.cipba-hon-hist > summary::-webkit-details-marker { display: none; }
+.cipba-hon-hist[open] > summary { border-radius: 10px 10px 0 0; }
+.cipba-hon-hist__title { display: block; }
+.cipba-hon-hist__title strong { display: block; margin-bottom: 3px; font-family: var(--wp--preset--font-family--condensed); font-size: 19px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-hon-hist__title span { font-size: 13.5px; color: var(--wp--preset--color--gris-teal, #607a7c); }
+.cipba-hon-hist__count { display: flex; align-items: center; gap: 10px; flex-shrink: 0; font-size: 12.5px; font-weight: 800; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-hon-hist__chev { display: grid; color: #00705e; transform: rotate(90deg); transition: transform .25s; }
+.cipba-hon-hist[open] .cipba-hon-hist__chev { transform: rotate(-90deg); }
+.cipba-hon-hist__list { padding: 6px 22px 14px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-top: 0; border-radius: 0 0 10px 10px; }
+.cipba-hon-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; padding: 15px 4px; border-bottom: 1px solid var(--cipba-border-card, #e8f5f1); text-decoration: none !important; }
+.cipba-hon-row:last-child { border-bottom: 0; }
+.cipba-hon-row__body { display: block; min-width: 0; }
+.cipba-hon-row__body strong { display: block; margin-bottom: 3px; font-family: var(--wp--preset--font-family--condensed); font-size: 16.5px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a); transition: color .18s; }
+a.cipba-hon-row:hover .cipba-hon-row__body strong { color: #00705e; }
+.cipba-hon-row__body > span { display: block; font-size: 13.5px; line-height: 1.55; color: var(--wp--preset--color--gris-teal, #607a7c); text-wrap: pretty; }
+.cipba-hon-row__side { display: flex; align-items: center; gap: 12px; white-space: nowrap; color: #c3d2d1; }
+.cipba-hon-row__side em { font-size: 12.5px; font-style: normal; font-weight: 700; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+a.cipba-hon-row:hover .cipba-hon-row__side { color: var(--wp--preset--color--verde-500, #00a48a); }
+@media (max-width: 640px) { .cipba-hon-row { grid-template-columns: 1fr; gap: 6px; } .cipba-hon-hist__title span { display: none; } }
+.cipba-hon-foot { margin: 22px 0 0; font-size: 13px; line-height: 1.6; color: var(--wp--preset--color--gris-400, #9aa8a9); text-wrap: pretty; }

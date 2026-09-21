@@ -212,57 +212,84 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		),
 	);
 
-	// Resolución — Honorarios mínimos.
+	// Resolución de honorarios mínimos (página /honorarios/). El título se arma solo
+	// a partir del código ("Resolución CS 1553/2026"). La vigente lleva los dos
+	// documentos subidos al sitio; las anteriores, un enlace al Consejo Superior.
 	$meta_boxes[] = array(
 		'title'      => 'Datos de la resolución',
 		'post_types' => 'resolucion',
 		'fields'     => array(
 			array(
-				'name' => 'Número',
-				'id'   => 'numero',
-				'type' => 'text',
+				'name'        => 'Código',
+				'id'          => 'numero',
+				'desc'        => 'Número y año de la resolución. El título se arma solo: "Resolución CS 1553/2026".',
+				'type'        => 'text',
+				'columns'     => 4,
+				'placeholder' => '1553/2026',
 			),
 			array(
-				'name' => 'Fecha de publicación',
-				'id'   => 'fecha_publicacion',
-				'type' => 'date',
+				'name'    => 'Fecha de publicación',
+				'id'      => 'fecha_publicacion',
+				'type'    => 'date',
+				'columns' => 4,
 				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
 			),
 			array(
-				'name' => 'Vigencia desde',
-				'id'   => 'vigencia_desde',
-				'type' => 'date',
+				'name'    => 'Vigencia desde',
+				'id'      => 'vigencia_desde',
+				'type'    => 'date',
+				'columns' => 4,
 				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
 			),
 			array(
-				'name' => 'Vigente',
+				'name'    => 'Vigencia hasta (opcional)',
+				'id'      => 'vigencia_hasta',
+				'desc'    => 'Solo en resoluciones anteriores con rango de vigencia: se muestra "Vigente 01/10/2025 – 31/03/2026".',
+				'type'    => 'date',
+				'columns' => 4,
+				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
+			),
+			array(
+				'name' => 'Es la resolución vigente',
 				'id'   => 'vigente',
+				'desc' => 'Se muestra arriba en la página de Honorarios, con sus documentos. Solo puede haber una: al tildarla, las demás se destildan solas.',
 				'type' => 'checkbox',
 			),
 			array(
-				'name'   => 'Anexos',
-				'id'     => 'anexos',
-				'type'   => 'group',
-				'clone'  => true,
-				'sort_clone' => true,
-				'fields' => array(
-					array(
-						'name' => 'Título',
-						'id'   => 'titulo',
-						'type' => 'text',
-					),
-					array(
-						'name'     => 'Archivo',
-						'id'       => 'archivo',
-						'type'     => 'file_advanced',
-						'max_file_uploads' => 1,
-					),
-					array(
-						'name' => 'Descripción',
-						'id'   => 'descripcion',
-						'type' => 'textarea',
-					),
-				),
+				'name' => 'Descripción',
+				'id'   => 'descripcion',
+				'desc' => 'En la vigente: resumen bajo el título. En las anteriores: la nota de la lista (ej: "Tabla general con Anexos I, II y III").',
+				'type' => 'textarea',
+				'rows' => 3,
+			),
+			array(
+				'type' => 'heading',
+				'name' => 'Documentos de la resolución vigente (se suben a este sitio)',
+			),
+			array(
+				'name'             => 'Resolución (documento)',
+				'id'               => 'archivo_resolucion',
+				'type'             => 'file_advanced',
+				'max_file_uploads' => 1,
+				'mime_type'        => 'application',
+			),
+			array(
+				'name'             => 'Anexos (documento)',
+				'id'               => 'archivo_anexos',
+				'type'             => 'file_advanced',
+				'max_file_uploads' => 1,
+				'mime_type'        => 'application',
+			),
+			array(
+				'type' => 'heading',
+				'name' => 'Resoluciones anteriores',
+			),
+			array(
+				'name'        => 'Enlace de descarga (Consejo Superior)',
+				'id'          => 'enlace_externo',
+				'desc'        => 'Dirección completa donde el Consejo Superior publica esta resolución.',
+				'type'        => 'url',
+				'placeholder' => 'http://www.colegioingenieros.org.ar/resolucion-1543-y-sus-anexos/',
 			),
 		),
 	);

@@ -11,7 +11,7 @@
 /**
  * Define Constants
  */
-define( 'CHILD_THEME_CIPBA_VERSION', '1.0.58' );
+define( 'CHILD_THEME_CIPBA_VERSION', '1.0.60' );
 
 /**
  * Enqueue styles
@@ -33,6 +33,7 @@ require_once get_stylesheet_directory() . '/inc/helpers.php';
 require_once get_stylesheet_directory() . '/inc/settings.php';
 require_once get_stylesheet_directory() . '/inc/tramites.php';
 require_once get_stylesheet_directory() . '/inc/novedades.php';
+require_once get_stylesheet_directory() . '/inc/honorarios.php';
 require_once get_stylesheet_directory() . '/inc/topbar.php';
 require_once get_stylesheet_directory() . '/inc/navbar.php';
 require_once get_stylesheet_directory() . '/inc/footer.php';
