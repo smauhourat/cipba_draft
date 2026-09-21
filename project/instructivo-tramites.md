@@ -183,12 +183,14 @@ Todas las publicaciones (jornadas, cursos, asambleas, beneficios, avisos) son **
 
 | Campo | Para qué sirve |
 |---|---|
+| **Tipo de publicación** | **Noticia** o **Evento o novedad**. Define en qué sección de la página de inicio aparece: *Noticias* (las 5 más recientes) o *Eventos y novedades* (la agenda: las actividades ya realizadas se ocultan solas). Si no se elige, cuenta como Noticia. |
 | **Bajada** | Resumen corto: va en las tarjetas y bajo el título. |
 | **Texto de fecha alternativo** | Opcional. Reemplaza a la fecha de publicación (ej.: *Vigente todo 2026*). |
 | **Destacada** | Se muestra como tarjeta grande arriba del listado. Si hay varias, la más reciente. |
-| **Mostrar en la agenda de la home** | Aparece en la agenda de la página de inicio. Las actividades ya realizadas se ocultan solas. |
 | **Botón de acción** | Texto y **enlace** (formulario de inscripción, otra página, un archivo…), o un **documento de la biblioteca**. Sin enlace, el botón lleva a Contacto. |
 | **Es una actividad con fecha** | Tildalo para eventos: aparece la caja *Datos de la actividad*. |
+
+> **Cómo se reparten en la página de inicio.** *Eventos y novedades* muestra hasta 3 publicaciones de tipo **Evento o novedad**, ordenadas por fecha (la de la actividad o, si no es una actividad, la de publicación). *Noticias* muestra las 5 más recientes de tipo **Noticia**. El listado completo de `/novedades/` incluye ambos tipos. En **Entradas** hay una columna **Tipo** y un filtro para verlos por separado.
 
 ### 6.2 Actividades (eventos)
 

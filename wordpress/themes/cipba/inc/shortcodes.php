@@ -24,8 +24,8 @@ function cipba_fecha_corta( $fecha ) {
 }
 
 /**
- * [cipba_eventos] — agenda de la home: hasta 3 publicaciones marcadas
- * "Mostrar en la agenda", sin las actividades ya realizadas, por fecha
+ * [cipba_eventos] — sección "Eventos y novedades" de la home: hasta 3 publicaciones de tipo
+ * "Evento o novedad", sin las actividades ya realizadas, por fecha
  * ascendente (ver cipba_get_agenda() en inc/novedades.php).
  */
 function cipba_eventos_shortcode() {
@@ -62,13 +62,15 @@ function cipba_eventos_shortcode() {
 add_shortcode( 'cipba_eventos', 'cipba_eventos_shortcode' );
 
 /**
- * [cipba_noticias] — últimas 5 publicaciones (entradas nativas), con la
- * categoría en el color de su paleta, fecha d/m/Y, imagen, título y bajada.
+ * [cipba_noticias] — sección "Noticias" de la home: las 5 últimas publicaciones
+ * de tipo "Noticia" (entradas nativas), con la categoría en el color de su
+ * paleta, fecha d/m/Y, imagen, título y bajada.
  */
 function cipba_noticias_shortcode() {
 	$query = new WP_Query( array(
 		'post_type'      => 'post',
 		'posts_per_page' => 5,
+		'meta_query'     => cipba_meta_query_tipo( 'noticia' ), // Solo tipo "Noticia" (los eventos y novedades van en la agenda).
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 	) );

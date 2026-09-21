@@ -296,14 +296,45 @@ add_shortcode( 'cipba_novedades', 'cipba_novedades_shortcode' );
    ========================================================================== */
 
 /**
- * Listado de entradas del admin: fecha de la actividad y destacada a la vista.
+ * Tipos de publicación: "noticia" (sección Noticias de la home; también lo que
+ * no tenga tipo) y "evento" (sección Eventos y novedades / agenda).
+ */
+function cipba_tipos_pub() {
+	return array(
+		'noticia' => 'Noticia',
+		'evento'  => 'Evento o novedad',
+	);
+}
+
+function cipba_tipo_pub( $post_id ) {
+	return 'evento' === get_post_meta( $post_id, 'tipo_pub', true ) ? 'evento' : 'noticia';
+}
+
+/**
+ * meta_query para traer solo las publicaciones de un tipo (las sin tipo
+ * cuentan como noticias).
+ */
+function cipba_meta_query_tipo( $tipo ) {
+	if ( 'evento' === $tipo ) {
+		return array( array( 'key' => 'tipo_pub', 'value' => 'evento' ) );
+	}
+	return array(
+		'relation' => 'OR',
+		array( 'key' => 'tipo_pub', 'value' => 'noticia' ),
+		array( 'key' => 'tipo_pub', 'compare' => 'NOT EXISTS' ),
+	);
+}
+
+/**
+ * Listado de entradas del admin: columna Tipo (con destacada y fecha de la
+ * actividad) y filtro por tipo.
  */
 function cipba_post_admin_columns( $cols ) {
 	$out = array();
 	foreach ( $cols as $key => $label ) {
 		$out[ $key ] = $label;
 		if ( 'title' === $key ) {
-			$out['actividad'] = 'Actividad';
+			$out['tipo_pub'] = 'Tipo';
 		}
 	}
 	return $out;
@@ -311,20 +342,43 @@ function cipba_post_admin_columns( $cols ) {
 add_filter( 'manage_post_posts_columns', 'cipba_post_admin_columns' );
 
 function cipba_post_admin_column_content( $col, $post_id ) {
-	if ( 'actividad' !== $col ) {
+	if ( 'tipo_pub' !== $col ) {
 		return;
 	}
+	$tipos = cipba_tipos_pub();
+	echo esc_html( $tipos[ cipba_tipo_pub( $post_id ) ] );
 	if ( get_post_meta( $post_id, 'destacada', true ) ) {
-		echo '★ Destacada';
-		echo get_post_meta( $post_id, 'es_actividad', true ) ? '<br>' : '';
+		echo ' · ★ Destacada';
 	}
-	if ( get_post_meta( $post_id, 'es_actividad', true ) ) {
-		echo esc_html( cipba_actividad_fecha( $post_id ) );
-	} elseif ( ! get_post_meta( $post_id, 'destacada', true ) ) {
-		echo '—';
+	if ( get_post_meta( $post_id, 'es_actividad', true ) && cipba_actividad_fecha( $post_id ) ) {
+		echo '<br><span style="color:#646970">' . esc_html( cipba_actividad_fecha( $post_id ) ) . '</span>';
 	}
 }
 add_action( 'manage_post_posts_custom_column', 'cipba_post_admin_column_content', 10, 2 );
+
+function cipba_post_admin_tipo_filter( $post_type ) {
+	if ( 'post' !== $post_type ) {
+		return;
+	}
+	$actual = isset( $_GET['tipo_pub_filtro'] ) ? sanitize_key( $_GET['tipo_pub_filtro'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	echo '<select name="tipo_pub_filtro"><option value="">Todos los tipos</option>';
+	foreach ( cipba_tipos_pub() as $k => $label ) {
+		printf( '<option value="%s"%s>%s</option>', esc_attr( $k ), selected( $actual, $k, false ), esc_html( $label ) );
+	}
+	echo '</select>';
+}
+add_action( 'restrict_manage_posts', 'cipba_post_admin_tipo_filter' );
+
+function cipba_post_admin_tipo_query( $query ) {
+	if ( ! is_admin() || ! $query->is_main_query() || 'post' !== $query->get( 'post_type' ) || empty( $_GET['tipo_pub_filtro'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		return;
+	}
+	$tipo = sanitize_key( $_GET['tipo_pub_filtro'] ); // phpcs:ignore WordPress.Security.NonceVerification
+	if ( array_key_exists( $tipo, cipba_tipos_pub() ) ) {
+		$query->set( 'meta_query', cipba_meta_query_tipo( $tipo ) );
+	}
+}
+add_action( 'pre_get_posts', 'cipba_post_admin_tipo_query' );
 
 /**
  * En la edición de una entrada, la caja "Datos de la actividad" solo se ve si
@@ -342,7 +396,7 @@ function cipba_novedad_admin_script( $hook ) {
 add_action( 'admin_enqueue_scripts', 'cipba_novedad_admin_script' );
 
 /**
- * Agenda de la home: publicaciones marcadas "Mostrar en la agenda", sin las
+ * Agenda de la home ("Eventos y novedades"): publicaciones de tipo "Evento o novedad", sin las
  * actividades ya pasadas, por fecha ascendente (fecha de la actividad o, si no
  * es una actividad, fecha de publicación).
  *
@@ -352,8 +406,8 @@ function cipba_get_agenda( $limit = 3 ) {
 	$posts = get_posts( array(
 		'post_type'   => 'post',
 		'numberposts' => -1,
-		'meta_key'    => 'en_agenda',
-		'meta_value'  => '1',
+		'meta_key'    => 'tipo_pub',
+		'meta_value'  => 'evento',
 	) );
 	$hoy   = current_time( 'Y-m-d' );
 	$items = array();

@@ -19,6 +19,17 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		'post_types' => 'post',
 		'fields'     => array(
 			array(
+				'name'    => 'Tipo de publicación',
+				'id'      => 'tipo_pub',
+				'desc'    => 'Define en qué sección de la página de inicio aparece. <strong>Evento o novedad</strong>: sección "Eventos y novedades" (agenda; las actividades ya realizadas se ocultan solas). <strong>Noticia</strong>: sección "Noticias" (las más recientes).',
+				'type'    => 'select',
+				'options' => array(
+					'noticia' => 'Noticia',
+					'evento'  => 'Evento o novedad',
+				),
+				'std'     => 'noticia',
+			),
+			array(
 				'name' => 'Bajada',
 				'id'   => 'bajada',
 				'desc' => 'Resumen corto: se muestra en las tarjetas y bajo el título de la publicación.',
@@ -36,12 +47,6 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 				'name' => 'Destacada',
 				'id'   => 'destacada',
 				'desc' => 'Se muestra como tarjeta grande arriba del listado de Novedades (si hay varias tildadas, la más reciente).',
-				'type' => 'checkbox',
-			),
-			array(
-				'name' => 'Mostrar en la agenda de la home',
-				'id'   => 'en_agenda',
-				'desc' => 'Aparece en la sección de agenda de la página de inicio. Las actividades pasadas se ocultan solas.',
 				'type' => 'checkbox',
 			),
 			array(
