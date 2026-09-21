@@ -1397,3 +1397,130 @@ body.cipba-modal-open { overflow: hidden; }
 .cipba-copy { padding: 5px 9px !important; line-height: 1.2; }
 .cipba-pago-btn { line-height: 1.3; }
 .cipba-pago-card__steps li > span { min-width: 0; flex: 1; }
+
+/* ==========================================================================
+   Eventos y novedades: listado ([cipba_novedades]) y detalle (single.php).
+   Mismo diseño que novedades.html / novedad.html del prototipo.
+   ========================================================================== */
+.cipba-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; white-space: nowrap; }
+.cipba-badge--dest { background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; }
+
+/* Filtros (barra fija bajo el header) */
+.cipba-nov-filtros { position: sticky; top: 109px; z-index: 40; background: #fff; border-top: 1px solid var(--wp--preset--color--gris-100, #eef2f1); border-bottom: 1px solid var(--cipba-border-card, #e8f5f1); }
+.admin-bar .cipba-nov-filtros { top: 141px; }
+.cipba-nov-filtros__inner { max-width: 1200px !important; margin: 0 auto !important; padding: 16px 24px !important; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.cipba-nov-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.cipba-chip { padding: 8px 16px !important; border: 1px solid #dfe9e7; border-radius: 20px; background: #fff; color: #4a6062; font-family: inherit; font-size: 13.5px; font-weight: 700; line-height: 1.3; cursor: pointer; transition: all var(--cipba-fast, .2s); }
+.cipba-chip:hover { border-color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-chip.is-active { background: var(--wp--preset--color--verde-700, #14484a); border-color: var(--wp--preset--color--verde-700, #14484a); color: #fff; }
+.cipba-nov-search { display: flex; align-items: center; gap: 8px; min-width: 230px; padding: 8px 14px; border: 1px solid #dfe9e7; border-radius: 20px; background: var(--wp--preset--color--gris-50, #f7faf9); color: var(--wp--preset--color--gris-teal, #607a7c); }
+.cipba-nov-search input { flex: 1; width: 100%; border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent; padding: 0 !important; font-family: inherit; font-size: 13.5px; color: var(--wp--preset--color--tinta-900, #373d3e); }
+@media (max-width: 760px) {
+	.cipba-nov-filtros__inner { flex-direction: column; align-items: stretch; gap: 10px; padding: 10px 16px !important; }
+	.cipba-nov-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+	.cipba-nov-chips::-webkit-scrollbar { display: none; }
+	.cipba-chip { flex-shrink: 0; }
+	.cipba-nov-search { min-width: 0; }
+}
+
+/* Cuerpo del listado */
+.cipba-nov-body { background: var(--wp--preset--color--gris-50, #f7faf9); padding: 36px 0 60px; }
+.cipba-nov-count { margin-bottom: 18px; font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-nov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 1000px) { .cipba-nov-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .cipba-nov-grid { grid-template-columns: 1fr; } }
+.cipba-nov-card[hidden], .cipba-nov-dest[hidden], .cipba-nov-empty[hidden] { display: none !important; }
+.cipba-nov-card { display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-decoration: none !important; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+.cipba-nov-card:hover { transform: translateY(-4px); border-color: var(--wp--preset--color--verde-500, #00a48a); box-shadow: 0 12px 28px rgba(20,72,74,.12); }
+.cipba-nov-card__img { aspect-ratio: 16 / 10; background: var(--wp--preset--color--gris-100, #eef2f1); overflow: hidden; }
+.cipba-nov-card__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cipba-nov-card__body { display: flex; flex-direction: column; gap: 9px; flex: 1; padding: 16px 18px 20px; }
+.cipba-nov-card__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.cipba-nov-card__meta > span:not(.cipba-badge) { font-size: 12px; font-weight: 600; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-nov-card h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; text-wrap: pretty; }
+.cipba-nov-card p { font-size: 14px; line-height: 1.6; color: var(--wp--preset--color--gris-teal, #607a7c); margin: 0; text-wrap: pretty; }
+.cipba-nov-card__more { display: flex; align-items: center; gap: 4px; margin-top: auto; padding-top: 6px; font-size: 13.5px; font-weight: 800; color: #00705e; }
+
+/* Publicación destacada */
+.cipba-nov-dest { display: grid; grid-template-columns: 1.05fr 1fr; margin-bottom: 26px; overflow: hidden; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-decoration: none !important; transition: box-shadow .22s ease, border-color .22s ease; }
+.cipba-nov-dest:hover { border-color: var(--wp--preset--color--verde-500, #00a48a); box-shadow: 0 14px 32px rgba(20,72,74,.13); }
+.cipba-nov-dest__img { min-height: 300px; background: var(--wp--preset--color--gris-100, #eef2f1); overflow: hidden; }
+.cipba-nov-dest__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cipba-nov-dest__txt { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 34px 38px 36px; }
+.cipba-nov-dest h2 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(24px, 3vw, 32px); font-weight: 900; line-height: 1.15; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; text-wrap: pretty; }
+.cipba-nov-dest p { font-size: 15.5px; line-height: 1.65; color: var(--wp--preset--color--gris-teal, #607a7c); margin: 0; text-wrap: pretty; }
+.cipba-nov-dest__facts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; font-weight: 600; color: #4a6062; }
+.cipba-nov-dest__facts span { display: inline-flex; align-items: center; gap: 6px; }
+.cipba-nov-dest__facts svg { color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-nov-dest__btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 11px 20px; border-radius: 6px; background: var(--wp--preset--color--verde-700, #14484a); color: #fff; font-size: 14px; font-weight: 700; }
+@media (max-width: 1000px) { .cipba-nov-dest { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .cipba-nov-dest__img { min-height: 200px; aspect-ratio: 16 / 9; } .cipba-nov-dest__txt { padding: 22px 20px 24px; gap: 11px; } }
+.cipba-nov-empty { padding: 46px 24px; text-align: center; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; color: var(--wp--preset--color--gris-teal, #607a7c); }
+.cipba-nov-empty strong { display: block; margin-bottom: 6px; font-family: var(--wp--preset--font-family--condensed); font-size: 20px; color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-nov-empty p { margin: 0; font-size: 14px; }
+
+/* Detalle */
+.cipba-nota__inner { max-width: 1200px !important; margin: 0 auto !important; padding: 0 24px !important; }
+.cipba-nota__head { background: #fff; padding: 38px 0 30px; }
+.cipba-nota__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.cipba-nota__meta > span:not(.cipba-badge) { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-nota__head h1 { max-width: 940px; font-family: var(--wp--preset--font-family--condensed); font-size: clamp(30px, 4.4vw, 46px); font-weight: 900; line-height: 1.1; letter-spacing: -.5px; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; text-wrap: pretty; }
+.cipba-nota__lead { max-width: 780px; margin: 14px 0 0; padding-left: 16px; border-left: 3px solid var(--wp--preset--color--verde-500, #00a48a); font-size: 18px; font-weight: 300; line-height: 1.6; color: #4a6062; text-wrap: pretty; }
+.cipba-nota__hero { background: #fff; padding-bottom: 46px; }
+.cipba-nota__hero-img { aspect-ratio: 21 / 9; overflow: hidden; background: var(--wp--preset--color--gris-100, #eef2f1); border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 14px; }
+.cipba-nota__hero-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cipba-nota__main { background: var(--wp--preset--color--gris-50, #f7faf9); border-top: 1px solid var(--cipba-border-card, #e8f5f1); padding: 46px 0 56px; }
+.cipba-nota__grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; align-items: start; }
+@media (max-width: 900px) { .cipba-nota__grid { grid-template-columns: 1fr; } }
+.cipba-nota__cuerpo { min-width: 0; }
+.cipba-nota__cuerpo > * { margin-top: 0; margin-bottom: 18px; }
+.cipba-nota__cuerpo p { font-size: 16.5px; line-height: 1.75; color: #4a6062; text-wrap: pretty; }
+.cipba-nota__cuerpo h2, .cipba-nota__cuerpo h3 { font-family: var(--wp--preset--font-family--condensed); font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin-top: 26px; }
+.cipba-nota__cuerpo h2 { font-size: 24px; }
+.cipba-nota__cuerpo h3 { font-size: 20px; }
+.cipba-nota__cuerpo ul { list-style: none; padding: 0; display: grid; gap: 10px; }
+.cipba-nota__cuerpo ul li { position: relative; padding-left: 27px; font-size: 16px; line-height: 1.65; color: #4a6062; margin: 0; text-wrap: pretty; }
+.cipba-nota__cuerpo ul li::before { content: ""; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; background: var(--wp--preset--color--verde-500, #00a48a); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat; }
+.cipba-nota__cuerpo ol { padding-left: 22px; display: grid; gap: 8px; }
+.cipba-nota__cuerpo ol li { font-size: 16px; line-height: 1.65; color: #4a6062; }
+.cipba-nota__cuerpo a { color: #00705e; font-weight: 700; }
+.cipba-nota__cuerpo img { max-width: 100%; height: auto; border-radius: 10px; }
+.cipba-nota__aside { display: grid; gap: 16px; }
+@media (min-width: 901px) {
+	.cipba-nota__aside { position: sticky; top: 132px; }
+	.admin-bar .cipba-nota__aside { top: 164px; }
+}
+
+/* Ficha, botón de acción y compartir */
+.cipba-ficha { padding: 24px 24px 26px; background: var(--wp--preset--color--verde-700, #14484a); color: #fff; border-radius: 12px; }
+.cipba-ficha h3 { font-family: var(--wp--preset--font-family--condensed); font-size: 19px; font-weight: 900; color: #fff; margin: 0 0 18px; }
+.cipba-ficha__row { display: flex; gap: 11px; align-items: flex-start; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px dashed rgba(255,255,255,.18); }
+.cipba-ficha__row:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.cipba-ficha__ico { flex-shrink: 0; margin-top: 2px; color: #7fd8c5; display: flex; }
+.cipba-ficha__lbl { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 3px; }
+.cipba-ficha__val { font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.9); }
+.cipba-nota__cta { padding: 22px 24px 24px; background: var(--wp--preset--color--verde-100, #e8f5f1); border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 12px; }
+.cipba-nota__cta h3, .cipba-share h3 { font-family: var(--wp--preset--font-family--condensed); font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 8px; }
+.cipba-nota__cta h3 { font-size: 18px; }
+.cipba-nota__cta p { font-size: 13.5px; line-height: 1.6; color: #4a6062; margin: 0 0 16px; text-wrap: pretty; }
+.cipba-nota__btn { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 13px; margin-bottom: 9px; border-radius: 6px; background: var(--wp--preset--color--verde-500, #00a48a); color: #fff !important; font-size: 14.5px; font-weight: 800; text-align: center; text-decoration: none !important; transition: background var(--cipba-fast, .2s); }
+.cipba-nota__btn:hover { background: #00705e; }
+.cipba-nota__mail { display: flex; align-items: center; gap: 8px; padding: 4px 2px; font-size: 13.5px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; word-break: break-all; }
+.cipba-nota__mail svg { color: var(--wp--preset--color--verde-500, #00a48a); flex-shrink: 0; }
+.cipba-share { padding: 20px 22px 22px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; }
+.cipba-share h3 { font-size: 16px; margin-bottom: 14px; }
+.cipba-share__row { display: flex; flex-wrap: wrap; gap: 9px; }
+.cipba-share__row a, .cipba-share__copy { display: inline-flex; align-items: center; justify-content: center; height: 40px; border: 1px solid #dfe9e7; border-radius: 10px; background: var(--wp--preset--color--gris-50, #f7faf9); color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; transition: all var(--cipba-fast, .2s); }
+.cipba-share__row a { width: 40px; }
+.cipba-share__row a:first-child { color: #25d366 !important; }
+.cipba-share__row a:hover, .cipba-share__copy:hover { border-color: var(--wp--preset--color--verde-500, #00a48a); background: var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-share__copy { gap: 7px; padding: 0 14px !important; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.cipba-share__copy svg { color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-share__copy.is-ok { background: var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-nota__back { display: flex; align-items: center; gap: 7px; padding: 2px; font-size: 13.5px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; }
+.cipba-nota__back svg { color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-nota__otras { background: var(--wp--preset--color--gris-100, #eef2f1); border-top: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); padding: 46px 0 56px; }
+.cipba-nota__otras-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.cipba-nota__otras-head h2 { font-family: var(--wp--preset--font-family--condensed); font-size: 24px; font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; }
+.cipba-nota__otras-head a { display: inline-flex; align-items: center; gap: 4px; font-size: 13.5px; font-weight: 800; color: #00705e !important; text-decoration: none !important; }
+@media (prefers-reduced-motion: reduce) { .cipba-nov-card, .cipba-nov-dest { transition: none; } .cipba-nov-card:hover { transform: none; } }

@@ -96,14 +96,14 @@ function cipba_get_tramite_documentos( $post_id ) {
 }
 
 /**
- * Al guardar un trámite se le pone el mismo layout de Astra que a las demás
+ * Al guardar un trámite o una novedad se le pone el mismo layout de Astra que a las demás
  * páginas del sitio: sin título automático, sin barra lateral y a ancho
  * completo. Astra guarda "default" cuando nadie tocó esos ajustes, y su propia
  * caja de ajustes puede volver a escribirlos al guardar, por eso este hook va
  * en `save_post` con prioridad tardía y reemplaza tanto los vacíos como "default".
  */
 function cipba_tramite_layout_defaults( $post_id ) {
-	if ( wp_is_post_revision( $post_id ) || 'tramite' !== get_post_type( $post_id ) ) {
+	if ( wp_is_post_revision( $post_id ) || ! in_array( get_post_type( $post_id ), array( 'tramite', 'post' ), true ) ) {
 		return;
 	}
 	$defaults = array(

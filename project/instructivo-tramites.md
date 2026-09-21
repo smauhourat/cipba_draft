@@ -168,7 +168,45 @@ En **Datos de la página de pago** se editan el título y la bajada, la sección
 
 ---
 
-## 6. Tareas frecuentes
+## 6. Eventos y novedades
+
+Todas las publicaciones (jornadas, cursos, asambleas, beneficios, avisos) son **entradas** del panel (**Entradas → Añadir nueva**) y se muestran juntas en **`/novedades/`**, con filtros por categoría y buscador. Cada una tiene su propia página de detalle.
+
+### 6.1 Cargar una publicación
+
+1. **Entradas → Añadir nueva**.
+2. **Título** y **contenido**: el contenido se escribe con el editor de bloques (párrafos, subtítulos con el bloque *Encabezado* y listas con el bloque *Lista*; las listas se ven con tildes verdes).
+3. **Imagen destacada** (panel lateral): una sola imagen sirve para la tarjeta y para la portada de la página. Se recorta sola; conviene una horizontal de al menos 1680 × 720.
+4. **Categoría** (panel lateral): elegí **una**. Define el color de la etiqueta y el filtro.
+5. **Fecha de publicación** (panel lateral → *Publicar*): ordena el listado y es la fecha que se muestra en las tarjetas. Se puede **programar** una fecha futura.
+6. En **Datos de la publicación** (debajo del editor) completá:
+
+| Campo | Para qué sirve |
+|---|---|
+| **Bajada** | Resumen corto: va en las tarjetas y bajo el título. |
+| **Texto de fecha alternativo** | Opcional. Reemplaza a la fecha de publicación (ej.: *Vigente todo 2026*). |
+| **Destacada** | Se muestra como tarjeta grande arriba del listado. Si hay varias, la más reciente. |
+| **Mostrar en la agenda de la home** | Aparece en la agenda de la página de inicio. Las actividades ya realizadas se ocultan solas. |
+| **Botón de acción** | Texto y **enlace** (formulario de inscripción, otra página, un archivo…), o un **documento de la biblioteca**. Sin enlace, el botón lleva a Contacto. |
+| **Es una actividad con fecha** | Tildalo para eventos: aparece la caja *Datos de la actividad*. |
+
+### 6.2 Actividades (eventos)
+
+Al tildar **Es una actividad con fecha** aparece **Datos de la actividad**: fecha de inicio (y de fin, si dura varios días), horario, lugar, modalidad (Presencial / Virtual / Mixta, con una aclaración opcional), cupo, arancel, y si la **inscripción está abierta** (con su fecha de cierre).
+
+Con eso la página de la publicación muestra la **ficha "Datos de la actividad"** (la fecha se escribe sola: *Jueves 9 de abril de 2026* o *Del 6 al 27 de mayo de 2026*) y el recuadro **Inscripción** con el botón. Si la inscripción no está abierta, el recuadro dice *Más información*.
+
+### 6.3 Categorías y colores
+
+**Entradas → Categorías**: cada categoría tiene un **Color** (violeta, verde, verde oscuro o ladrillo) y un **Orden** (posición en los filtros; menor, primero). Las categorías sin publicaciones no aparecen en los filtros.
+
+### 6.4 Lo que se arma solo
+
+Los botones de compartir (WhatsApp, LinkedIn, Facebook, correo, copiar enlace), "Otras novedades" (3, de la misma categoría primero), la ruta de navegación, el contador y el filtrado del listado. El correo de contacto del recuadro sale de **Datos del Distrito**.
+
+---
+
+## 7. Tareas frecuentes
 
 ### Cambió la resolución de matriculación
 1. **Datos del Distrito** → *Resolución vigente* → escribí la nueva (ej.: `1600/26`) → **Guardar cambios**.
@@ -198,7 +236,7 @@ Editá el trámite → bloque de la lista → agregá o borrá un ítem de la li
 
 ---
 
-## 7. Preguntas y problemas comunes
+## 8. Preguntas y problemas comunes
 
 **Veo `{{algo}}` en la página con las llaves.**
 El marcador está mal escrito o no existe. Compará con la lista de la sección 2.2 o con la cajita lateral del trámite.
@@ -220,7 +258,7 @@ No. El sitio arma el diseño; quien edita solo carga texto y listas. El contenid
 
 ---
 
-## 8. Notas técnicas (para quien mantiene el tema)
+## 9. Notas técnicas (para quien mantiene el tema)
 
 - Plantilla: `single-tramite.php`. Lógica: `inc/tramites.php`. Formulario de campos: `inc/meta-boxes.php` (caja "Datos del trámite").
 - Datos y marcadores: `inc/settings.php` (`cipba_datos_fields()`, `cipba_tokens()`, `cipba_dato_display()`). Para sumar un dato nuevo (y su marcador) alcanza con agregar una entrada en `cipba_datos_fields()`.
@@ -229,3 +267,4 @@ No. El sitio arma el diseño; quien edita solo carga texto y listas. El contenid
 - Al guardar un trámite, `cipba_tramite_layout_defaults()` fija el layout de Astra (ancho completo, sin barra lateral, sin título automático), aunque Astra guarde su valor "default".
 - Medios de pago: plantilla `single-tramite-pago-matricula.php` (WordPress la elige por el nombre `single-{tipo}-{slug}.php`), script `assets/js/pago-matricula.js` (ventanas y botón Copiar) y estilos en `style.css` (bloque "Medios de pago"). Los datos bancarios son campos de `cipba_datos_fields()` (`banco_*`).
 - Formulario de edición de esa página: caja "Datos de la página de pago" en `inc/meta-boxes.php`. Cada trámite muestra **solo** su caja (común o de pago): la decide `cipba_admin_editando_pago()` (`inc/tramites.php`), porque las dos comparten nombres de campo y, si aparecieran juntas, una pisaría a la otra al guardar.
+- Eventos y novedades: entradas nativas (`single.php`, listado `[cipba_novedades]` en `template-parts/novedades-list.php`, lógica y colores de categoría en `inc/novedades.php`, filtros en `assets/js/novedades.js`). Los campos están en `inc/meta-boxes.php` (cajas *Datos de la publicación* y *Datos de la actividad*; esta última se muestra u oculta con `assets/js/admin-novedad.js`). El tipo de contenido anterior `evento` se retiró y sus eventos se migraron a entradas.

@@ -11,37 +11,161 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function cipba_register_meta_boxes( $meta_boxes ) {
 
-	// Evento — agenda de la home.
+	// Eventos y novedades: entradas nativas con dos cajas de campos. El título, el
+	// texto, la imagen destacada, la categoría y la fecha de publicación son los
+	// campos nativos de WordPress.
 	$meta_boxes[] = array(
-		'title'      => 'Datos del evento',
-		'post_types' => 'evento',
+		'title'      => 'Datos de la publicación',
+		'post_types' => 'post',
 		'fields'     => array(
 			array(
-				'name' => 'Fecha de inicio',
-				'id'   => 'fecha_inicio',
-				'type' => 'date',
-				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
+				'name' => 'Bajada',
+				'id'   => 'bajada',
+				'desc' => 'Resumen corto: se muestra en las tarjetas y bajo el título de la publicación.',
+				'type' => 'textarea',
+				'rows' => 3,
 			),
 			array(
-				'name' => 'Cupo',
-				'id'   => 'cupo',
-				'type' => 'number',
+				'name'        => 'Texto de fecha alternativo',
+				'id'          => 'fecha_alt',
+				'desc'        => 'Opcional. Reemplaza a la fecha de publicación en las tarjetas y el encabezado. Ej: "Vigente todo 2026".',
+				'type'        => 'text',
+				'placeholder' => 'Vigente todo 2026',
 			),
 			array(
-				'name' => 'Inscripción abierta',
-				'id'   => 'inscripcion_abierta',
+				'name' => 'Destacada',
+				'id'   => 'destacada',
+				'desc' => 'Se muestra como tarjeta grande arriba del listado de Novedades (si hay varias tildadas, la más reciente).',
 				'type' => 'checkbox',
 			),
 			array(
-				'name' => 'Cierre de inscripción',
-				'id'   => 'cierre_inscripcion',
-				'type' => 'date',
+				'name' => 'Mostrar en la agenda de la home',
+				'id'   => 'en_agenda',
+				'desc' => 'Aparece en la sección de agenda de la página de inicio. Las actividades pasadas se ocultan solas.',
+				'type' => 'checkbox',
+			),
+			array(
+				'type' => 'heading',
+				'name' => 'Botón de acción (opcional)',
+			),
+			array(
+				'name'        => 'Texto del botón',
+				'id'          => 'cta_texto',
+				'type'        => 'text',
+				'columns'     => 4,
+				'placeholder' => 'Inscribirme a la jornada',
+			),
+			array(
+				'name'        => 'Enlace',
+				'id'          => 'cta_url',
+				'desc'        => 'Dirección completa (formulario de inscripción, otra página, un archivo…).',
+				'type'        => 'url',
+				'columns'     => 8,
+				'placeholder' => 'https://…',
+			),
+			array(
+				'name'        => 'O un documento de la biblioteca',
+				'id'          => 'cta_doc',
+				'desc'        => 'Se usa solo si el enlace está vacío. Sin enlace ni documento, el botón dice "Escribinos" y lleva a Contacto.',
+				'type'        => 'post',
+				'post_type'   => 'documento',
+				'field_type'  => 'select_advanced',
+				'placeholder' => '— Ninguno —',
+				'query_args'  => array( 'post_status' => 'publish', 'posts_per_page' => -1 ),
+			),
+			array(
+				'type' => 'heading',
+				'name' => 'Tipo de publicación',
+			),
+			array(
+				'name' => 'Es una actividad con fecha',
+				'id'   => 'es_actividad',
+				'desc' => 'Tildalo para jornadas, cursos, asambleas y demás eventos: aparece la caja "Datos de la actividad" y la ficha en la publicación.',
+				'type' => 'checkbox',
+			),
+		),
+	);
+
+	$meta_boxes[] = array(
+		'title'      => 'Datos de la actividad',
+		'post_types' => 'post',
+		'fields'     => array(
+			array(
+				'name'    => 'Fecha de inicio',
+				'id'      => 'fecha_inicio',
+				'type'    => 'date',
+				'columns' => 6,
 				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
 			),
 			array(
-				'name' => 'Lugar',
-				'id'   => 'lugar',
-				'type' => 'text',
+				'name'    => 'Fecha de fin (opcional)',
+				'id'      => 'fecha_fin',
+				'desc'    => 'Solo para actividades de varios días.',
+				'type'    => 'date',
+				'columns' => 6,
+				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
+			),
+			array(
+				'name'        => 'Horario',
+				'id'          => 'horario',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => '18:00 a 21:00 h',
+			),
+			array(
+				'name'        => 'Lugar',
+				'id'          => 'lugar',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => 'Sede San Justo — Salón de actos',
+			),
+			array(
+				'name'        => 'Modalidad',
+				'id'          => 'modalidad',
+				'type'        => 'select',
+				'columns'     => 4,
+				'placeholder' => '— Elegir —',
+				'options'     => array(
+					'Presencial' => 'Presencial',
+					'Virtual'    => 'Virtual',
+					'Mixta'      => 'Mixta',
+				),
+			),
+			array(
+				'name'        => 'Aclaración de la modalidad',
+				'id'          => 'modalidad_nota',
+				'desc'        => 'Opcional. Ej: "con transmisión en vivo".',
+				'type'        => 'text',
+				'columns'     => 8,
+				'placeholder' => 'con transmisión en vivo',
+			),
+			array(
+				'name'        => 'Cupo',
+				'id'          => 'cupo',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => '80 matriculados',
+			),
+			array(
+				'name'        => 'Arancel',
+				'id'          => 'arancel',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => 'Sin cargo para matriculados al día',
+			),
+			array(
+				'name'    => 'Inscripción abierta',
+				'id'      => 'inscripcion_abierta',
+				'desc'    => 'Muestra "Inscripción" en la ficha y en el recuadro lateral.',
+				'type'    => 'checkbox',
+				'columns' => 6,
+			),
+			array(
+				'name'    => 'Cierre de inscripción',
+				'id'      => 'cierre_inscripcion',
+				'type'    => 'date',
+				'columns' => 6,
+				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
 			),
 		),
 	);

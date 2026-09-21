@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom Post Types: evento, documento, resolucion, subcomision, tramite.
+ * Custom Post Types: documento, resolucion, subcomision, sede, autoridad, area_contacto, tramite (los eventos son entradas nativas, ver inc/novedades.php).
  *
  * @package cipba
  */
@@ -10,23 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function cipba_register_post_types() {
-
-	register_post_type( 'evento', array(
-		'label'        => 'Eventos',
-		'labels'       => array(
-			'name'          => 'Eventos',
-			'singular_name' => 'Evento',
-			'add_new_item'  => 'Agregar evento',
-			'edit_item'     => 'Editar evento',
-			'all_items'     => 'Todos los eventos',
-		),
-		'public'       => true,
-		'show_in_rest' => true,
-		'has_archive'  => true,
-		'menu_icon'    => 'dashicons-calendar-alt',
-		'supports'     => array( 'title', 'editor', 'thumbnail' ),
-		'rewrite'      => array( 'slug' => 'eventos' ),
-	) );
 
 	register_post_type( 'documento', array(
 		'label'        => 'Documentos',
@@ -150,22 +133,34 @@ function cipba_register_post_types() {
 add_action( 'init', 'cipba_register_post_types' );
 
 /**
- * Categorías por defecto para Novedades (post nativo).
- * Corren una sola vez al activar el tema; para un sitio ya activo,
- * se cargan a mano con `wp term create` (ver plan-inicial-wp.md).
+ * Categorías por defecto de Eventos y novedades (entradas nativas), con su
+ * color y su posición en los filtros. Se crean al activar el tema; en un sitio
+ * ya activo se cargan desde Entradas → Categorías.
  */
 function cipba_seed_novedades_categories() {
+	// slug => array( nombre, paleta, orden )
 	$categorias = array(
-		'institucional' => 'Institucional',
-		'capacitacion'  => 'Capacitación',
-		'normativa'     => 'Normativa',
-		'matricula'     => 'Matrícula',
-		'comisiones'    => 'Comisiones',
+		'eventos'       => array( 'Eventos', 'violeta', 1 ),
+		'capacitacion'  => array( 'Capacitación', 'verde', 2 ),
+		'institucional' => array( 'Institucional', 'verde_oscuro', 3 ),
+		'beneficios'    => array( 'Beneficios', 'violeta', 4 ),
+		'normativa'     => array( 'Normativa', 'ladrillo', 5 ),
+		'comisiones'    => array( 'Comisiones', 'violeta', 6 ),
 	);
 
-	foreach ( $categorias as $slug => $nombre ) {
-		if ( ! term_exists( $slug, 'category' ) ) {
-			wp_insert_term( $nombre, 'category', array( 'slug' => $slug ) );
+	foreach ( $categorias as $slug => $c ) {
+		$term = term_exists( $slug, 'category' );
+		if ( ! $term ) {
+			$term = wp_insert_term( $c[0], 'category', array( 'slug' => $slug ) );
+		}
+		if ( ! is_wp_error( $term ) ) {
+			$term_id = is_array( $term ) ? (int) $term['term_id'] : (int) $term;
+			if ( '' === get_term_meta( $term_id, 'paleta', true ) ) {
+				update_term_meta( $term_id, 'paleta', $c[1] );
+			}
+			if ( '' === get_term_meta( $term_id, 'orden', true ) ) {
+				update_term_meta( $term_id, 'orden', $c[2] );
+			}
 		}
 	}
 }
@@ -347,7 +342,7 @@ add_action( 'pre_get_posts', 'cipba_area_admin_default_order' );
  * cipba_tramite_layout_defaults() en cada guardado.
  */
 function cipba_limpiar_metaboxes_cpt() {
-	$tipos = array( 'evento', 'documento', 'resolucion', 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite' );
+	$tipos = array( 'post', 'documento', 'resolucion', 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite' );
 	foreach ( $tipos as $tipo ) {
 		remove_meta_box( 'astra_settings_meta_box', $tipo, 'side' );
 		remove_meta_box( 'postcustom', $tipo, 'normal' );

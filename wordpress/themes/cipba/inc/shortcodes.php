@@ -24,69 +24,48 @@ function cipba_fecha_corta( $fecha ) {
 }
 
 /**
- * [cipba_eventos] — grilla de 3 próximos eventos (CPT evento), ordenados
- * por fecha_inicio ascendente, filtrando los que ya pasaron.
+ * [cipba_eventos] — agenda de la home: hasta 3 publicaciones marcadas
+ * "Mostrar en la agenda", sin las actividades ya realizadas, por fecha
+ * ascendente (ver cipba_get_agenda() en inc/novedades.php).
  */
 function cipba_eventos_shortcode() {
-	$query = new WP_Query( array(
-		'post_type'      => 'evento',
-		'posts_per_page' => 3,
-		'meta_key'       => 'fecha_inicio',
-		'orderby'        => 'meta_value',
-		'order'          => 'ASC',
-		'meta_query'     => array(
-			array(
-				'key'     => 'fecha_inicio',
-				'value'   => current_time( 'Y-m-d' ),
-				'compare' => '>=',
-				'type'    => 'DATE',
-			),
-		),
-	) );
+	$agenda = cipba_get_agenda( 3 );
 
-	if ( ! $query->have_posts() ) {
+	if ( ! $agenda ) {
 		return '';
 	}
 
 	ob_start();
 	?>
 	<div class="cipba-ev-grid">
-		<?php while ( $query->have_posts() ) : $query->the_post(); ?>
-			<a href="<?php the_permalink(); ?>" class="cipba-ev-card">
+		<?php foreach ( $agenda as $p ) :
+			$ini   = trim( (string) get_post_meta( $p->ID, 'fecha_inicio', true ) );
+			$fecha = $ini ? cipba_fecha_corta( $ini ) : cipba_fecha_novedad( $p->ID );
+			?>
+			<a href="<?php echo esc_url( get_permalink( $p->ID ) ); ?>" class="cipba-ev-card">
 				<div class="cipba-ev-card__img">
-					<?php if ( has_post_thumbnail() ) : ?>
-						<?php the_post_thumbnail( 'cipba-card' ); ?>
-					<?php endif; ?>
+					<?php echo get_the_post_thumbnail( $p->ID, 'cipba-card' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 				</div>
 				<div class="cipba-ev-card__body">
-					<h3><?php the_title(); ?></h3>
+					<h3><?php echo esc_html( get_the_title( $p->ID ) ); ?></h3>
 					<div class="cipba-ev-card__foot">
-						<span class="cipba-ev-card__date"><?php echo esc_html( cipba_fecha_corta( get_post_meta( get_the_ID(), 'fecha_inicio', true ) ) ); ?></span>
+						<span class="cipba-ev-card__date"><?php echo esc_html( $fecha ); ?></span>
 						<span class="cipba-ev-card__more">Ver detalle ›</span>
 					</div>
 				</div>
 			</a>
-		<?php endwhile; ?>
+		<?php endforeach; ?>
 	</div>
 	<?php
-	wp_reset_postdata();
 	return ob_get_clean();
 }
 add_shortcode( 'cipba_eventos', 'cipba_eventos_shortcode' );
 
 /**
- * [cipba_noticias] — últimas 5 entradas nativas (post), con categoría
- * coloreada (§5.5), fecha d/m/Y, imagen, título y extracto a 2 líneas.
+ * [cipba_noticias] — últimas 5 publicaciones (entradas nativas), con la
+ * categoría en el color de su paleta, fecha d/m/Y, imagen, título y bajada.
  */
 function cipba_noticias_shortcode() {
-	$colores = array(
-		'institucional' => '#14484a',
-		'capacitacion'  => '#00a48a',
-		'normativa'     => '#8a3a2a',
-		'matricula'     => '#00a48a',
-		'comisiones'    => '#484586',
-	);
-
 	$query = new WP_Query( array(
 		'post_type'      => 'post',
 		'posts_per_page' => 5,
@@ -102,9 +81,8 @@ function cipba_noticias_shortcode() {
 	?>
 	<div class="cipba-news-grid">
 		<?php while ( $query->have_posts() ) : $query->the_post();
-			$cats  = get_the_category();
-			$cat   = $cats ? $cats[0] : null;
-			$color = $cat && isset( $colores[ $cat->slug ] ) ? $colores[ $cat->slug ] : '#607a7c';
+			$cat   = cipba_novedad_categoria( get_the_ID() );
+			$color = $cat ? cipba_cat_paleta( $cat->term_id )['ink'] : '#607a7c';
 			?>
 			<a href="<?php the_permalink(); ?>" class="cipba-news-card">
 				<div class="cipba-news-card__meta">
@@ -122,7 +100,7 @@ function cipba_noticias_shortcode() {
 				</div>
 				<div class="cipba-news-card__body">
 					<h3><?php the_title(); ?></h3>
-					<p><?php echo esc_html( get_the_excerpt() ); ?></p>
+					<p><?php echo esc_html( cipba_bajada( get_the_ID() ) ); ?></p>
 				</div>
 			</a>
 		<?php endwhile; ?>
