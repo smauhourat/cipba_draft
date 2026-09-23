@@ -13,6 +13,7 @@ Los trámites (Inscripción, Rehabilitación, Baja y Solicitud de credenciales) 
 | Un valor que aparece en varios textos (resolución, monto del módulo, fecha límite, código de un formulario) | Se cambia una vez y se actualiza en todas las páginas | **Datos del Distrito → Matrícula y trámites** |
 | El texto de una página de trámite (requisitos, avisos, costos, bajada) | Formulario de cada trámite | **Trámites** |
 | Un formulario o documento descargable (título, archivo) | Biblioteca de documentos | **Documentos (Normativa)** |
+| Los **links de interés** de la última columna del pie de página | Un link por sitio: nombre, dirección y orden | **Links de interés** |
 
 ---
 
@@ -242,6 +243,14 @@ La página **`/honorarios/`** muestra la **resolución vigente** con sus dos doc
 2. La resolución que estaba vigente pasa sola a *Resoluciones anteriores*. Abrila y cargale el **Enlace de descarga (Consejo Superior)** (y, si tiene, la *Vigencia hasta*).
 3. La **barra de aviso de la home** ("Honorarios mínimos vigentes desde … — Res. …") se actualiza sola con la nueva vigente: no hay nada más que cargar.
 
+### Agregar, cambiar o quitar un link de interés del pie de página
+Panel → **Links de interés** (menú lateral). Es la lista de la última columna del pie de todo el sitio.
+
+- **Agregar:** **Agregar link de interés** → escribí el **nombre del sitio** (el título), la **dirección completa** (con `https://`) y, si querés, el **orden** (Atributos → Orden; menor número, primero) → **Publicar**.
+- **Cambiar:** abrí el link, corregí el nombre o la dirección y **Actualizar**.
+- **Quitar:** mandalo a la papelera, o pasalo a **Borrador** si querés conservarlo sin mostrarlo.
+- Todos se abren en una **pestaña nueva** y muestran el ícono de enlace externo; no hay nada más que configurar. Un link sin dirección no se muestra.
+
 ### Cambió la resolución de matriculación
 1. **Datos del Distrito** → *Resolución vigente* → escribí la nueva (ej.: `1600/26`) → **Guardar cambios**.
 2. Listo: se actualiza en todas las páginas que usan `{{resolucion}}`.
@@ -303,3 +312,4 @@ No. El sitio arma el diseño; quien edita solo carga texto y listas. El contenid
 - Formulario de edición de esa página: caja "Datos de la página de pago" en `inc/meta-boxes.php`. Cada trámite muestra **solo** su caja (común o de pago): la decide `cipba_admin_editando_pago()` (`inc/tramites.php`), porque las dos comparten nombres de campo y, si aparecieran juntas, una pisaría a la otra al guardar.
 - Eventos y novedades: entradas nativas (`single.php`, listado `[cipba_novedades]` en `template-parts/novedades-list.php`, lógica y colores de categoría en `inc/novedades.php`, filtros en `assets/js/novedades.js`). Los campos están en `inc/meta-boxes.php` (cajas *Datos de la publicación* y *Datos de la actividad*; esta última se muestra u oculta con `assets/js/admin-novedad.js`). El tipo de contenido anterior `evento` se retiró y sus eventos se migraron a entradas.
 - Honorarios mínimos: lógica en `inc/honorarios.php` (título automático, una sola vigente, listados), página en `template-parts/honorarios.php` ([cipba_honorarios]), campos en `inc/meta-boxes.php` (caja *Datos de la resolución*). El tipo `resolucion` no tiene título ni editor.
+- Links de interés del pie: tipo de contenido `link_interes` (título + campo `url`; orden por `menu_order`), leído por `cipba_get_links_interes()` en `inc/footer.php`. Reemplaza al menú "Pie - Links de interés" (las otras 3 columnas del pie siguen siendo menús).

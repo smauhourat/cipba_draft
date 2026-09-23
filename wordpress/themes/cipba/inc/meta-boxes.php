@@ -855,6 +855,22 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		);
 	}
 
+	// Link de interés (pie de página): el nombre va en el título.
+	$meta_boxes[] = array(
+		'title'      => 'Datos del link',
+		'post_types' => 'link_interes',
+		'fields'     => array(
+			array(
+				'name'        => 'Dirección',
+				'id'          => 'url',
+				'desc'        => 'Dirección completa del sitio, con https://. Se abre en una pestaña nueva. El orden se define en Atributos → Orden.',
+				'type'        => 'url',
+				'required'    => true,
+				'placeholder' => 'https://www.arba.gov.ar/',
+			),
+		),
+	);
+
 	return $meta_boxes;
 }
 add_filter( 'rwmb_meta_boxes', 'cipba_register_meta_boxes' );

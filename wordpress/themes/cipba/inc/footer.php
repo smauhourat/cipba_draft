@@ -32,16 +32,41 @@ function cipba_replace_primary_footer() {
 add_action( 'wp', 'cipba_replace_primary_footer' );
 
 /**
- * Marca + los 4 menús del pie (Trámites, Normativa, Institucional,
- * Links de interés), en grilla 1.5fr + 4×1fr como en el diseño.
+ * Links de interés del pie: salen del menú **Links de interés** del panel
+ * (nombre, dirección y orden). Todos abren en pestaña nueva; la clase
+ * `abre-nuevo` les pone el ícono de enlace externo.
+ *
+ * @return array[] Cada item: título y url.
+ */
+function cipba_get_links_interes() {
+	$posts = get_posts( array(
+		'post_type'   => 'link_interes',
+		'post_status' => 'publish',
+		'numberposts' => -1,
+		'orderby'     => 'menu_order title',
+		'order'       => 'ASC',
+	) );
+	$out = array();
+	foreach ( $posts as $p ) {
+		$url = trim( (string) get_post_meta( $p->ID, 'url', true ) );
+		if ( '' !== $url ) {
+			$out[] = array( 'titulo' => get_the_title( $p ), 'url' => $url );
+		}
+	}
+	return $out;
+}
+
+/**
+ * Marca + 3 menús del pie (Trámites, Normativa, Institucional) + la columna
+ * de Links de interés, en grilla 1.5fr + 4×1fr como en el diseño.
  */
 function cipba_render_footer_columns() {
 	$columnas = array(
 		'Pie - Trámites'          => 'Trámites',
 		'Pie - Normativa'         => 'Normativa',
 		'Pie - Institucional'     => 'Institucional',
-		'Pie - Links de interés'  => 'Links de interés',
 	);
+	$links = cipba_get_links_interes();
 	?>
 	<div class="cipba-footer-wrap">
 		<div class="cipba-footer-grid">
@@ -67,6 +92,16 @@ function cipba_render_footer_columns() {
 					?>
 				</div>
 			<?php endforeach; ?>
+			<?php if ( $links ) : ?>
+				<div class="cipba-footer-col">
+					<h3>Links de interés</h3>
+					<ul class="cipba-footer-links">
+						<?php foreach ( $links as $l ) : ?>
+							<li class="abre-nuevo"><a href="<?php echo esc_url( $l['url'] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $l['titulo'] ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 	<?php

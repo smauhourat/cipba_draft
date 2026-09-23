@@ -113,6 +113,23 @@ function cipba_register_post_types() {
 		'supports'     => array( 'title', 'page-attributes' ),
 	) );
 
+	register_post_type( 'link_interes', array(
+		'label'        => 'Links de interés',
+		'labels'       => array(
+			'name'          => 'Links de interés',
+			'singular_name' => 'Link de interés',
+			'add_new_item'  => 'Agregar link de interés',
+			'edit_item'     => 'Editar link de interés',
+			'all_items'     => 'Todos los links de interés',
+		),
+		'public'       => false,
+		'show_ui'      => true,
+		'show_in_rest' => true,
+		'has_archive'  => false,
+		'menu_icon'    => 'dashicons-admin-links',
+		'supports'     => array( 'title', 'page-attributes' ),
+	) );
+
 	register_post_type( 'tramite', array(
 		'label'        => 'Trámites',
 		'labels'       => array(
@@ -206,13 +223,16 @@ add_action( 'pre_get_posts', 'cipba_subcomision_admin_default_order' );
  * cajas de campos), sin el editor de bloques que no aporta nada acá.
  */
 function cipba_subcomision_classic_editor( $use_block_editor, $post_type ) {
-	return in_array( $post_type, array( 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite' ), true ) ? false : $use_block_editor;
+	return in_array( $post_type, array( 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite', 'link_interes' ), true ) ? false : $use_block_editor;
 }
 add_filter( 'use_block_editor_for_post_type', 'cipba_subcomision_classic_editor', 10, 2 );
 
 function cipba_subcomision_title_placeholder( $text, $post ) {
 	if ( 'subcomision' === $post->post_type ) {
 		return 'Nombre de la subcomisión (ej: Ingeniería Civil)';
+	}
+	if ( 'link_interes' === $post->post_type ) {
+		return 'Nombre del sitio (ej: ARBA)';
 	}
 	if ( 'tramite' === $post->post_type ) {
 		return 'Nombre del trámite (ej: Inscripción)';
@@ -342,7 +362,7 @@ add_action( 'pre_get_posts', 'cipba_area_admin_default_order' );
  * cipba_tramite_layout_defaults() en cada guardado.
  */
 function cipba_limpiar_metaboxes_cpt() {
-	$tipos = array( 'post', 'documento', 'resolucion', 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite' );
+	$tipos = array( 'post', 'documento', 'resolucion', 'subcomision', 'sede', 'autoridad', 'area_contacto', 'tramite', 'link_interes' );
 	foreach ( $tipos as $tipo ) {
 		remove_meta_box( 'astra_settings_meta_box', $tipo, 'side' );
 		remove_meta_box( 'postcustom', $tipo, 'normal' );
@@ -350,3 +370,34 @@ function cipba_limpiar_metaboxes_cpt() {
 	}
 }
 add_action( 'add_meta_boxes', 'cipba_limpiar_metaboxes_cpt', 99 );
+
+/**
+ * Links de interés (columna del pie de página) — listado del admin: dirección
+ * y orden a la vista.
+ */
+function cipba_link_admin_columns( $cols ) {
+	return array(
+		'cb'    => $cols['cb'],
+		'title' => 'Sitio',
+		'url'   => 'Dirección',
+		'orden' => 'Orden',
+	);
+}
+add_filter( 'manage_link_interes_posts_columns', 'cipba_link_admin_columns' );
+
+function cipba_link_admin_column_content( $col, $post_id ) {
+	if ( 'url' === $col ) {
+		echo esc_html( get_post_meta( $post_id, 'url', true ) );
+	} elseif ( 'orden' === $col ) {
+		echo (int) get_post_field( 'menu_order', $post_id );
+	}
+}
+add_action( 'manage_link_interes_posts_custom_column', 'cipba_link_admin_column_content', 10, 2 );
+
+function cipba_link_admin_default_order( $query ) {
+	if ( is_admin() && $query->is_main_query() && 'link_interes' === $query->get( 'post_type' ) && ! $query->get( 'orderby' ) ) {
+		$query->set( 'orderby', 'menu_order title' );
+		$query->set( 'order', 'ASC' );
+	}
+}
+add_action( 'pre_get_posts', 'cipba_link_admin_default_order' );
