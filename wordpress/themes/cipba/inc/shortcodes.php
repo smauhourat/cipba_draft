@@ -277,6 +277,20 @@ function cipba_delegaciones_shortcode() {
 add_shortcode( 'cipba_delegaciones', 'cipba_delegaciones_shortcode' );
 
 /**
+ * [cipba_partidos] — sección "Partidos comprendidos" (página Institucional):
+ * mapa del Distrito VII y listado de partidos con buscador en el navegador.
+ * El markup vive en template-parts/partidos-list.php.
+ */
+function cipba_partidos_shortcode() {
+	wp_enqueue_script( 'cipba-partidos', get_stylesheet_directory_uri() . '/assets/js/partidos.js', array(), CHILD_THEME_CIPBA_VERSION, true );
+
+	ob_start();
+	get_template_part( 'template-parts/partidos-list' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_partidos', 'cipba_partidos_shortcode' );
+
+/**
  * [cipba_autoridades] — autoridades del Consejo Directivo (CPT `autoridad`):
  * el presidente como tarjeta destacada de doble ancho y el resto en grilla.
  * El markup vive en template-parts/autoridades-list.php.
