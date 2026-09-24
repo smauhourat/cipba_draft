@@ -22,9 +22,17 @@ El problema de las URLs: la base guarda `http://localhost:8080` en cientos de lu
 2. Confirmar que el sitio local está en el estado que se quiere publicar (menús, páginas, CPTs). Revisar en particular el contenido editable de la sección *"Contenido editable del sitio"* (más abajo): **Datos del Distrito** con los valores reales, **Fluent Forms → Entries** sin envíos de prueba, y los documentos de los trámites con su archivo subido.
 3. No actualizar plugins/núcleo justo antes de migrar sin probarlos.
 4. Hacer un backup de seguridad de local por si algo sale mal:
+
+   **Opción A — bash / Git Bash / WSL:**
    ```
    docker exec wordpress_db sh -c 'mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --no-tablespaces --single-transaction wordpress > /tmp/backup-local.sql'
    docker cp wordpress_db:/tmp/backup-local.sql ./backups/backup-local-AAAAMMDD.sql
+   ```
+
+   **Opción B — PowerShell / cmd:** Windows no interpreta comillas simples como agrupador de argumentos, así que el comando de arriba se rompe (`unexpected EOF while looking for matching`). Usar `-r` de `mysqldump` para que escriba el archivo directo, sin `sh -c` ni redirección (reemplazar `<password>` por el valor de `DB_ROOT_PASSWORD` en `wordpress/.env`):
+   ```powershell
+   docker exec wordpress_db mysqldump -uroot -p<password> --no-tablespaces --single-transaction wordpress -r /tmp/backup-local.sql
+   docker cp wordpress_db:/tmp/backup-local.sql .\backups\backup-local-AAAAMMDD.sql
    ```
    (`wordpress/backups/` está ignorado por git: los `.sql` contienen hashes de contraseñas.)
 
@@ -107,6 +115,11 @@ tar -a -c -f wp-content.zip -C pkg wp-content
 - [ ] **Seguridad:** cambiar contraseñas de los usuarios `admin` y `cipbaadmin` (vienen de local); revisar usuarios; `WP_DEBUG` en false; claves/salts nuevas en `wp-config.php`.
 - [ ] **Caché:** activar LiteSpeed Cache (el hosting usa LiteSpeed) **y purgarla** después de importar la base — el hosting ya venía cacheando la instalación default de WP desde antes de migrar, así que a los visitantes sin login (logueado en el wp-admin no se nota, esa vista no usa caché) les sigue apareciendo la versión vieja hasta que se purga. LiteSpeed Cache → Toolbox → Purge All (o el ícono del tacho en la barra de admin). Repetir cada vez que se reimporte la base o se suba un cambio de tema/contenido en el ciclo de re-deploy.
 - [ ] **Plugins:** verificar que ninguno tire errores con PHP 8.4 (fallback: bajar a 8.3 desde el panel).
+  - Recorrer wp-admin y el front (home, cada CPT, Fluent Forms, Rank Math, Mega Menu) buscando `Warning:`, `Deprecated:` o `Fatal error:` mezclado en la página.
+  - Activar el log sin mostrarlo al público: en `wp-config.php`, `define('WP_DEBUG', true); define('WP_DEBUG_LOG', true); define('WP_DEBUG_DISPLAY', false);`. Navegar el sitio y después revisar `wp-content/debug.log` buscando rutas de `wp-content/plugins/<nombre>/...`. Volver `WP_DEBUG` a `false` al terminar.
+  - Revisar también el log de errores de PHP del hosting (panel de Ferozo / `error_log` en la raíz del dominio): captura fatales que tiran pantalla blanca antes de que WordPress llegue a loguear nada.
+  - Herramientas → Salud del sitio → pestaña Info: lista funciones deprecadas de PHP en uso (no exhaustivo).
+  - Si algo da error crítico: bajar PHP a 8.3 desde el panel, o desactivar plugins de a uno renombrando la carpeta (ver tabla de Solución de problemas).
 - [ ] Backups programados de UpdraftPlus a almacenamiento externo.
 - [ ] Indexación: staging → bloqueada; producción final → permitir y enviar sitemap (Rank Math) a Search Console.
 - [ ] Nota: `/wp-content/uploads` y la Biblioteca de medios deben mostrar las imágenes/PDF.
