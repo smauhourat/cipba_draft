@@ -279,8 +279,60 @@ function cipba_render_nov_dest( $post_id ) {
 }
 
 /**
- * [cipba_novedades] — listado completo: filtros por categoría, buscador,
- * publicación destacada y grilla de tarjetas (el filtrado es en el navegador).
+ * Tabs del listado de /novedades/ ("Eventos y novedades" / "Noticias"):
+ * etiqueta, título y bajada del encabezado — mismos textos que el prototipo
+ * (novedades-tabs.html).
+ */
+function cipba_novedades_tabs() {
+	return array(
+		'evento'  => array(
+			'label' => 'Eventos y novedades',
+			'title' => 'Eventos y novedades',
+			'desc'  => 'Jornadas, cursos, asambleas, beneficios y avisos internos del Distrito VII. Las actividades con inscripción abierta se publican con cupo y fecha de cierre.',
+		),
+		'noticia' => array(
+			'label' => 'Noticias',
+			'title' => 'Noticias',
+			'desc'  => 'Novedades generales de la profesión: normativa, gestiones institucionales, comisiones y actualización profesional.',
+		),
+	);
+}
+
+/**
+ * Tab actual del listado según ?tipo= en la URL ("evento" por defecto, igual
+ * que el prototipo).
+ */
+function cipba_novedades_tipo_actual() {
+	$tipo = isset( $_GET['tipo'] ) ? sanitize_key( wp_unslash( $_GET['tipo'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	return 'noticia' === $tipo ? 'noticia' : 'evento';
+}
+
+/**
+ * Enlace al listado de novedades ya en el tab indicado (para "volver" desde
+ * el detalle al tab que corresponde, o para los links de la home).
+ */
+function cipba_novedades_url( $tipo ) {
+	return add_query_arg( 'tipo', $tipo, home_url( '/novedades/' ) );
+}
+
+/**
+ * Pestaña del navegador según el tab de /novedades/ (?tipo=), igual que hace
+ * el prototipo con document.title.
+ */
+function cipba_novedades_document_title( $title ) {
+	if ( is_page( 'novedades' ) ) {
+		$tabs            = cipba_novedades_tabs();
+		$title['title']  = $tabs[ cipba_novedades_tipo_actual() ]['title'];
+	}
+	return $title;
+}
+add_filter( 'document_title_parts', 'cipba_novedades_document_title' );
+
+/**
+ * [cipba_novedades] — listado completo: encabezado y tabs por tipo de
+ * publicación, filtros por categoría, buscador, destacada y grilla de
+ * tarjetas (el filtrado por categoría/búsqueda es en el navegador; el tab se
+ * resuelve en el servidor vía ?tipo=).
  */
 function cipba_novedades_shortcode() {
 	wp_enqueue_script( 'cipba-novedades', get_stylesheet_directory_uri() . '/assets/js/novedades.js', array(), CHILD_THEME_CIPBA_VERSION, true );

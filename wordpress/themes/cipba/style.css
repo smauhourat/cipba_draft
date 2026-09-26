@@ -1432,6 +1432,13 @@ body.cipba-modal-open { overflow: hidden; }
 .cipba-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; white-space: nowrap; }
 .cipba-badge--dest { background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; }
 
+/* Tabs "Eventos y novedades" / "Noticias" (?tipo= en la URL) */
+.cipba-nov-tabs__inner { display: flex; gap: 30px; }
+.cipba-nov-tab { display: inline-block; border-bottom: 3px solid transparent; padding: 14px 2px 12px; font-family: var(--wp--preset--font-family--condensed); font-size: 17px; font-weight: 700; color: var(--wp--preset--color--gris-teal, #607a7c); text-decoration: none !important; transition: color .2s, border-color .2s; white-space: nowrap; }
+.cipba-nov-tab:hover { color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-nov-tab.is-active { color: var(--wp--preset--color--verde-700, #14484a); border-bottom-color: var(--wp--preset--color--verde-500, #00a48a); }
+@media (max-width: 760px) { .cipba-nov-tabs__inner { gap: 22px; overflow-x: auto; scrollbar-width: none; } .cipba-nov-tabs__inner::-webkit-scrollbar { display: none; } .cipba-nov-tab { font-size: 15.5px; } }
+
 /* Filtros (barra fija bajo el header) */
 .cipba-nov-filtros { position: sticky; top: 109px; z-index: 40; background: #fff; border-top: 1px solid var(--wp--preset--color--gris-100, #eef2f1); border-bottom: 1px solid var(--cipba-border-card, #e8f5f1); }
 .admin-bar .cipba-nov-filtros { top: 141px; }

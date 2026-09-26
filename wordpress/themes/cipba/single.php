@@ -26,6 +26,7 @@ while ( have_posts() ) :
 	$mail    = trim( cipba_dato( 'email' ) );
 	$url     = get_permalink( $id );
 	$titulo  = get_the_title();
+	$nov_url = cipba_novedades_url( cipba_tipo_pub( $id ) ); // Vuelve al tab (Eventos/Noticias) que corresponde a esta publicación.
 	$share   = array(
 		array( 'WhatsApp', 'whatsapp', 'https://wa.me/?text=' . rawurlencode( $titulo . ' ' . $url ) ),
 		array( 'LinkedIn', 'linkedin', 'https://www.linkedin.com/sharing/share-offsite/?url=' . rawurlencode( $url ) ),
@@ -40,7 +41,7 @@ while ( have_posts() ) :
 				<div class="cipba-pagehead__crumbs">
 					<div class="cipba-pagehead__inner">
 						<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo cipba_icon( 'home', 12 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> Inicio</a>
-						<span>›</span><a href="<?php echo esc_url( home_url( '/novedades/' ) ); ?>">Novedades</a>
+						<span>›</span><a href="<?php echo esc_url( $nov_url ); ?>">Novedades</a>
 						<?php if ( $cat ) : ?><span>›</span><strong><?php echo esc_html( $cat->name ); ?></strong><?php endif; ?>
 					</div>
 				</div>
@@ -97,7 +98,7 @@ while ( have_posts() ) :
 							</div>
 						</div>
 
-						<a class="cipba-nota__back" href="<?php echo esc_url( home_url( '/novedades/' ) ); ?>"><?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> Volver a todas las novedades</a>
+						<a class="cipba-nota__back" href="<?php echo esc_url( $nov_url ); ?>"><?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> Volver a todas las novedades</a>
 					</aside>
 				</div>
 			</section>
@@ -118,7 +119,7 @@ while ( have_posts() ) :
 					<div class="cipba-nota__inner">
 						<div class="cipba-nota__otras-head">
 							<h2>Otras novedades</h2>
-							<a href="<?php echo esc_url( home_url( '/novedades/' ) ); ?>">Ver listado completo <?php echo cipba_icon( 'chevron', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
+							<a href="<?php echo esc_url( $nov_url ); ?>">Ver listado completo <?php echo cipba_icon( 'chevron', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 						</div>
 						<div class="cipba-nov-grid">
 							<?php foreach ( $otras as $o ) { cipba_render_nov_card( $o->ID ); } ?>
