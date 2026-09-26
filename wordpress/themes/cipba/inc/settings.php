@@ -41,8 +41,8 @@ function cipba_datos_fields() {
 			'section'     => 'Contacto general',
 			'label'       => 'Teléfono',
 			'desc'        => 'Teléfono principal del Distrito. El link para llamar se genera solo.',
-			'placeholder' => '(011) 4651-0064',
-			'default'     => '(011) 4651-0064',
+			'placeholder' => '(011) 3535-0751',
+			'default'     => '(011) 3535-0751',
 		),
 		'email'               => array(
 			'section'     => 'Contacto general',
@@ -50,6 +50,14 @@ function cipba_datos_fields() {
 			'desc'        => 'Correo de contacto general.',
 			'placeholder' => 'info@cipba.org',
 			'default'     => 'info@cipba.org',
+			'type'        => 'email',
+		),
+		'email_tesoreria'     => array(
+			'section'     => 'Contacto general',
+			'label'       => 'Correo de tesorería',
+			'desc'        => 'Correo de contacto de tesorería. Marcador: {{email_tesoreria}}',
+			'placeholder' => 'tesoreria@cipba.org',
+			'default'     => 'tesoreria@cipba.org',
 			'type'        => 'email',
 		),
 		'horario'             => array(
@@ -121,6 +129,14 @@ function cipba_datos_fields() {
 		),
 
 		// — Matrícula y trámites (se usan como marcadores {{clave}} en los textos de los trámites) —
+		'email_tramites'      => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Correo para trámites',
+			'desc'        => 'Correo que se muestra en la página de cada trámite para iniciarlo por mail. Si lo dejás vacío, se usa el correo de contacto general. Marcador: {{email_tramites}}',
+			'placeholder' => 'info@cipba.org',
+			'default'     => '',
+			'type'        => 'email',
+		),
 		'resolucion'          => array(
 			'section'     => 'Matrícula y trámites',
 			'label'       => 'Resolución vigente',

@@ -528,6 +528,13 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 			'columns'     => 6,
 			'placeholder' => '(011) 15-5857-0060',
 		);
+		$area_fields[] = array(
+			'name'        => 'Email',
+			'id'          => "persona{$i}_email",
+			'type'        => 'email',
+			'columns'     => 6,
+			'placeholder' => 'nombre@cipba.org',
+		);
 	}
 
 	$meta_boxes[] = array(

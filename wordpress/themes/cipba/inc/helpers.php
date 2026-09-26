@@ -51,6 +51,40 @@ function cipba_get_documento_file_meta( $post_id ) {
 }
 
 /**
+ * Algunos ítems de menú (Apariencia → Menús) enlazan directo a un Documento
+ * de la biblioteca en vez de mostrarse en una lista de trámites/novedades
+ * (ej. "Código de Ética" en el menú de Normativa). Como el CPT `documento` no
+ * es público (no tiene página propia), el ítem de menú se carga como "Enlace
+ * personalizado" y guarda el ID del documento en el meta "_cipba_documento_id".
+ *
+ * Este hook mantiene esa URL sincronizada: al guardar el Documento (por
+ * ejemplo, al reemplazar el archivo subido), se actualiza sola la URL de
+ * todos los ítems de menú vinculados a él, para que no quede apuntando al
+ * archivo viejo.
+ */
+function cipba_sync_menu_documento_links( $post_id ) {
+	if ( wp_is_post_revision( $post_id ) || 'documento' !== get_post_type( $post_id ) ) {
+		return;
+	}
+	$file = cipba_get_documento_file_meta( $post_id );
+	if ( ! $file ) {
+		return;
+	}
+	$items = get_posts( array(
+		'post_type'      => 'nav_menu_item',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'meta_key'       => '_cipba_documento_id',
+		'meta_value'     => $post_id,
+		'fields'         => 'ids',
+	) );
+	foreach ( $items as $item_id ) {
+		update_post_meta( $item_id, '_menu_item_url', $file['url'] );
+	}
+}
+add_action( 'save_post', 'cipba_sync_menu_documento_links', 20 );
+
+/**
  * Permite subir SVG a la Media Library (para el logo y otros assets
  * vectoriales). Solo administradores pueden subir archivos, así que el
  * riesgo de SVG con script embebido es bajo en este sitio.
@@ -201,7 +235,7 @@ function cipba_initials( $nombre ) {
  * Entiende los formatos habituales de Argentina:
  *   "15-5181-9336"       → +5491151819336  (celular AMBA: sin 15, con 9 y área 11)
  *   "02324-15-58-2633"   → +5492324582633  (celular con código de área: sin 0 ni 15, con 9)
- *   "(11) 4651-0064"     → +541146510064   (fijo: se antepone solo 54)
+ *   "(11) 3535-0751"     → +541135350751   (fijo: se antepone solo 54)
  * Si ya trae 54 al inicio no lo duplica.
  */
 function cipba_tel_link( $tel ) {
@@ -343,7 +377,7 @@ function cipba_initials_first_two( $nombre ) {
 define( 'CIPBA_AREA_MAX_PERSONAS', 4 );
 
 /**
- * Personas de un área de contacto (nombre, tel) — solo las que tienen nombre.
+ * Personas de un área de contacto (nombre, tel, email) — solo las que tienen nombre.
  *
  * @param int|null $post_id ID del área (por defecto, el post actual).
  * @return array[]
@@ -359,6 +393,7 @@ function cipba_get_area_personas( $post_id = null ) {
 		$out[] = array(
 			'nombre' => $nombre,
 			'tel'    => trim( (string) get_post_meta( $post_id, "persona{$i}_tel", true ) ),
+			'email'  => trim( (string) get_post_meta( $post_id, "persona{$i}_email", true ) ),
 		);
 	}
 	return $out;

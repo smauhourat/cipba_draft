@@ -342,9 +342,14 @@ function cipba_areas_contacto_shortcode() {
 						<?php foreach ( $personas as $p ) : ?>
 							<div class="cipba-area__person">
 								<span class="cipba-area__name"><?php echo esc_html( $p['nombre'] ); ?></span>
-								<?php if ( $p['tel'] ) : ?>
-									<a href="tel:<?php echo esc_attr( cipba_tel_link( $p['tel'] ) ); ?>"><?php echo esc_html( $p['tel'] ); ?></a>
-								<?php endif; ?>
+								<span class="cipba-area__person-links">
+									<?php if ( $p['tel'] ) : ?>
+										<a href="tel:<?php echo esc_attr( cipba_tel_link( $p['tel'] ) ); ?>"><?php echo esc_html( $p['tel'] ); ?></a>
+									<?php endif; ?>
+									<?php if ( $p['email'] ) : ?>
+										<a href="mailto:<?php echo esc_attr( antispambot( $p['email'] ) ); ?>"><?php echo esc_html( $p['email'] ); ?></a>
+									<?php endif; ?>
+								</span>
 							</div>
 						<?php endforeach; ?>
 					</div>

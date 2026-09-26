@@ -30,7 +30,8 @@ while ( have_posts() ) :
 	$docs_titulo  = $docs_titulo ? $docs_titulo : 'Formularios y documentación';
 	$docs_intro   = trim( (string) get_post_meta( $id, 'docs_intro', true ) );
 	$whatsapp     = cipba_dato_url( 'whatsapp' );
-	$mail         = trim( cipba_dato( 'email' ) );
+	$mail         = trim( cipba_dato( 'email_tramites' ) );
+	$mail         = $mail ? $mail : trim( cipba_dato( 'email' ) );
 	?>
 	<div id="primary" class="content-area primary">
 		<main id="main" class="site-main cipba-tramite">
