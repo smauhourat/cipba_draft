@@ -2,8 +2,9 @@
 /**
  * Partidos comprendidos por el Distrito VII (página Institucional).
  * Se renderiza con [cipba_partidos]. La lista de partidos es fija (la
- * define la ley de creación del Distrito), por eso va hardcodeada acá en
- * vez de salir de un CPT o de Datos del Distrito.
+ * define la ley de creación del Distrito); vive en
+ * assets/data/partidos-distrito-vii.json (ver cipba_get_partidos()), fuente
+ * única que también usa el consultor de la home.
  *
  * @package cipba
  */
@@ -12,15 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$partidos = array(
-	'Escobar', 'Exaltación de la Cruz', 'General Las Heras', 'General Rodríguez',
-	'General San Martín', 'Hurlingham', 'Ituzaingó', 'José C. Paz',
-	'La Matanza', 'Luján', 'Malvinas Argentinas', 'Marcos Paz',
-	'Mercedes', 'Merlo', 'Moreno', 'Morón',
-	'Pilar', 'San Isidro', 'San Fernando', 'San Miguel',
-	'Tigre', 'Tres de Febrero', 'Vicente López',
-);
-$total = count( $partidos );
+$partidos = cipba_get_partidos();
+$total    = count( $partidos );
 ?>
 <div class="cipba-partidos-grid">
 	<div class="cipba-partidos-map">

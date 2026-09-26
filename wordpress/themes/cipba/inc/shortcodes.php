@@ -291,6 +291,21 @@ function cipba_partidos_shortcode() {
 add_shortcode( 'cipba_partidos', 'cipba_partidos_shortcode' );
 
 /**
+ * [cipba_consultor_partidos] — tarjeta "¿Tu partido pertenece al Distrito
+ * VII?" de la home: caja de texto que busca (sin ser literal: tolera
+ * acentos, mayúsculas y errores de tipeo) contra los 23 partidos. El
+ * markup vive en template-parts/consultor-partidos.php.
+ */
+function cipba_consultor_partidos_shortcode() {
+	wp_enqueue_script( 'cipba-consultor-partidos', get_stylesheet_directory_uri() . '/assets/js/consultor-partidos.js', array(), CHILD_THEME_CIPBA_VERSION, true );
+
+	ob_start();
+	get_template_part( 'template-parts/consultor-partidos' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_consultor_partidos', 'cipba_consultor_partidos_shortcode' );
+
+/**
  * [cipba_autoridades] — autoridades del Consejo Directivo (CPT `autoridad`):
  * el presidente como tarjeta destacada de doble ancho y el resto en grilla.
  * El markup vive en template-parts/autoridades-list.php.

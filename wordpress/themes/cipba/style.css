@@ -118,15 +118,18 @@ Template: astra
 .cipba-dist-col { display: grid; gap: 18px; align-content: start; }
 .cipba-dist-card { background: #fff; border: 1px solid var(--wp--preset--color--verde-200,#c0e2ca); border-radius: 12px; padding: 22px 24px 24px; }
 .cipba-dist-card h3 { font-size: 15.5px; font-weight: 800; color: var(--wp--preset--color--tinta-900,#373d3e); margin: 0 0 14px; }
-.cipba-dist-placeholder {
-	border: 1.5px dashed var(--wp--preset--color--verde-200,#c0e2ca);
-	border-radius: 8px;
-	padding: 18px;
-	text-align: center;
-	font-size: 13px;
-	color: var(--wp--preset--color--gris-teal,#607a7c);
-	background: var(--wp--preset--color--verde-100,#e8f5f1);
-}
+/* Consultor de partidos (tarjeta "¿Tu partido pertenece al Distrito VII?"). */
+.cipba-consultor__field { display: flex; align-items: center; gap: 10px; background: var(--wp--preset--color--gris-50,#f7faf9); border: 1.5px solid var(--cipba-border-input,#dbe6e3); border-radius: 6px; padding: 10px 14px; color: var(--wp--preset--color--gris-400,#9aa8a9); transition: border-color var(--cipba-fast,.2s); }
+.cipba-consultor__field:focus-within { border-color: var(--wp--preset--color--verde-500,#00a48a); }
+.cipba-consultor__field input { flex: 1; border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent; padding: 0 !important; font-size: 14px; font-family: inherit; color: var(--wp--preset--color--tinta-900,#373d3e); }
+.cipba-consultor__resultado { margin-top: 12px; padding: 12px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+.cipba-consultor__resultado[hidden] { display: none; }
+.cipba-consultor__resultado.is-ok { background: var(--wp--preset--color--verde-100,#e8f5f1); color: var(--wp--preset--color--verde-800,#1a5f5c); }
+.cipba-consultor__resultado.is-ok strong { color: var(--wp--preset--color--verde-700,#14484a); }
+.cipba-consultor__resultado.is-sugerencia { background: #fff7e6; color: #8a6416; }
+.cipba-consultor__resultado.is-no { background: var(--wp--preset--color--gris-100,#eef2f1); color: var(--wp--preset--color--gris-teal,#607a7c); }
+.cipba-consultor__link { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 13px; font-weight: 700; color: var(--wp--preset--color--verde-700,#14484a) !important; text-decoration: none !important; }
+.cipba-consultor__link:hover { text-decoration: underline !important; }
 .cipba-dist-sede {
 	background: var(--wp--preset--color--verde-700,#14484a);
 	border-radius: 12px;

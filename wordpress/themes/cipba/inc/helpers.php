@@ -398,3 +398,19 @@ function cipba_get_area_personas( $post_id = null ) {
 	}
 	return $out;
 }
+
+/**
+ * Los 23 partidos del Distrito VII (fijos por Ley 10.416): fuente única en
+ * assets/data/partidos-distrito-vii.json, usada por la sección "Partidos
+ * comprendidos" de Institucional y por el consultor de la home.
+ */
+function cipba_get_partidos() {
+	static $partidos = null;
+	if ( null !== $partidos ) {
+		return $partidos;
+	}
+	$path     = get_stylesheet_directory() . '/assets/data/partidos-distrito-vii.json';
+	$decoded  = file_exists( $path ) ? json_decode( (string) file_get_contents( $path ), true ) : null;
+	$partidos = is_array( $decoded ) ? $decoded : array();
+	return $partidos;
+}
