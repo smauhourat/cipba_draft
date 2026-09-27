@@ -72,7 +72,7 @@ function cipba_render_footer_columns() {
 		<div class="cipba-footer-grid">
 			<div class="cipba-footer-brand">
 				<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/logo-blanco.svg' ); ?>" alt="CIPBA Distrito VII" class="cipba-footer-logo" />
-				<p>Entidad pública no estatal creada por Ley 10.416. Ejercicio profesional habilitado en 23 partidos de la zona oeste y norte del Gran Buenos Aires.</p>
+				<p>Entidad pública no estatal creada por Ley 10.416</p>
 				<div style="margin-top:16px"><?php echo cipba_social_icons( true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 			</div>
 			<?php foreach ( $columnas as $menu_name => $titulo ) :

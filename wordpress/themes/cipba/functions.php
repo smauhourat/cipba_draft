@@ -38,6 +38,7 @@ require_once get_stylesheet_directory() . '/inc/topbar.php';
 require_once get_stylesheet_directory() . '/inc/navbar.php';
 require_once get_stylesheet_directory() . '/inc/footer.php';
 require_once get_stylesheet_directory() . '/inc/shortcodes.php';
+require_once get_stylesheet_directory() . '/inc/favicon.php';
 
 if ( class_exists( 'RWMB_Loader' ) ) {
 	require_once get_stylesheet_directory() . '/inc/meta-boxes.php';
