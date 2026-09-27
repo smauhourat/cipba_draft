@@ -44,7 +44,7 @@ function cipba_eventos_shortcode() {
 			?>
 			<a href="<?php echo esc_url( get_permalink( $p->ID ) ); ?>" class="cipba-ev-card">
 				<div class="cipba-ev-card__img">
-					<?php echo get_the_post_thumbnail( $p->ID, 'cipba-card' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+					<?php echo get_the_post_thumbnail( $p->ID, 'cipba-card-vert' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 				</div>
 				<div class="cipba-ev-card__body">
 					<h3><?php echo esc_html( get_the_title( $p->ID ) ); ?></h3>

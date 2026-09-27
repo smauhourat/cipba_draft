@@ -26,7 +26,9 @@ while ( have_posts() ) :
 	$mail    = trim( cipba_dato( 'email' ) );
 	$url     = get_permalink( $id );
 	$titulo  = get_the_title();
-	$nov_url = cipba_novedades_url( cipba_tipo_pub( $id ) ); // Vuelve al tab (Eventos/Noticias) que corresponde a esta publicación.
+	$tipo    = cipba_tipo_pub( $id );
+	$evento  = 'evento' === $tipo;
+	$nov_url = cipba_novedades_url( $tipo ); // Vuelve al tab (Eventos/Noticias) que corresponde a esta publicación.
 	$share   = array(
 		array( 'WhatsApp', 'whatsapp', 'https://wa.me/?text=' . rawurlencode( $titulo . ' ' . $url ) ),
 		array( 'LinkedIn', 'linkedin', 'https://www.linkedin.com/sharing/share-offsite/?url=' . rawurlencode( $url ) ),
@@ -60,7 +62,7 @@ while ( have_posts() ) :
 
 			<?php if ( has_post_thumbnail() ) : ?>
 				<div class="cipba-nota__hero">
-					<div class="cipba-nota__inner"><div class="cipba-nota__hero-img"><?php the_post_thumbnail( 'cipba-nov-hero' ); ?></div></div>
+					<div class="cipba-nota__inner"><div class="cipba-nota__hero-img<?php echo $evento ? ' cipba-nota__hero-img--flyer' : ''; ?>"><?php the_post_thumbnail( $evento ? 'cipba-flyer' : 'cipba-nov-hero' ); ?></div></div>
 				</div>
 			<?php endif; ?>
 

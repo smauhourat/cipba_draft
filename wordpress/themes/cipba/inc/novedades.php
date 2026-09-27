@@ -237,9 +237,10 @@ function cipba_render_nov_card( $post_id ) {
 	$cat    = cipba_novedad_categoria( $post_id );
 	$titulo = get_the_title( $post_id );
 	$bajada = cipba_bajada( $post_id );
+	$evento = 'evento' === cipba_tipo_pub( $post_id );
 	?>
-	<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" class="cipba-nov-card" data-nov-item data-cat="<?php echo esc_attr( $cat ? $cat->slug : '' ); ?>" data-search="<?php echo esc_attr( mb_strtolower( $titulo . ' ' . $bajada ) ); ?>">
-		<div class="cipba-nov-card__img"><?php echo get_the_post_thumbnail( $post_id, 'cipba-card' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+	<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" class="cipba-nov-card<?php echo $evento ? ' cipba-nov-card--evento' : ''; ?>" data-nov-item data-cat="<?php echo esc_attr( $cat ? $cat->slug : '' ); ?>" data-search="<?php echo esc_attr( mb_strtolower( $titulo . ' ' . $bajada ) ); ?>">
+		<div class="cipba-nov-card__img"><?php echo get_the_post_thumbnail( $post_id, $evento ? 'cipba-card-vert' : 'cipba-card' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
 		<div class="cipba-nov-card__body">
 			<div class="cipba-nov-card__meta"><?php echo cipba_cat_badge( $post_id ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span><?php echo esc_html( cipba_fecha_novedad( $post_id ) ); ?></span></div>
 			<h3><?php echo esc_html( $titulo ); ?></h3>
@@ -259,9 +260,10 @@ function cipba_render_nov_dest( $post_id ) {
 	$bajada = cipba_bajada( $post_id );
 	$es_act = (bool) get_post_meta( $post_id, 'es_actividad', true );
 	$lugar  = trim( (string) get_post_meta( $post_id, 'lugar', true ) );
+	$evento = 'evento' === cipba_tipo_pub( $post_id );
 	?>
-	<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" class="cipba-nov-dest" data-nov-item data-cat="<?php echo esc_attr( $cat ? $cat->slug : '' ); ?>" data-search="<?php echo esc_attr( mb_strtolower( $titulo . ' ' . $bajada ) ); ?>">
-		<div class="cipba-nov-dest__img"><?php echo get_the_post_thumbnail( $post_id, 'cipba-nov-hero' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+	<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" class="cipba-nov-dest<?php echo $evento ? ' cipba-nov-dest--flyer' : ''; ?>" data-nov-item data-cat="<?php echo esc_attr( $cat ? $cat->slug : '' ); ?>" data-search="<?php echo esc_attr( mb_strtolower( $titulo . ' ' . $bajada ) ); ?>">
+		<div class="cipba-nov-dest__img"><?php echo get_the_post_thumbnail( $post_id, $evento ? 'cipba-flyer' : 'cipba-nov-hero' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
 		<div class="cipba-nov-dest__txt">
 			<div class="cipba-nov-card__meta"><span class="cipba-badge cipba-badge--dest">Destacado</span><?php echo cipba_cat_badge( $post_id ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span><?php echo esc_html( cipba_fecha_novedad( $post_id ) ); ?></span></div>
 			<h2><?php echo esc_html( $titulo ); ?></h2>
