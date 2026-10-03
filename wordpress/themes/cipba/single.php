@@ -11,6 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Botón "Copiar enlace" de la tarjeta Compartir.
+wp_enqueue_script( 'cipba-novedades', get_stylesheet_directory_uri() . '/assets/js/novedades.js', array(), CHILD_THEME_CIPBA_VERSION, true );
+
 get_header();
 
 while ( have_posts() ) :
@@ -23,7 +26,10 @@ while ( have_posts() ) :
 	$filas   = $es_act ? cipba_actividad_filas( $id ) : array();
 	$cta     = cipba_novedad_cta( $id );
 	$insc    = $es_act && get_post_meta( $id, 'inscripcion_abierta', true );
-	$mail    = trim( cipba_dato( 'email' ) );
+	$mail    = trim( (string) get_post_meta( $id, 'contacto_email', true ) );
+	$mail    = $mail ? $mail : trim( cipba_dato( 'email' ) );
+	$tel     = trim( (string) get_post_meta( $id, 'contacto_telefono', true ) );
+	$tel_url = cipba_tel_link( $tel );
 	$url     = get_permalink( $id );
 	$titulo  = get_the_title();
 	$tipo    = cipba_tipo_pub( $id );
@@ -88,6 +94,7 @@ while ( have_posts() ) :
 							<p><?php echo $insc ? 'La inscripción se confirma por mail una vez verificada la matrícula. Si el cupo está completo, quedás en lista de espera.' : 'Para consultas sobre esta publicación podés escribirnos o comunicarte con el área correspondiente.'; ?></p>
 							<a class="cipba-nota__btn" href="<?php echo esc_url( $cta[1] ); ?>"<?php echo 0 === strpos( $cta[1], home_url() ) ? '' : ' target="_blank" rel="noopener"'; ?>><?php echo esc_html( $cta[0] ); ?> <?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 							<?php if ( $mail ) : ?><a class="cipba-nota__mail" href="mailto:<?php echo esc_attr( antispambot( $mail ) ); ?>"><?php echo cipba_icon( 'mail', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $mail ); ?></a><?php endif; ?>
+							<?php if ( $tel_url ) : ?><a class="cipba-nota__mail" href="<?php echo esc_url( 'tel:' . $tel_url ); ?>"><?php echo cipba_icon( 'phone', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $tel ); ?></a><?php endif; ?>
 						</div>
 
 						<div class="cipba-share">

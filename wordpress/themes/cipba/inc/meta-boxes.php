@@ -80,6 +80,25 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 			),
 			array(
 				'type' => 'heading',
+				'name' => 'Contacto para consultas (opcional)',
+				'desc' => 'Se muestran en el recuadro "Más información". Sin mail, se usa el mail general del Colegio; sin teléfono, no se muestra.',
+			),
+			array(
+				'name'        => 'Mail',
+				'id'          => 'contacto_email',
+				'type'        => 'email',
+				'columns'     => 6,
+				'placeholder' => 'capacitacion@cipba.org.ar',
+			),
+			array(
+				'name'        => 'Teléfono',
+				'id'          => 'contacto_telefono',
+				'type'        => 'text',
+				'columns'     => 6,
+				'placeholder' => '(011) 4651-1234',
+			),
+			array(
+				'type' => 'heading',
 				'name' => 'Tipo de publicación',
 			),
 			array(
