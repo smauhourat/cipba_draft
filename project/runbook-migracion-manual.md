@@ -4,6 +4,8 @@
 **No depende de ningún plugin de backup ni de acceso SSH al hosting.**
 Sirve igual para el ensayo (`cipba.site`) y para el destino final (`cipba.org`): solo cambia `<DOMINIO>`.
 
+> **Si lo que estás haciendo es el redeploy posterior al compromiso de `cipba.site`**, seguí este runbook *y además* la sección **"Variante: reinstalación limpia post-incidente"** al final, que reemplaza las Fases 3–5 (hay que borrar todo y crear una base nueva) y agrega el endurecimiento. Contexto del incidente: `project/plan-limpieza-migracion.md`.
+
 > Convención: `<DOMINIO>` = `cipba.site` (staging) o `cipba.org` (final). Todos los comandos se corren desde `wordpress/` en el repo, con los contenedores levantados (`docker compose up -d`). Contenedor de WordPress: `wordpress_app`.
 
 **Idea central:** hay 3 cosas para mover y solo una es delicada.
@@ -20,7 +22,7 @@ El problema de las URLs: la base guarda `http://localhost:8080` en cientos de lu
 ## Fase 0 — Antes de empezar (local)
 1. Si está instalado, **desactivar y eliminar Duplicator** y **WP Reset** (dev-only). Duplicator deja logs con `localhost:8080` en la base.
 2. Confirmar que el sitio local está en el estado que se quiere publicar (menús, páginas, CPTs). Revisar en particular el contenido editable de la sección *"Contenido editable del sitio"* (más abajo): **Datos del Distrito** con los valores reales, **Fluent Forms → Entries** sin envíos de prueba, y los documentos de los trámites con su archivo subido.
-3. No actualizar plugins/núcleo justo antes de migrar sin probarlos.
+3. No actualizar plugins/núcleo justo antes de migrar sin probarlos. **Excepción:** las actualizaciones de *seguridad* sí se aplican antes de empaquetar (ver 0-bis); después de aplicarlas hay que recorrer el sitio local y confirmar que nada se rompió.
 4. Hacer un backup de seguridad de local por si algo sale mal:
 
    **Opción A — bash / Git Bash / WSL:**
@@ -36,6 +38,43 @@ El problema de las URLs: la base guarda `http://localhost:8080` en cientos de lu
    ```
    (`wordpress/backups/` está ignorado por git: los `.sql` contienen hashes de contraseñas.)
 
+## Fase 0-bis — Chequeos de seguridad antes de empaquetar
+Desde el incidente del 27/09 estos pasos son obligatorios: lo que se empaqueta acá es exactamente lo que va a correr en el servidor.
+
+Los puntos 1, 2, 4 y 5 los reporta de una sola corrida el script `wordpress/scripts/chequeo-pre-deploy.php` (solo lee, no modifica nada). Marca con `!` lo que hay que atender:
+```powershell
+docker cp .\scripts\chequeo-pre-deploy.php wordpress_app:/tmp/chequeo-pre-deploy.php
+docker exec wordpress_app wp --allow-root eval-file /tmp/chequeo-pre-deploy.php
+```
+
+1. **Actualizar los plugins con parches de seguridad.** Ver qué hay pendiente y actualizar:
+   ```
+   docker exec wordpress_app wp --allow-root plugin list --fields=name,status,version,update,update_version
+   docker exec wordpress_app wp --allow-root plugin update <plugin> [<plugin>...]
+   ```
+   Mínimo obligatorio: **UpdraftPlus ≥ 1.26.8** (CVE-2026-82841: cualquier usuario logueado podía leer las credenciales del destino remoto de backup) y **FluentSMTP ≥ 2.4.1**.
+2. **Verificar que no quedó nada del kit del atacante en local.** No debería aparecer nada:
+   ```
+   docker exec wordpress_app bash -c 'cd /var/www/html && find wp-content -maxdepth 2 \( -name "wp-signup.php" -o -name ".well-known" -o -name ".tmb" -o -name "wp-file-manager*" -o -name "system" \) -print'
+   docker exec wordpress_app bash -c 'cd /var/www/html && find wp-content/uploads -type f -name "*.php*" -print'
+   ```
+   `wp-signup.php` es archivo de *core* y vive en la raíz: si aparece dentro de `wp-content/`, es una webshell. En `uploads/` el único `.htaccess` esperado es el de Astra (`ast-block-templates-json/.htaccess`); cualquier `.php` ahí adentro es sospechoso.
+3. **Usuario `admin`:** el login genérico `admin` es el primer blanco de fuerza bruta. Ya fue renombrado en local (ver *Registro de verificación*); WP-CLI no permite cambiar `user_login`, se hace por base:
+   ```php
+   // wp eval-file: $wpdb->update( $wpdb->users, array( 'user_login' => '<nuevo>', 'user_nicename' => '<nuevo>' ), array( 'ID' => 1 ) );
+   ```
+   Los posts referencian al autor por `ID`, así que no se rompe nada. **Ojo:** `display_name` es un campo aparte — si quedó en `admin`, eso es lo que se ve como autor en el front.
+4. **Vaciar las entradas de prueba del formulario** (Fluent Forms → Entries). Para contarlas sin salir de la consola:
+   ```php
+   // wp eval-file: global $wpdb; echo $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}fluentform_submissions" );
+   ```
+5. **Confirmar que el registro público está cerrado:** `users_can_register` debe ser `0` (`wp option get users_can_register`).
+6. **Humo sobre el sitio local** después de las actualizaciones, buscando `Fatal error` / `Warning:` / `Deprecated:` en el HTML:
+   ```powershell
+   $urls = @('http://localhost:8080/','http://localhost:8080/novedades/','http://localhost:8080/institucional/','http://localhost:8080/contacto/','http://localhost:8080/honorarios/','http://localhost:8080/tramites/inscripcion/','http://localhost:8080/tramites/pago-matricula/')
+   foreach ($u in $urls) { $r = Invoke-WebRequest -Uri $u -UseBasicParsing; "{0,-50} {1} fatal/warn:{2}" -f $u,$r.StatusCode,($r.Content -match 'Fatal error|Warning:|Deprecated:') }
+   ```
+
 ## Fase 1 — Exportar la base de datos con las URLs ya reemplazadas
 Esto **no modifica la base local**: escribe un `.sql` nuevo con el reemplazo aplicado (respeta datos serializados).
 ```
@@ -50,24 +89,35 @@ docker cp wordpress_app:/tmp/deploy.sql ./backups/deploy-<DOMINIO>-AAAAMMDD.sql
 - ✅ *Verificado el 2026-09-19 (164 reemplazos, base local intacta).*
 
 ## Fase 2 — Empaquetar `wp-content`
-`wp-content` vive en un volumen Docker (el tema `cipba` está montado desde `wordpress/themes/cipba`; el `tar` lo incluye).
+`wp-content` vive en un volumen Docker (el tema `cipba` está montado desde `wordpress/themes/cipba`; el paquete lo incluye).
+
+**El `.zip` se arma adentro del contenedor, con PHP.** No se pasa por Windows: las rutas de `vendor/` de UpdraftPlus, FluentSMTP y Rank Math ya superan los 260 caracteres de `MAX_PATH`, así que PowerShell 5.1 no puede ni enumerarlas ni borrarlas (`Could not find a part of the path…`) y cualquier paso intermedio en `C:\` o `D:\` deja archivos afuera en silencio. Tampoco sirve `Compress-Archive`: genera rutas con `\` que se rompen al extraer en Linux.
+
+1. Escribir `wordpress/scripts/zip-wp-content.php` (ya versionado en el repo) y correrlo en el contenedor:
+   ```powershell
+   docker cp .\scripts\zip-wp-content.php wordpress_app:/tmp/zip-wp-content.php
+   docker exec wordpress_app php -d memory_limit=1G /tmp/zip-wp-content.php
+   docker cp wordpress_app:/tmp/wp-content.zip .\backups\wp-content-<DOMINIO>-AAAAMMDD.zip
+   ```
+   El script imprime `archivos / carpetas / excluidos / tamaño`; las exclusiones están adentro: `cache`, `upgrade`, **`upgrade-temp-backup`**, `updraft`, `duplicator-backups`, `plugins/wp-reset`, `plugins/duplicator`.
+2. **`upgrade-temp-backup` es importante:** cada `plugin update` deja ahí una copia de la versión *anterior* del plugin. Sin esa exclusión, el paquete se lleva al servidor justo la versión vulnerable que se acaba de reemplazar.
+3. Verificar el zip antes de subirlo — entradas, que no haya rutas con `\`, y que estén el tema y los plugins:
+   ```
+   docker exec wordpress_app php -r '$z=new ZipArchive();$z->open("/tmp/wp-content.zip");echo $z->numFiles." entradas\n";var_dump($z->locateName("wp-content/themes/cipba/style.css")!==false);'
+   ```
+   Contrastar `numFiles` contra el conteo que imprimió el script (`archivos + carpetas + 1`).
+
+Opcionalmente, para tener también un `.tar.gz` (útil como copia nativa de Linux, no se sube al hosting):
 ```
 docker exec wordpress_app tar -czf /tmp/wp-content.tar.gz -C /var/www/html \
-  --exclude=wp-content/cache --exclude=wp-content/upgrade --exclude=wp-content/updraft \
-  --exclude=wp-content/duplicator-backups --exclude=wp-content/plugins/wp-reset \
-  --exclude=wp-content/plugins/duplicator wp-content
-docker cp wordpress_app:/tmp/wp-content.tar.gz ./backups/wp-content.tar.gz
+  --exclude=wp-content/cache --exclude=wp-content/upgrade --exclude=wp-content/upgrade-temp-backup \
+  --exclude=wp-content/updraft --exclude=wp-content/duplicator-backups \
+  --exclude=wp-content/plugins/wp-reset --exclude=wp-content/plugins/duplicator wp-content
+docker cp wordpress_app:/tmp/wp-content.tar.gz ./backups/wp-content-AAAAMMDD.tar.gz
 ```
-Convertir a **.zip** (el Administrador de archivos del hosting extrae zip con seguridad; no usar `Compress-Archive` de PowerShell 5.1: genera rutas con `\` que se rompen en Linux). En PowerShell, con el `tar` de Windows:
-```
-cd backups
-mkdir pkg
-tar -xzf wp-content.tar.gz -C pkg
-tar -a -c -f wp-content.zip -C pkg wp-content
-```
-- `tar: file changed as we read it` es un aviso normal (algún archivo temporal cambió mientras se leía); no invalida el paquete.
-- Tamaño de referencia: ≈66 MB el `.tar.gz` y ≈70 MB el `.zip`; límite de subida del hosting: 128 MB.
-- Extraer y comprimir ≈9.500 archivos en Windows lleva **varios minutos**; hacerlo en una carpeta de un disco local rápido (p. ej. `C:\`), no sobre `D:\` montado en Docker.
+- Desde **Git Bash**, cualquier `docker exec … /ruta/absoluta` necesita `export MSYS_NO_PATHCONV=1` adelante; si no, MSYS traduce `/var/www/html` a `C:/Program Files/Git/var/www/html` y el comando falla.
+- `tar: file changed as we read it` es un aviso normal; no invalida el paquete.
+- Tamaño de referencia (02/10/2026): **88,7 MB** el `.zip`, 84,5 MB el `.tar.gz`, 10.884 entradas. Límite de subida del hosting: 128 MB — el margen se está achicando (70 MB en septiembre).
 - Si el zip supera 128 MB, subirlo por FTP (FileZilla) en vez del Administrador de archivos.
 - Los plugins de terceros vienen dentro del zip: no hace falta reinstalarlos. (`wordpress/plugins.txt` es solo el listado de referencia.)
 
@@ -112,7 +162,7 @@ tar -a -c -f wp-content.zip -C pkg wp-content
 - [ ] **Correo:** configurar SMTP del hosting (plugin WP Mail SMTP o similar) y probar un formulario de Fluent Forms. Sin SMTP los mensajes de `/contacto/` **se guardan** (Fluent Forms → Entries) pero **no llegan por mail**.
 - [ ] **Formulario de Contacto (Fluent Forms):** el aviso por correo se envía al destinatario cargado en el formulario (hoy `info@cipba.org`), **no** al correo de Datos del Distrito. Revisarlo en Fluent Forms → *Contacto CIPBA* → Configuración → Notificaciones por correo. Enviar una consulta de prueba y **borrar esa entrada** después.
 - [ ] **Akismet:** activarlo ahora que hay un formulario público (el formulario solo tiene la protección básica de Fluent Forms).
-- [ ] **Seguridad:** cambiar contraseñas de los usuarios `admin` y `cipbaadmin` (vienen de local); revisar usuarios; `WP_DEBUG` en false; claves/salts nuevas en `wp-config.php`.
+- [ ] **Seguridad:** cambiar las contraseñas de **todos** los usuarios (vienen de local, y nunca deben ser las mismas entre local y producción — usar un gestor de contraseñas); revisar la lista de usuarios; `WP_DEBUG` en false; claves/salts nuevas en `wp-config.php`. Detalle completo en *"Variante: reinstalación limpia post-incidente"*.
 - [ ] **Caché:** activar LiteSpeed Cache (el hosting usa LiteSpeed) **y purgarla** después de importar la base — el hosting ya venía cacheando la instalación default de WP desde antes de migrar, así que a los visitantes sin login (logueado en el wp-admin no se nota, esa vista no usa caché) les sigue apareciendo la versión vieja hasta que se purga. LiteSpeed Cache → Toolbox → Purge All (o el ícono del tacho en la barra de admin). Repetir cada vez que se reimporte la base o se suba un cambio de tema/contenido en el ciclo de re-deploy.
 - [ ] **Plugins:** verificar que ninguno tire errores con PHP 8.4 (fallback: bajar a 8.3 desde el panel).
   - Recorrer wp-admin y el front (home, cada CPT, Fluent Forms, Rank Math, Mega Menu) buscando `Warning:`, `Deprecated:` o `Fatal error:` mezclado en la página.
@@ -170,6 +220,48 @@ Cosas a tener en cuenta:
 - **Ojo con las consultas del formulario de Contacto:** las entradas de Fluent Forms viven en la base. Reimportar la base en un sitio que ya recibió consultas reales las **borra**. Antes de cualquier reimportación en un sitio en uso, exportar las entradas (Fluent Forms → Entries → Export) o directamente no importar.
 - **Contenido que se edita en producción** (Datos del Distrito, trámites, documentos, sedes…) tampoco debe pisarse con una base de local; los cambios de código del tema (`single-tramite.php`, `inc/`, `style.css`) sí se suben por FTP sin tocar la base.
 
+## Variante: reinstalación limpia post-incidente
+Para el redeploy de `cipba.site` después del compromiso del 27/09/2026 (contexto y hallazgos: `project/plan-limpieza-migracion.md`). La idea es **no limpiar archivo por archivo**: se encontraron varios mecanismos de persistencia (WP File Manager, `wp-content/wp-signup.php`, carpetas `.well-known` repetidas, `.tmb`, carpeta `system`), así que se pisa todo. Local es la fuente de verdad y **no hay contenido nuevo cargado en producción que rescatar** (confirmado con el usuario).
+
+Se corren las Fases 0, 0-bis, 1 y 2 tal cual. Lo que cambia son las Fases 3–5, y después se endurece.
+
+### Antes de tocar nada
+- [ ] Sitio protegido con contraseña de directorio desde el panel de Ferozo mientras dura la limpieza.
+- [ ] Confirmado que ya se cambiaron las contraseñas de **WP**, **FTP** y **panel de Ferozo/DonWeb**.
+- [ ] (Opcional, evidencia) Bajar por FTP una copia completa del sitio comprometido a una carpeta aparte, p. ej. `C:\forensics\cipba-site-comprometido`. **No ejecutar nada de esa copia.**
+- [ ] Si UpdraftPlus tenía un destino remoto configurado (Drive/Dropbox/S3/FTP): **rotar esas credenciales**. El sitio corría UpdraftPlus 1.26.7, afectado por CVE-2026-82841, que permitía a cualquier usuario logueado leerlas — y existió un usuario Suscriptor creado por el atacante.
+
+### Fase 3' — Hosting desde cero
+1. Por FTP, **borrar el contenido completo** de la carpeta del dominio (con la copia de evidencia ya a salvo). Incluye archivos ocultos: `.htaccess`, `.well-known`, `.tmb`.
+2. Crear una **base de datos nueva**, con usuario y contraseña nuevos. **No reusar la vieja**: esas credenciales pueden haber quedado expuestas.
+3. PHP 8.4 (fallback 8.3), `memory_limit` 256M, subida 128M — igual que la Fase 3 normal.
+4. SSL activo antes de abrir el sitio por `https://`.
+
+### Fase 4' — WordPress limpio
+Igual que la Fase 4, pero bajando el núcleo **de wordpress.org**, no reutilizando archivos del sitio anterior. Misma versión mayor que local (`docker exec wordpress_app wp --allow-root core version`) e idioma `es_AR`. Prefijo de tablas `wp_`.
+
+### Fase 5' — Subir el paquete
+Igual que la Fase 5. Como la carpeta quedó vacía, no hay `wp-content` previo que renombrar: se sube el `.zip` y se extrae directo. Permisos 755/644 como siempre.
+
+### Fase 8 — Endurecer (nueva, después de la Fase 7)
+1. En `wp-config.php`:
+   ```php
+   define( 'DISALLOW_FILE_EDIT', true );
+   define( 'DISALLOW_FILE_MODS', true );
+   ```
+   `DISALLOW_FILE_EDIT` saca el editor de temas/plugins de wp-admin; `DISALLOW_FILE_MODS` bloquea instalar y actualizar plugins desde el panel — exactamente el vector de este incidente (con sesión de admin válida, instalar WP File Manager y plantar backdoors es una acción autenticada normal, no hace falta ninguna CVE).
+   **Contrapartida:** con `DISALLOW_FILE_MODS` las actualizaciones automáticas de plugins tampoco corren. A partir de ahí, actualizar = actualizar en local y repetir Fases 0-bis/2/5. Si se prefiere poder actualizar desde el panel, dejar solo `DISALLOW_FILE_EDIT`.
+2. Claves y salts nuevos en `wp-config.php` (generarlos en `https://api.wordpress.org/secret-key/1.1/salt/`). Invalida cualquier cookie de sesión que el atacante tuviera.
+3. Instalar **Wordfence** (o equivalente): escaneo de integridad de archivos y bloqueo de fuerza bruta. Sin SSH es la única forma práctica de vigilar que no vuelvan a aparecer archivos.
+4. Si el plan de Ferozo lo permite: contraseña de directorio (`.htpasswd`) sobre `/wp-admin/` y `wp-login.php`, además del login de WP.
+5. Confirmar que *Ajustes → General → Cualquiera puede registrarse* sigue desactivado (en el incidente el usuario se creó igual, por código, pero es gratis confirmarlo).
+6. Revisar la lista de plugins instalados y **borrar los que estén inactivos y no se vayan a usar** (hoy viajan en el paquete: `akismet`, `custom-post-type-ui`, `mystickymenu`, `pdf-embedder`). Un plugin inactivo igual tiene sus archivos PHP accesibles por URL: es superficie de ataque sin contrapartida. Excepción: `akismet` se va a activar (Fase 7).
+
+### Fase 9 — Vigilancia los primeros días
+1. Guardar el `.zip` de `wp-content` y el `.sql` de esta instalación como **nuevo baseline de referencia** (reemplaza a los del 19 y 23/09).
+2. 1 o 2 veces por día durante la primera semana: revisar la **lista de usuarios** y la **lista de plugins activos**.
+3. Comparar por hash el `wp-content` del servidor contra el baseline. ⚠️ El script `Compare-WpContent.ps1` que menciona el plan de limpieza **todavía no existe**; además, hacer ese diff en Windows choca con el mismo `MAX_PATH` de la Fase 2, así que conviene que compare el listado de hashes *dentro* del zip de referencia contra un listado traído del servidor, sin extraer nada a disco.
+
 ## Diferencias para la producción final (`cipba.org`)
 1. Repetir Fases 0–7 con `<DOMINIO>` = `cipba.org` (exportar la base de nuevo con `https://cipba.org`; **no reutilizar** el `.sql` de `cipba.site`).
 2. Antes de importar: DNS/delegación del dominio apuntando a DonWeb y SSL activo.
@@ -181,8 +273,25 @@ Cosas a tener en cuenta:
 ## Registro de verificación
 | Paso | Estado |
 |---|---|
-| Fase 1: `search-replace --export` | ✅ Probado 2026-09-19 (164 reemplazos, ≈1,9 MB, base local intacta) |
-| Fase 2: `tar` con exclusiones (≈66 MB) | ✅ Probado 2026-09-19 (aviso "file changed as we read it" normal) |
-| Fase 2: conversión a `.zip` con `tar -a` | ✅ Probado 2026-09-19 (70 MB, 9.527 entradas, exclusiones OK; tarda varios minutos en Windows por la cantidad de archivos; quedan solo `*-es_AR.*` de Duplicator en `languages/`, inofensivos) |
+| Fase 1: `search-replace --export` | ✅ Probado 2026-09-19 (164 reemplazos) y **2026-10-02 (279 reemplazos, 1,3 MB, 0 restos de `localhost:8080`, base local intacta)** |
+| Fase 2: `tar` con exclusiones | ✅ Probado 2026-09-19 (≈66 MB) y 2026-10-02 (84,5 MB). Aviso "file changed as we read it" normal |
+| Fase 2: conversión a `.zip` con `tar -a` en Windows | ❌ **Descartado el 2026-10-02.** Las rutas de `vendor/` pasan `MAX_PATH` y PowerShell 5.1 no las puede enumerar ni borrar; el método no es confiable para contar ni verificar el paquete |
+| Fase 2: `.zip` con `scripts/zip-wp-content.php` en el contenedor | ✅ Probado 2026-10-02 (88,7 MB, 9.033 archivos + 1.851 carpetas = 10.884 entradas, coincide exacto con el `.tar.gz`; 0 rutas con `\`) |
+| Fase 0-bis: `scripts/chequeo-pre-deploy.php` | ✅ Probado 2026-10-02 |
+| Fase 0-bis: UpdraftPlus 1.26.8 / FluentSMTP 2.4.1 | ✅ Actualizados 2026-10-02; humo sobre 7 URLs locales en 200 sin `Fatal error`/`Warning`/`Deprecated` |
+| Fase 0-bis: renombrar `admin` | ✅ Hecho 2026-10-02 — `admin` (ID 1) pasó a `smauhourat` (`user_login` + `user_nicename`). ⚠️ `display_name` quedó en `admin` |
 | Fases 3–7 en Ferozo | ⏳ Pendiente de ejecutar en `cipba.site` (los nombres de menús de Ferozo no están verificados) |
+| Fases 3'–5', 8 y 9 (reinstalación limpia) | ⏳ Pendiente. Paquete del 2026-10-02 listo en `wordpress/backups/` |
 | Contenido editable nuevo (Institucional, Subcomisiones, Contacto, trámites, documentos, Datos del Distrito, formulario) | ⏳ Pendiente de verificar en `cipba.site` con el checklist de la Fase 7 y la sección *"Contenido editable del sitio"*. Local ya probado (2026-09-20): páginas, marcadores, formulario con guardado de entradas y descarga de documentos desde uploads |
+
+### Paquete preparado el 2026-10-02 (reinstalación limpia de `cipba.site`)
+En `wordpress/backups/` (ignorado por git):
+
+| Archivo | Qué es |
+|---|---|
+| `backup-local-20261002.sql` (1,29 MB) | Backup de la base local **antes** de tocar nada (Fase 0.4) |
+| `deploy-cipba.site-20261002.sql` (1,3 MB) | **Para importar por phpMyAdmin.** URLs ya en `https://cipba.site` |
+| `wp-content-cipba.site-20261002.zip` (88,7 MB) | **Para subir y extraer en la raíz del dominio.** 10.884 entradas |
+| `wp-content-20261002.tar.gz` (84,5 MB) | Copia nativa de Linux del mismo contenido; no se sube al hosting |
+
+Versiones de este paquete: WP core **7.1.2**, tema `cipba`, UpdraftPlus **1.26.8**, FluentSMTP **2.4.1**. Quedaron **sin** actualizar, por decisión explícita de no meter cambios no probados: `fluentform` 6.2.14→6.2.15, `megamenu` 3.10.6→3.10.8, `seo-by-rank-math` 1.0.278→1.0.279, `ultimate-addons-for-gutenberg` 2.20.3→2.20.4, `akismet` 5.7→5.7.2, `mystickymenu` 2.9.1→2.9.3. Ninguno tiene CVE conocida aplicable a la versión instalada (cruce del 28/09 en `plan-limpieza-migracion.md`), pero conviene ponerlos al día en el próximo ciclo.

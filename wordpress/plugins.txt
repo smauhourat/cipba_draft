@@ -1,11 +1,18 @@
-# Plugins del sitio (versiones al 2026-09-19). Los plugins de terceros NO se versionan: se reinstalan.
+# Plugins del sitio (versiones al 2026-10-02). Los plugins de terceros NO se versionan: se reinstalan.
 # active = necesarios en produccion | dev = solo desarrollo, no subir a DonWeb
 code-snippets 3.10.2 active
+fluent-smtp 2.4.1 active
 fluentform 6.2.14 active
 megamenu 3.10.6 active
 meta-box 5.15.1 active
 seo-by-rank-math 1.0.278 active
 ultimate-addons-for-gutenberg 2.20.3 active
-updraftplus 1.26.7 active
-wp-reset 2.08 dev
-# instalados pero inactivos (se mantienen a proposito): akismet, custom-post-type-ui, mystickymenu, pdf-embedder. Hello Dolly eliminado 2026-09-19.
+updraftplus 1.26.8 active
+# instalados pero inactivos: akismet 5.7 (activar en produccion), custom-post-type-ui 1.19.3,
+# mystickymenu 2.9.1, pdf-embedder 5.0.2. Hello Dolly eliminado 2026-09-19.
+# wp-reset y duplicator (dev) desinstalados; las exclusiones del paquete los siguen contemplando.
+#
+# 2026-10-02: updraftplus 1.26.7 -> 1.26.8 (CVE-2026-82841) y fluent-smtp 2.4.0 -> 2.4.1,
+# por el incidente del 27/09 (ver project/plan-limpieza-migracion.md).
+# Pendientes de actualizar, sin CVE aplicable conocida: fluentform 6.2.15, megamenu 3.10.8,
+# seo-by-rank-math 1.0.279, ultimate-addons-for-gutenberg 2.20.4, akismet 5.7.2, mystickymenu 2.9.3.
