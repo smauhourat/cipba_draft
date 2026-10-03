@@ -70,13 +70,18 @@ function cipba_register_post_types() {
 			'add_new_item'  => 'Agregar sede',
 			'edit_item'     => 'Editar sede',
 			'all_items'     => 'Todas las sedes',
+			// La foto de la Casa Central es la que se muestra en la home ("El Distrito VII").
+			'featured_image'        => 'Foto de la sede',
+			'set_featured_image'    => 'Elegir foto de la sede',
+			'remove_featured_image' => 'Quitar foto',
+			'use_featured_image'    => 'Usar como foto de la sede',
 		),
 		'public'       => false,
 		'show_ui'      => true,
 		'show_in_rest' => true,
 		'has_archive'  => false,
 		'menu_icon'    => 'dashicons-location-alt',
-		'supports'     => array( 'title', 'page-attributes' ),
+		'supports'     => array( 'title', 'page-attributes', 'thumbnail' ),
 	) );
 
 	register_post_type( 'autoridad', array(
@@ -285,6 +290,34 @@ function cipba_sede_admin_default_order( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'cipba_sede_admin_default_order' );
+
+/**
+ * Documentos — listado del admin: archivo y si aparece en la página Normativa
+ * (la biblioteca también guarda los formularios de trámites, que no van ahí).
+ */
+function cipba_documento_admin_columns( $cols ) {
+	return array(
+		'cb'        => $cols['cb'],
+		'title'     => 'Documento',
+		'archivo'   => 'Archivo',
+		'normativa' => 'En Normativa',
+		'orden'     => 'Orden',
+		'date'      => $cols['date'],
+	);
+}
+add_filter( 'manage_documento_posts_columns', 'cipba_documento_admin_columns' );
+
+function cipba_documento_admin_column_content( $col, $post_id ) {
+	if ( 'archivo' === $col ) {
+		$file = cipba_get_documento_file_meta( $post_id );
+		echo esc_html( $file ? trim( $file['formato'] . ' ' . $file['peso'] ) : '—' );
+	} elseif ( 'normativa' === $col ) {
+		echo get_post_meta( $post_id, 'en_normativa', true ) ? '✓' : '';
+	} elseif ( 'orden' === $col ) {
+		echo (int) get_post_meta( $post_id, 'orden', true );
+	}
+}
+add_action( 'manage_documento_posts_custom_column', 'cipba_documento_admin_column_content', 10, 2 );
 
 /**
  * Autoridades — listado del admin: cargo, título y orden a la vista.

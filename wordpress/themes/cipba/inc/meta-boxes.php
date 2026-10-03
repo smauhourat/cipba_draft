@@ -197,9 +197,22 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 				'type' => 'url',
 			),
 			array(
+				'name' => 'Mostrar en la página Normativa',
+				'id'   => 'en_normativa',
+				'desc' => 'Tildar para que aparezca en /normativa/. Los formularios de trámites no se tildan. Si el documento es solo un enlace externo, se lista aparte, bajo "En el sitio del Consejo Superior".',
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => 'Descripción',
+				'id'   => 'descripcion',
+				'desc' => 'Una o dos oraciones que explican de qué trata. Se muestra en la página Normativa.',
+				'type' => 'textarea',
+				'rows' => 3,
+			),
+			array(
 				'name' => 'Origen',
 				'id'   => 'origen',
-				'desc' => 'Ej: "Consejo Superior" si el documento se aloja externamente, o "Distrito VII" si es propio.',
+				'desc' => 'Quién lo emite. Ej: "Provincia de Buenos Aires", "Consejo Superior" o "Distrito VII".',
 				'type' => 'text',
 			),
 			array(
@@ -376,7 +389,7 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		array(
 			'name' => 'Casa Central',
 			'id'   => 'destacada',
-			'desc' => 'Tildar solo en la sede principal: se muestra como tarjeta grande, con la lista de contactos directos.',
+			'desc' => 'Tildar solo en la sede principal: se muestra como tarjeta grande, con la lista de contactos directos. Su "Foto de la sede" (columna derecha) es la imagen de la home.',
 			'type' => 'checkbox',
 		),
 		array(

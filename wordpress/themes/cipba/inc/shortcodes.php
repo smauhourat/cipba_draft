@@ -168,6 +168,18 @@ function cipba_subcomisiones_listado_shortcode() {
 add_shortcode( 'cipba_subcomisiones_listado', 'cipba_subcomisiones_listado_shortcode' );
 
 /**
+ * [cipba_normativa] — página /normativa/: documentos de la biblioteca tildados
+ * "Mostrar en la página Normativa" (los subidos y, aparte, los enlaces al
+ * Consejo Superior). El markup vive en template-parts/normativa.php.
+ */
+function cipba_normativa_shortcode() {
+	ob_start();
+	get_template_part( 'template-parts/normativa' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_normativa', 'cipba_normativa_shortcode' );
+
+/**
  * [cipba_sedes] — sedes y delegaciones (CPT `sede`): la Casa Central como
  * tarjeta ancha con contactos directos y el resto en grilla de 3 columnas.
  * El markup vive en template-parts/sedes-list.php.
@@ -197,14 +209,47 @@ function cipba_get_sedes() {
 	) );
 }
 
-function cipba_sede_principal_shortcode() {
-	$principal = null;
+function cipba_get_sede_principal() {
 	foreach ( cipba_get_sedes() as $sede ) {
 		if ( get_post_meta( $sede->ID, 'destacada', true ) ) {
-			$principal = $sede;
-			break;
+			return $sede;
 		}
 	}
+	return null;
+}
+
+/**
+ * [cipba_sede_foto] — foto de la home ("El Distrito VII"): la imagen
+ * destacada ("Foto de la sede") de la Casa Central, con la dirección como
+ * epígrafe. Sin foto cargada no se muestra nada.
+ */
+function cipba_sede_foto_shortcode() {
+	$principal = cipba_get_sede_principal();
+	if ( ! $principal || ! has_post_thumbnail( $principal ) ) {
+		return '';
+	}
+
+	$id      = $principal->ID;
+	$thumb   = get_post_thumbnail_id( $id );
+	$alt     = trim( (string) get_post_meta( $thumb, '_wp_attachment_image_alt', true ) );
+	$alt     = '' !== $alt ? $alt : 'Frente de la ' . get_the_title( $id );
+	$caption = trim( (string) get_post_meta( $id, 'direccion', true ) );
+
+	ob_start();
+	?>
+	<figure class="cipba-dist-figure">
+		<?php echo wp_get_attachment_image( $thumb, 'large', false, array( 'alt' => $alt, 'sizes' => '(max-width: 900px) 100vw, 600px' ) ); ?>
+		<?php if ( '' !== $caption ) : ?>
+			<figcaption>Sede principal — <?php echo esc_html( $caption ); ?></figcaption>
+		<?php endif; ?>
+	</figure>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_sede_foto', 'cipba_sede_foto_shortcode' );
+
+function cipba_sede_principal_shortcode() {
+	$principal = cipba_get_sede_principal();
 	if ( ! $principal ) {
 		return '';
 	}

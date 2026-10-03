@@ -1641,3 +1641,16 @@ a.cipba-hon-row:hover .cipba-hon-row__body strong { color: #00705e; }
 a.cipba-hon-row:hover .cipba-hon-row__side { color: var(--wp--preset--color--verde-500, #00a48a); }
 @media (max-width: 640px) { .cipba-hon-row { grid-template-columns: 1fr; gap: 6px; } .cipba-hon-hist__title span { display: none; } }
 .cipba-hon-foot { margin: 22px 0 0; font-size: 13px; line-height: 1.6; color: var(--wp--preset--color--gris-400, #9aa8a9); text-wrap: pretty; }
+
+/* ==========================================================================
+   Normativa ([cipba_normativa]): documentos de la biblioteca. Reusa la fila
+   .cipba-hon-doc de Honorarios; los enlaces externos van punteados, bajo un
+   separador. Mismo diseño que normativa.html del prototipo.
+   ========================================================================== */
+.cipba-norm { display: grid; gap: 14px; max-width: 900px !important; margin: 0 auto !important; }
+.cipba-norm__sep { display: flex; align-items: center; gap: 14px; margin: 14px 0 2px; font-size: 11.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-norm__sep::before, .cipba-norm__sep::after { content: ""; flex: 1; height: 1px; background: #dfe9e7; }
+.cipba-hon-doc--ext { background: var(--wp--preset--color--gris-100, #eef2f1); border: 1px dashed var(--wp--preset--color--verde-200, #c0e2ca); box-shadow: none; }
+.cipba-hon-doc--ext:hover { box-shadow: none; }
+.cipba-hon-doc--ext .cipba-hon-doc__ico { background: #fff; border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-norm .cipba-hon-foot { margin-top: 10px; }
