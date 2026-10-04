@@ -1654,3 +1654,15 @@ a.cipba-hon-row:hover .cipba-hon-row__side { color: var(--wp--preset--color--ver
 .cipba-hon-doc--ext:hover { box-shadow: none; }
 .cipba-hon-doc--ext .cipba-hon-doc__ico { background: #fff; border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); }
 .cipba-norm .cipba-hon-foot { margin-top: 10px; }
+
+/* ==========================================================================
+   TAD ([cipba_tad]): resoluciones (fila .cipba-hon-doc), botón del formulario
+   y mail de contacto. Mismo diseño que tad.html del prototipo.
+   ========================================================================== */
+.cipba-tad__label { font-size: 11.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-tad__box { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; margin-top: 14px; padding: 22px 24px; background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 10px; }
+.cipba-tad__btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 8px; background: #00705e; color: #fff !important; font-size: 14.5px; font-weight: 800; text-decoration: none !important; transition: background var(--cipba-fast, .2s); }
+.cipba-tad__btn:hover { background: #005e4f; }
+.cipba-tad__mail { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 14.5px; font-weight: 700; color: var(--wp--preset--color--verde-700, #14484a) !important; text-decoration: none !important; word-break: break-all; }
+.cipba-tad__mail svg, .cipba-tad__mail span { color: var(--wp--preset--color--verde-500, #00a48a); }
+@media (max-width: 640px) { .cipba-tad__box { padding: 18px; } .cipba-tad__btn { width: 100%; justify-content: center; } }

@@ -186,6 +186,7 @@ Desde el 2026-09-20 el sitio tiene contenido que se carga desde el panel y **no 
 | **Documentos descargables** de los trámites (PDF/DOCX) | Archivos en `wp-content/uploads/` + referencia en la base | `wp-content` (Fase 2 → 5) **y** base |
 | Resoluciones de honorarios (`/honorarios/`) y sus **PDF** (resolución y anexos, ≈ 7 MB) | Base (`wp_posts` + `wp_postmeta`) + archivos en `wp-content/uploads/` | Base **y** `wp-content` (mismo caso que los documentos de trámites) |
 | Links de interés del pie de página (`link_interes`) | Base de datos (`wp_posts` + `wp_postmeta`) | Base |
+| Página TAD (`/tad/`): documentos elegidos y mail (campos de la página) + los 3 PDF (Res. 1433, Disp. 80, formulario) | Base (`wp_posts` + `wp_postmeta`) + archivos en `wp-content/uploads/` | Base **y** `wp-content`. Ojo: el enlace de la tarjeta TAD de la home (`/tad/`) también está en la base (página Inicio) |
 | Menús (los ítems apuntan a `/tramites/…/`, `/contacto/`, etc.) | Base de datos | Base |
 
 Cosas a tener en cuenta:

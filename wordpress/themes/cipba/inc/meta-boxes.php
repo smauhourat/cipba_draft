@@ -916,6 +916,57 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 		),
 	);
 
+	// Página TAD (slug "tad"): documentos de la biblioteca y mail de contacto.
+	if ( cipba_admin_editando_pagina( 'tad' ) ) {
+		$tad_fields = array(
+			array(
+				'type' => 'heading',
+				'name' => 'Resoluciones',
+				'desc' => 'Se eligen de la biblioteca de Documentos (allí se sube el archivo). En la página se muestran en este orden, con la descripción y el origen cargados en cada documento.',
+			),
+		);
+		for ( $i = 1; $i <= CIPBA_TAD_DOCS; $i++ ) {
+			$tad_fields[] = array(
+				'name'        => "Documento $i",
+				'id'          => "tad_doc{$i}",
+				'type'        => 'post',
+				'post_type'   => 'documento',
+				'field_type'  => 'select_advanced',
+				'placeholder' => '— Elegí un documento —',
+				'query_args'  => array( 'post_status' => 'publish', 'posts_per_page' => -1 ),
+				'columns'     => 6,
+			);
+		}
+		$tad_fields[] = array(
+			'type' => 'heading',
+			'name' => 'Formulario y contacto',
+		);
+		$tad_fields[] = array(
+			'name'        => 'Formulario de inicio',
+			'id'          => 'tad_formulario',
+			'desc'        => 'Botón "Descargar formulario". Vacío = no se muestra.',
+			'type'        => 'post',
+			'post_type'   => 'documento',
+			'field_type'  => 'select_advanced',
+			'placeholder' => '— Elegí un documento —',
+			'query_args'  => array( 'post_status' => 'publish', 'posts_per_page' => -1 ),
+			'columns'     => 6,
+		);
+		$tad_fields[] = array(
+			'name'        => 'Mail de contacto',
+			'id'          => 'tad_email',
+			'desc'        => 'Vacío = no se muestra.',
+			'type'        => 'email',
+			'placeholder' => 'trib.arbitral7@cipba.org',
+			'columns'     => 6,
+		);
+		$meta_boxes[] = array(
+			'title'      => 'Contenido de la página TAD',
+			'post_types' => 'page',
+			'fields'     => $tad_fields,
+		);
+	}
+
 	return $meta_boxes;
 }
 add_filter( 'rwmb_meta_boxes', 'cipba_register_meta_boxes' );

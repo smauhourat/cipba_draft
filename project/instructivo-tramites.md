@@ -234,6 +234,21 @@ La página **`/honorarios/`** muestra la **resolución vigente** con sus dos doc
 - El enlace del aviso *"listado de honorarios del Consejo Superior"* también se edita ahí.
 
 - La **barra de aviso de la página de inicio** ("Honorarios mínimos vigentes desde 01/04/2026 — Res. 1553", con enlace a esta página) se arma sola con la resolución vigente: toma su **código** y su **vigencia desde**. Si no hay ninguna vigente, la barra no se muestra.
+
+## 7-bis. Página TAD (Tribunal de Árbitros)
+
+La página **`/tad/`** (se llega desde la tarjeta *TAD* de la página de inicio) muestra las resoluciones que regulan el Tribunal, el botón **Descargar formulario** y el mail de contacto.
+
+Se edita en **Páginas → TAD**, en la caja **Contenido de la página TAD**:
+
+| Campo | Para qué sirve |
+|---|---|
+| **Documento 1 a 6** | Las resoluciones, en el orden en que se muestran. Se eligen de la biblioteca de **Documentos** (allí se sube el archivo, como en los trámites). El título, la **descripción** y el **origen** son los del documento. Si un documento es solo un enlace externo, se muestra como enlace al sitio. |
+| **Formulario de inicio** | El documento del botón *Descargar formulario*. Vacío = no hay botón. |
+| **Mail de contacto** | Vacío = no se muestra. |
+
+Para reemplazar una resolución por una nueva: cargarla en **Documentos → Agregar documento** y después elegirla en el casillero que corresponda de la página TAD. El título y el texto del encabezado se editan en el contenido de la página.
+
 ---
 
 ## 8. Tareas frecuentes

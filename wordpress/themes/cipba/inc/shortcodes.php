@@ -492,3 +492,15 @@ function cipba_enqueue_contact_form_script() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'cipba_enqueue_contact_form_script' );
+
+/**
+ * [cipba_tad] — página /tad/ (Tribunal de Árbitros): las resoluciones, el
+ * formulario y el mail se eligen en la caja "Contenido de la página TAD" de
+ * la propia página (documentos de la biblioteca). Markup en template-parts/tad.php.
+ */
+function cipba_tad_shortcode() {
+	ob_start();
+	get_template_part( 'template-parts/tad' );
+	return ob_get_clean();
+}
+add_shortcode( 'cipba_tad', 'cipba_tad_shortcode' );
