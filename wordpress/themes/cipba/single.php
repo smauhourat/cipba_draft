@@ -89,6 +89,7 @@ while ( have_posts() ) :
 							</div>
 						<?php endif; ?>
 
+						<?php if ( ! get_post_meta( $id, 'ocultar_info', true ) ) : ?>
 						<div class="cipba-nota__cta">
 							<h3><?php echo $insc ? 'Inscripción' : 'Más información'; ?></h3>
 							<p><?php echo $insc ? 'La inscripción se confirma por mail una vez verificada la matrícula. Si el cupo está completo, quedás en lista de espera.' : 'Para consultas sobre esta publicación podés escribirnos o comunicarte con el área correspondiente.'; ?></p>
@@ -96,6 +97,7 @@ while ( have_posts() ) :
 							<?php if ( $mail ) : ?><a class="cipba-nota__mail" href="mailto:<?php echo esc_attr( antispambot( $mail ) ); ?>"><?php echo cipba_icon( 'mail', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $mail ); ?></a><?php endif; ?>
 							<?php if ( $tel_url ) : ?><a class="cipba-nota__mail" href="<?php echo esc_url( 'tel:' . $tel_url ); ?>"><?php echo cipba_icon( 'phone', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $tel ); ?></a><?php endif; ?>
 						</div>
+						<?php endif; ?>
 
 						<div class="cipba-share">
 							<h3>Compartir</h3>

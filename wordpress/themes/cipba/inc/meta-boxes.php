@@ -98,6 +98,12 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 				'placeholder' => '(011) 4651-1234',
 			),
 			array(
+				'name' => 'Ocultar el recuadro "Más información"',
+				'id'   => 'ocultar_info',
+				'desc' => 'Tildalo para no mostrar el recuadro lateral (con el botón de acción, el mail y el teléfono) en esta publicación.',
+				'type' => 'checkbox',
+			),
+			array(
 				'type' => 'heading',
 				'name' => 'Tipo de publicación',
 			),
