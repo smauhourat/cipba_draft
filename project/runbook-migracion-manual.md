@@ -105,7 +105,7 @@ docker cp wordpress_app:/tmp/deploy.sql ./backups/deploy-<DOMINIO>-AAAAMMDD.sql
    ```
    docker exec wordpress_app php -r '$z=new ZipArchive();$z->open("/tmp/wp-content.zip");echo $z->numFiles." entradas\n";var_dump($z->locateName("wp-content/themes/cipba/style.css")!==false);'
    ```
-   Contrastar `numFiles` contra el conteo que imprimió el script (`archivos + carpetas + 1`).
+   Contrastar `numFiles` contra el conteo que imprimió el script (`archivos + carpetas`).
 
 Opcionalmente, para tener también un `.tar.gz` (útil como copia nativa de Linux, no se sube al hosting):
 ```
@@ -274,10 +274,11 @@ Igual que la Fase 5. Como la carpeta quedó vacía, no hay `wp-content` previo q
 ## Registro de verificación
 | Paso | Estado |
 |---|---|
-| Fase 1: `search-replace --export` | ✅ Probado 2026-09-19 (164 reemplazos) y **2026-10-02 (279 reemplazos, 1,3 MB, 0 restos de `localhost:8080`, base local intacta)** |
+| Fase 1: `search-replace --export` | ✅ Probado 2026-09-19 (164 reemplazos), 2026-10-02 (279 reemplazos) y **2026-10-04 (304 reemplazos, 1,4 MB, 0 restos de `localhost:8080`, base local intacta)**. Quedan 4 `wordpress@localhost` en `wp_fluentform_logs` (logs de mails fallidos de pruebas viejas): inofensivos |
 | Fase 2: `tar` con exclusiones | ✅ Probado 2026-09-19 (≈66 MB) y 2026-10-02 (84,5 MB). Aviso "file changed as we read it" normal |
 | Fase 2: conversión a `.zip` con `tar -a` en Windows | ❌ **Descartado el 2026-10-02.** Las rutas de `vendor/` pasan `MAX_PATH` y PowerShell 5.1 no las puede enumerar ni borrar; el método no es confiable para contar ni verificar el paquete |
 | Fase 2: `.zip` con `scripts/zip-wp-content.php` en el contenedor | ✅ Probado 2026-10-02 (88,7 MB, 9.033 archivos + 1.851 carpetas = 10.884 entradas, coincide exacto con el `.tar.gz`; 0 rutas con `\`) |
+| Paquete 2026-10-04 | ✅ Fases 0, 0-bis, 1 y 2 rehechas (incluye Normativa, TAD y los campos nuevos de novedades). Zip 91,0 MB, 9.053 archivos + 1.851 carpetas = 10.904 entradas, 0 rutas con `\`. Humo: 10 URLs en 200 sin errores. **Reemplaza al paquete del 2026-10-02** |
 | Fase 0-bis: `scripts/chequeo-pre-deploy.php` | ✅ Probado 2026-10-02 |
 | Fase 0-bis: UpdraftPlus 1.26.8 / FluentSMTP 2.4.1 | ✅ Actualizados 2026-10-02; humo sobre 7 URLs locales en 200 sin `Fatal error`/`Warning`/`Deprecated` |
 | Fase 0-bis: renombrar `admin` | ✅ Hecho 2026-10-02 — `admin` (ID 1) pasó a `smauhourat` (`user_login` + `user_nicename`). ⚠️ `display_name` quedó en `admin` |
@@ -285,7 +286,10 @@ Igual que la Fase 5. Como la carpeta quedó vacía, no hay `wp-content` previo q
 | Fases 3'–5', 8 y 9 (reinstalación limpia) | ⏳ Pendiente. Paquete del 2026-10-02 listo en `wordpress/backups/` |
 | Contenido editable nuevo (Institucional, Subcomisiones, Contacto, trámites, documentos, Datos del Distrito, formulario) | ⏳ Pendiente de verificar en `cipba.site` con el checklist de la Fase 7 y la sección *"Contenido editable del sitio"*. Local ya probado (2026-09-20): páginas, marcadores, formulario con guardado de entradas y descarga de documentos desde uploads |
 
-### Paquete preparado el 2026-10-02 (reinstalación limpia de `cipba.site`)
+### Paquete preparado el 2026-10-04 (vigente para `cipba.site`)
+En `wordpress/backups/`: `backup-local-20261004.sql` (1,39 MB, backup previo), **`deploy-cipba.site-20261004.sql`** (1,4 MB, para phpMyAdmin) y **`wp-content-cipba.site-20261004.zip`** (91,0 MB / 95,4 MB en disco, 10.904 entradas, para extraer en la raíz). Mismas versiones de plugins y núcleo que el del 2026-10-02 (abajo); las actualizaciones pendientes siguen sin aplicar.
+
+### Paquete preparado el 2026-10-02 (reinstalación limpia de `cipba.site`) — reemplazado por el del 2026-10-04
 En `wordpress/backups/` (ignorado por git):
 
 | Archivo | Qué es |
