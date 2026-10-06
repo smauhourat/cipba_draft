@@ -209,6 +209,13 @@ function cipba_datos_fields() {
 			'placeholder' => 'CRE-2024',
 			'default'     => 'CRE-2024',
 		),
+		'form_certificado'    => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Formulario de certificados',
+			'desc'        => 'Marcador: {{form_certificado}}',
+			'placeholder' => 'CER-2024',
+			'default'     => 'CER-2024',
+		),
 
 		// — Datos bancarios (ventana "Transferencia bancaria" de Medios de pago) —
 		'banco_cta_cte'       => array(

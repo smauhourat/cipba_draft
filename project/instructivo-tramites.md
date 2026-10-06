@@ -47,6 +47,7 @@ Un **marcador** es el nombre del dato entre dos llaves. Donde lo escribas se ree
 | `{{form_baja}}` | Formulario de baja | B-2024 | B-2024 |
 | `{{form_baja_fallecimiento}}` | Formulario de baja por fallecimiento | BF-2024 | BF-2024 |
 | `{{form_credencial}}` | Formulario de credenciales | CRE-2024 | CRE-2024 |
+| `{{form_certificado}}` | Formulario de certificados | CER-2024 | CER-2024 |
 | `{{email}}`, `{{telefono}}`, `{{horario}}` | Contacto general del Distrito | — | Tal cual |
 | `{{periodo_autoridades}}` | Período del Consejo Directivo | 2024 – 2027 | Tal cual |
 
