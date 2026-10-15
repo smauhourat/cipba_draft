@@ -286,7 +286,12 @@ Igual que la Fase 5. Como la carpeta quedó vacía, no hay `wp-content` previo q
 | Fases 3'–5', 8 y 9 (reinstalación limpia) | ⏳ Pendiente. Paquete del 2026-10-02 listo en `wordpress/backups/` |
 | Contenido editable nuevo (Institucional, Subcomisiones, Contacto, trámites, documentos, Datos del Distrito, formulario) | ⏳ Pendiente de verificar en `cipba.site` con el checklist de la Fase 7 y la sección *"Contenido editable del sitio"*. Local ya probado (2026-09-20): páginas, marcadores, formulario con guardado de entradas y descarga de documentos desde uploads |
 
-### Paquete preparado el 2026-10-04 (vigente para `cipba.site`)
+### Paquete preparado el 2026-10-15 (vigente para `cipba.site`)
+En `wordpress/backups/`: `backup-local-20261015.sql` (2,9 MB, backup previo), **`deploy-cipba.site-20261015.sql`** (2,9 MB, para phpMyAdmin; 338 reemplazos, 0 restos de `localhost:8080`, base local intacta) y **`wp-content-cipba.site-20261015.zip`** (106,2 MB / 111,4 MB en disco, 9.156 archivos + 1.851 carpetas = 11.007 entradas, 0 rutas con `\`, tema 1.0.71). Incluye el nuevo detalle de Eventos (2/3 – 1/3), el campo *Texto del recuadro* de las novedades y las 7 noticias del 11/10 (categoría *Actualidad*). Chequeo pre-deploy sin hallazgos (registro cerrado, 0 entradas de Fluent Forms, nada sospechoso en `wp-content`); humo: 11 URLs en 200 sin errores.
+- ⚠️ **El zip ya está en 106 MB** — quedan ~22 MB hasta el límite de 128 MB del Administrador de archivos. Si falla la subida, usar FTP.
+- Plugins **sin** actualizar (misma decisión que en paquetes anteriores): `akismet` 5.7→5.7.2, `code-snippets` 3.10.2→4.0.0, `fluentform` 6.2.14→6.2.15, `megamenu` 3.10.6→3.10.8, `meta-box` 5.15.1→5.15.2, `mystickymenu` 2.9.1→2.9.3, `seo-by-rank-math` 1.0.278→1.0.280, `ultimate-addons-for-gutenberg` 2.20.3→2.20.5, `updraftplus` 1.26.8→1.26.9.
+
+### Paquete preparado el 2026-10-04 — reemplazado por el del 2026-10-15
 En `wordpress/backups/`: `backup-local-20261004.sql` (1,39 MB, backup previo), **`deploy-cipba.site-20261004.sql`** (1,4 MB, para phpMyAdmin) y **`wp-content-cipba.site-20261004.zip`** (91,0 MB / 95,4 MB en disco, 10.904 entradas, para extraer en la raíz). Mismas versiones de plugins y núcleo que el del 2026-10-02 (abajo); las actualizaciones pendientes siguen sin aplicar.
 
 ### Paquete preparado el 2026-10-02 (reinstalación limpia de `cipba.site`) — reemplazado por el del 2026-10-04
