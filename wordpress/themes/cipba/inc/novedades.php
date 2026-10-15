@@ -281,6 +281,39 @@ function cipba_render_nov_dest( $post_id ) {
 }
 
 /**
+ * Columna lateral del detalle de un evento: los últimos 5 eventos (sin el
+ * actual) con imagen, categoría, título y fecha, y el link al listado.
+ */
+function cipba_render_nov_lista_lateral( $post_id ) {
+	$items = get_posts(
+		array(
+			'post_type'    => 'post',
+			'numberposts'  => 5,
+			'post__not_in' => array( $post_id ),
+			'meta_query'   => cipba_meta_query_tipo( 'evento' ), // phpcs:ignore WordPress.DB.SlowDBQuery
+		)
+	);
+	?>
+	<div class="cipba-ev-lista">
+		<?php if ( $items ) : ?>
+			<h2>Más eventos y novedades</h2>
+			<?php foreach ( $items as $p ) : ?>
+				<a href="<?php echo esc_url( get_permalink( $p ) ); ?>" class="cipba-ev-mini">
+					<span class="cipba-ev-mini__img"><?php echo get_the_post_thumbnail( $p, 'cipba-card-vert' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+					<span class="cipba-ev-mini__body">
+						<?php echo cipba_cat_badge( $p->ID, 10.5 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						<strong><?php echo esc_html( get_the_title( $p ) ); ?></strong>
+						<span class="cipba-ev-mini__fecha"><?php echo esc_html( cipba_fecha_novedad( $p->ID ) ); ?></span>
+					</span>
+				</a>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		<a class="cipba-ev-lista__all" href="<?php echo esc_url( cipba_novedades_url( 'evento' ) ); ?>">Ver listado completo &#8250;</a>
+	</div>
+	<?php
+}
+
+/**
  * Tabs del listado de /novedades/ ("Eventos y novedades" / "Noticias"):
  * etiqueta, título y bajada del encabezado — mismos textos que el prototipo
  * (novedades-tabs.html).

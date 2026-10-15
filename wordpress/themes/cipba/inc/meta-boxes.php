@@ -84,6 +84,13 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 				'desc' => 'Se muestran en el recuadro "Más información". Sin mail, se usa el mail general del Colegio; sin teléfono, no se muestra.',
 			),
 			array(
+				'name' => 'Texto del recuadro',
+				'id'   => 'info_texto',
+				'desc' => 'Opcional. Reemplaza el texto fijo del recuadro. Vacío: con inscripción abierta dice "La inscripción se confirma por mail una vez verificada la matrícula. Si el cupo está completo, quedás en lista de espera."; si no, "Para consultas sobre esta publicación podés escribirnos o comunicarte con el área correspondiente."',
+				'type' => 'textarea',
+				'rows' => 3,
+			),
+			array(
 				'name'        => 'Mail',
 				'id'          => 'contacto_email',
 				'type'        => 'email',

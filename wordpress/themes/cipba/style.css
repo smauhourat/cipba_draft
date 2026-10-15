@@ -1514,10 +1514,6 @@ body.cipba-modal-open { overflow: hidden; }
 .cipba-nota__hero { background: #fff; padding-bottom: 46px; }
 .cipba-nota__hero-img { aspect-ratio: 21 / 9; overflow: hidden; background: var(--wp--preset--color--gris-100, #eef2f1); border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 14px; }
 .cipba-nota__hero-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* Eventos y novedades: flyer vertical completo, sin recortar, centrado dentro de la misma franja */
-.cipba-nota__hero-img--flyer { display: flex; align-items: center; justify-content: center; }
-.cipba-nota__hero-img--flyer img { width: auto; height: 100%; max-width: 100%; object-fit: contain; }
-@media (max-width: 760px) { .cipba-nota__hero-img--flyer { aspect-ratio: 4 / 5; } }
 .cipba-nota__main { background: var(--wp--preset--color--gris-50, #f7faf9); border-top: 1px solid var(--cipba-border-card, #e8f5f1); padding: 46px 0 56px; }
 .cipba-nota__grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; align-items: start; }
 @media (max-width: 900px) { .cipba-nota__grid { grid-template-columns: 1fr; } }
@@ -1539,6 +1535,37 @@ body.cipba-modal-open { overflow: hidden; }
 	.cipba-nota__aside { position: sticky; top: 132px; }
 	.admin-bar .cipba-nota__aside { top: 164px; }
 }
+
+/* Detalle de evento (2/3 – 1/3): flyer de Instagram completo en su proporción + últimos eventos */
+.cipba-ev-det { background: #fff; padding: 38px 0 56px; }
+.cipba-ev-det__grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 900px) { .cipba-ev-det__grid { grid-template-columns: 1fr; } }
+.cipba-ev-det__main { min-width: 0; }
+.cipba-ev-det__head { margin-bottom: 26px; }
+.cipba-ev-det__head h1 { font-family: var(--wp--preset--font-family--condensed); font-size: clamp(28px, 3.6vw, 40px); font-weight: 900; line-height: 1.1; letter-spacing: -.5px; color: var(--wp--preset--color--verde-700, #14484a); margin: 0; text-wrap: pretty; }
+.cipba-ev-det__flyer { display: flex; justify-content: center; margin: 0 0 30px; padding: 18px; background: var(--wp--preset--color--gris-100, #eef2f1); border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 14px; }
+.cipba-ev-det__flyer img { display: block; width: auto; height: auto; max-width: 100%; max-height: min(88vh, 960px); object-fit: contain; border-radius: 6px; box-shadow: 0 6px 22px rgba(20,72,74,.12); }
+@media (max-width: 640px) { .cipba-ev-det__flyer { padding: 0; background: none; border: 0; } .cipba-ev-det__flyer img { max-height: none; } }
+.cipba-ev-det__extras { display: grid; gap: 16px; margin-top: 30px; }
+.cipba-ev-det__extras .cipba-nota__btn { display: inline-flex; padding: 11px 22px; }
+.cipba-ev-det__side { padding: 22px 22px 18px; background: var(--wp--preset--color--gris-50, #f7faf9); border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; }
+@media (min-width: 901px) {
+	.cipba-ev-det__side { position: sticky; top: 132px; }
+	.admin-bar .cipba-ev-det__side { top: 164px; }
+}
+.cipba-ev-lista h2 { font-family: var(--wp--preset--font-family--condensed); font-size: 20px; font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 6px; }
+.cipba-ev-mini { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--cipba-border-card, #e8f5f1); text-decoration: none !important; }
+.cipba-ev-mini__img { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 8px; background: var(--wp--preset--color--gris-100, #eef2f1); }
+.cipba-ev-mini__img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.cipba-ev-mini__body { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.cipba-ev-mini strong { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-family: var(--wp--preset--font-family--condensed); font-size: 16px; font-weight: 700; line-height: 1.25; color: var(--wp--preset--color--verde-700, #14484a); transition: color var(--cipba-fast, .2s); }
+.cipba-ev-mini__fecha { font-size: 12px; font-weight: 600; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-ev-mini:hover strong { color: #00705e; }
+.cipba-ev-mini:hover .cipba-ev-mini__img img { transform: scale(1.04); }
+/* Mismo estilo que el "Ver listado completo ›" de la home */
+.cipba-ev-lista__all { display: inline-block; margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #008c75 !important; white-space: nowrap; text-decoration: none !important; }
+.cipba-ev-lista__all:hover { text-decoration: underline !important; }
+@media (prefers-reduced-motion: reduce) { .cipba-ev-mini__img img { transition: none; } .cipba-ev-mini:hover .cipba-ev-mini__img img { transform: none; } }
 
 /* Ficha, botón de acción y compartir */
 .cipba-ficha { padding: 24px 24px 26px; background: var(--wp--preset--color--verde-700, #14484a); color: #fff; border-radius: 12px; }

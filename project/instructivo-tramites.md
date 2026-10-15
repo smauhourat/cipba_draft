@@ -189,6 +189,7 @@ Todas las publicaciones (jornadas, cursos, asambleas, beneficios, avisos) son **
 | **Texto de fecha alternativo** | Opcional. Reemplaza a la fecha de publicación (ej.: *Vigente todo 2026*). |
 | **Destacada** | Se muestra como tarjeta grande arriba del listado. Si hay varias, la más reciente. |
 | **Botón de acción** | Texto y **enlace** (formulario de inscripción, otra página, un archivo…), o un **documento de la biblioteca**. Sin enlace, el botón lleva a Contacto. |
+| **Texto del recuadro** | Opcional. Reemplaza el texto fijo del recuadro *Inscripción / Más información* (vacío = el texto de siempre). |
 | **Es una actividad con fecha** | Tildalo para eventos: aparece la caja *Datos de la actividad*. |
 
 > **Cómo se reparten en la página de inicio.** *Eventos y novedades* muestra hasta 3 publicaciones de tipo **Evento o novedad**, ordenadas por fecha (la de la actividad o, si no es una actividad, la de publicación). *Noticias* muestra las 5 más recientes de tipo **Noticia**. El listado completo de `/novedades/` incluye ambos tipos. En **Entradas** hay una columna **Tipo** y un filtro para verlos por separado.
@@ -199,13 +200,15 @@ Al tildar **Es una actividad con fecha** aparece **Datos de la actividad**: fech
 
 Con eso la página de la publicación muestra la **ficha "Datos de la actividad"** (la fecha se escribe sola: *Jueves 9 de abril de 2026* o *Del 6 al 27 de mayo de 2026*) y el recuadro **Inscripción** con el botón. Si la inscripción no está abierta, el recuadro dice *Más información*.
 
+> **Imagen de los Eventos y novedades.** Se muestra completa, en su proporción original y sin recortes (pensada para los posteos de Instagram en 4:5 o 9:16), en la columna principal de la página; a la derecha aparecen los últimos 5 eventos. En las Noticias, en cambio, la imagen es apaisada y se recorta a lo ancho.
+
 ### 6.3 Categorías y colores
 
 **Entradas → Categorías**: cada categoría tiene un **Color** (violeta, verde, verde oscuro o ladrillo) y un **Orden** (posición en los filtros; menor, primero). Las categorías sin publicaciones no aparecen en los filtros.
 
 ### 6.4 Lo que se arma solo
 
-Los botones de compartir (WhatsApp, LinkedIn, Facebook, correo, copiar enlace), "Otras novedades" (3, de la misma categoría primero), la ruta de navegación, el contador y el filtrado del listado. El correo de contacto del recuadro sale de **Datos del Distrito**.
+Los botones de compartir (WhatsApp, LinkedIn, Facebook, correo, copiar enlace), "Otras novedades" al pie de las Noticias (3, de la misma categoría primero), la columna "Más eventos y novedades" en el detalle de los Eventos (los 5 últimos eventos, con link al listado completo), la ruta de navegación, el contador y el filtrado del listado. El correo de contacto del recuadro sale de **Datos del Distrito**.
 
 ---
 

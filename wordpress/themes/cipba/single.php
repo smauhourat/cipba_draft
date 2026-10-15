@@ -1,8 +1,11 @@
 <?php
 /**
- * Detalle de una novedad o evento (entrada nativa): encabezado, imagen, texto,
- * y en la columna lateral la ficha de la actividad, el botón de acción y
- * compartir; al pie, otras novedades.
+ * Detalle de una novedad o evento (entrada nativa).
+ * Noticias: encabezado, imagen apaisada, texto y en la columna lateral la ficha
+ * de la actividad, el botón de acción y compartir; al pie, otras novedades.
+ * Eventos y novedades (flyers de Instagram 4:5 o 9:16): layout 2/3 – 1/3; en
+ * 2/3 la publicación con la imagen completa (sin recortar) y debajo del texto
+ * ficha/acción/compartir; en 1/3 los últimos eventos y el link al listado.
  *
  * @package cipba
  */
@@ -41,6 +44,55 @@ while ( have_posts() ) :
 		array( 'Facebook', 'facebook', 'https://www.facebook.com/sharer/sharer.php?u=' . rawurlencode( $url ) ),
 		array( 'Correo', 'mail', 'mailto:?subject=' . rawurlencode( $titulo ) . '&body=' . rawurlencode( $url ) ),
 	);
+
+	// Ficha de la actividad, recuadro de contacto/inscripción, compartir y volver:
+	// en Noticias van en la columna lateral; en Eventos, debajo del texto.
+	$extras = function () use ( $id, $filas, $insc, $cta, $mail, $tel, $tel_url, $share, $url, $nov_url ) {
+		if ( $filas ) :
+			?>
+			<div class="cipba-ficha">
+				<h3>Datos de la actividad</h3>
+				<?php foreach ( $filas as $f ) : ?>
+					<div class="cipba-ficha__row">
+						<span class="cipba-ficha__ico"><?php echo cipba_icon( $f[0], 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+						<div><div class="cipba-ficha__lbl"><?php echo esc_html( $f[1] ); ?></div><div class="cipba-ficha__val"><?php echo esc_html( $f[2] ); ?></div></div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<?php
+		endif;
+
+		if ( ! get_post_meta( $id, 'ocultar_info', true ) ) :
+			?>
+			<div class="cipba-nota__cta">
+				<h3><?php echo $insc ? 'Inscripción' : 'Más información'; ?></h3>
+				<?php
+				$info = trim( (string) get_post_meta( $id, 'info_texto', true ) );
+				if ( '' === $info ) {
+					$info = $insc ? 'La inscripción se confirma por mail una vez verificada la matrícula. Si el cupo está completo, quedás en lista de espera.' : 'Para consultas sobre esta publicación podés escribirnos o comunicarte con el área correspondiente.';
+				}
+				?>
+				<p><?php echo nl2br( esc_html( $info ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+				<a class="cipba-nota__btn" href="<?php echo esc_url( $cta[1] ); ?>"<?php echo 0 === strpos( $cta[1], home_url() ) ? '' : ' target="_blank" rel="noopener"'; ?>><?php echo esc_html( $cta[0] ); ?> <?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
+				<?php if ( $mail ) : ?><a class="cipba-nota__mail" href="mailto:<?php echo esc_attr( antispambot( $mail ) ); ?>"><?php echo cipba_icon( 'mail', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $mail ); ?></a><?php endif; ?>
+				<?php if ( $tel_url ) : ?><a class="cipba-nota__mail" href="<?php echo esc_url( 'tel:' . $tel_url ); ?>"><?php echo cipba_icon( 'phone', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $tel ); ?></a><?php endif; ?>
+			</div>
+			<?php
+		endif;
+		?>
+		<div class="cipba-share">
+			<h3>Compartir</h3>
+			<div class="cipba-share__row">
+				<?php foreach ( $share as $s ) : ?>
+					<a href="<?php echo esc_url( $s[2] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $s[0] ); ?>" title="<?php echo esc_attr( $s[0] ); ?>"><?php echo cipba_icon( $s[1], 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
+				<?php endforeach; ?>
+				<button type="button" class="cipba-share__copy" data-copy-url="<?php echo esc_url( $url ); ?>"><?php echo cipba_icon( 'copy', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <span>Copiar enlace</span></button>
+			</div>
+		</div>
+
+		<a class="cipba-nota__back" href="<?php echo esc_url( $nov_url ); ?>"><?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> Volver a todas las novedades</a>
+		<?php
+	};
 	?>
 	<div id="primary" class="content-area primary">
 		<main id="main" class="site-main cipba-nota">
@@ -55,88 +107,85 @@ while ( have_posts() ) :
 				</div>
 			</div>
 
-			<header class="cipba-nota__head">
-				<div class="cipba-nota__inner">
-					<div class="cipba-nota__meta">
-						<?php echo cipba_cat_badge( $id, 11.5 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-						<span><?php echo cipba_icon( 'calendar', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( cipba_fecha_novedad( $id ) ); ?></span>
-					</div>
-					<h1><?php echo esc_html( $titulo ); ?></h1>
-					<?php if ( $bajada ) : ?><p class="cipba-nota__lead"><?php echo esc_html( $bajada ); ?></p><?php endif; ?>
-				</div>
-			</header>
+			<?php if ( $evento ) : ?>
 
-			<?php if ( has_post_thumbnail() ) : ?>
-				<div class="cipba-nota__hero">
-					<div class="cipba-nota__inner"><div class="cipba-nota__hero-img<?php echo $evento ? ' cipba-nota__hero-img--flyer' : ''; ?>"><?php the_post_thumbnail( $evento ? 'cipba-flyer' : 'cipba-nov-hero' ); ?></div></div>
-				</div>
-			<?php endif; ?>
+				<section class="cipba-ev-det">
+					<div class="cipba-nota__inner cipba-ev-det__grid">
+						<div class="cipba-ev-det__main">
+							<header class="cipba-ev-det__head">
+								<div class="cipba-nota__meta">
+									<?php echo cipba_cat_badge( $id, 11.5 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+									<span><?php echo cipba_icon( 'calendar', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( cipba_fecha_novedad( $id ) ); ?></span>
+								</div>
+								<h1><?php echo esc_html( $titulo ); ?></h1>
+								<?php if ( $bajada ) : ?><p class="cipba-nota__lead"><?php echo esc_html( $bajada ); ?></p><?php endif; ?>
+							</header>
 
-			<section class="cipba-nota__main">
-				<div class="cipba-nota__inner cipba-nota__grid">
-					<article class="cipba-nota__cuerpo"><?php the_content(); ?></article>
+							<?php if ( has_post_thumbnail() ) : ?>
+								<figure class="cipba-ev-det__flyer"><?php the_post_thumbnail( 'cipba-flyer' ); ?></figure>
+							<?php endif; ?>
 
-					<aside class="cipba-nota__aside">
-						<?php if ( $filas ) : ?>
-							<div class="cipba-ficha">
-								<h3>Datos de la actividad</h3>
-								<?php foreach ( $filas as $f ) : ?>
-									<div class="cipba-ficha__row">
-										<span class="cipba-ficha__ico"><?php echo cipba_icon( $f[0], 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
-										<div><div class="cipba-ficha__lbl"><?php echo esc_html( $f[1] ); ?></div><div class="cipba-ficha__val"><?php echo esc_html( $f[2] ); ?></div></div>
-									</div>
-								<?php endforeach; ?>
-							</div>
-						<?php endif; ?>
+							<article class="cipba-nota__cuerpo"><?php the_content(); ?></article>
 
-						<?php if ( ! get_post_meta( $id, 'ocultar_info', true ) ) : ?>
-						<div class="cipba-nota__cta">
-							<h3><?php echo $insc ? 'Inscripción' : 'Más información'; ?></h3>
-							<p><?php echo $insc ? 'La inscripción se confirma por mail una vez verificada la matrícula. Si el cupo está completo, quedás en lista de espera.' : 'Para consultas sobre esta publicación podés escribirnos o comunicarte con el área correspondiente.'; ?></p>
-							<a class="cipba-nota__btn" href="<?php echo esc_url( $cta[1] ); ?>"<?php echo 0 === strpos( $cta[1], home_url() ) ? '' : ' target="_blank" rel="noopener"'; ?>><?php echo esc_html( $cta[0] ); ?> <?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
-							<?php if ( $mail ) : ?><a class="cipba-nota__mail" href="mailto:<?php echo esc_attr( antispambot( $mail ) ); ?>"><?php echo cipba_icon( 'mail', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $mail ); ?></a><?php endif; ?>
-							<?php if ( $tel_url ) : ?><a class="cipba-nota__mail" href="<?php echo esc_url( 'tel:' . $tel_url ); ?>"><?php echo cipba_icon( 'phone', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( $tel ); ?></a><?php endif; ?>
-						</div>
-						<?php endif; ?>
-
-						<div class="cipba-share">
-							<h3>Compartir</h3>
-							<div class="cipba-share__row">
-								<?php foreach ( $share as $s ) : ?>
-									<a href="<?php echo esc_url( $s[2] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $s[0] ); ?>" title="<?php echo esc_attr( $s[0] ); ?>"><?php echo cipba_icon( $s[1], 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
-								<?php endforeach; ?>
-								<button type="button" class="cipba-share__copy" data-copy-url="<?php echo esc_url( $url ); ?>"><?php echo cipba_icon( 'copy', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <span>Copiar enlace</span></button>
-							</div>
+							<div class="cipba-ev-det__extras"><?php $extras(); ?></div>
 						</div>
 
-						<a class="cipba-nota__back" href="<?php echo esc_url( $nov_url ); ?>"><?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> Volver a todas las novedades</a>
-					</aside>
-				</div>
-			</section>
-
-			<?php
-			// Otras novedades: primero las de la misma categoría.
-			$otras = array();
-			if ( $cat ) {
-				$otras = get_posts( array( 'post_type' => 'post', 'numberposts' => 3, 'post__not_in' => array( $id ), 'category' => $cat->term_id ) );
-			}
-			if ( count( $otras ) < 3 ) {
-				$ya    = array_merge( array( $id ), wp_list_pluck( $otras, 'ID' ) );
-				$otras = array_merge( $otras, get_posts( array( 'post_type' => 'post', 'numberposts' => 3 - count( $otras ), 'post__not_in' => $ya ) ) );
-			}
-			if ( $otras ) :
-				?>
-				<section class="cipba-nota__otras">
-					<div class="cipba-nota__inner">
-						<div class="cipba-nota__otras-head">
-							<h2>Otras novedades</h2>
-							<a href="<?php echo esc_url( $nov_url ); ?>">Ver listado completo <?php echo cipba_icon( 'chevron', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
-						</div>
-						<div class="cipba-nov-grid">
-							<?php foreach ( $otras as $o ) { cipba_render_nov_card( $o->ID ); } ?>
-						</div>
+						<aside class="cipba-ev-det__side"><?php cipba_render_nov_lista_lateral( $id ); ?></aside>
 					</div>
 				</section>
+
+			<?php else : ?>
+
+				<header class="cipba-nota__head">
+					<div class="cipba-nota__inner">
+						<div class="cipba-nota__meta">
+							<?php echo cipba_cat_badge( $id, 11.5 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+							<span><?php echo cipba_icon( 'calendar', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <?php echo esc_html( cipba_fecha_novedad( $id ) ); ?></span>
+						</div>
+						<h1><?php echo esc_html( $titulo ); ?></h1>
+						<?php if ( $bajada ) : ?><p class="cipba-nota__lead"><?php echo esc_html( $bajada ); ?></p><?php endif; ?>
+					</div>
+				</header>
+
+				<?php if ( has_post_thumbnail() ) : ?>
+					<div class="cipba-nota__hero">
+						<div class="cipba-nota__inner"><div class="cipba-nota__hero-img"><?php the_post_thumbnail( 'cipba-nov-hero' ); ?></div></div>
+					</div>
+				<?php endif; ?>
+
+				<section class="cipba-nota__main">
+					<div class="cipba-nota__inner cipba-nota__grid">
+						<article class="cipba-nota__cuerpo"><?php the_content(); ?></article>
+
+						<aside class="cipba-nota__aside"><?php $extras(); ?></aside>
+					</div>
+				</section>
+
+				<?php
+				// Otras novedades: primero las de la misma categoría.
+				$otras = array();
+				if ( $cat ) {
+					$otras = get_posts( array( 'post_type' => 'post', 'numberposts' => 3, 'post__not_in' => array( $id ), 'category' => $cat->term_id ) );
+				}
+				if ( count( $otras ) < 3 ) {
+					$ya    = array_merge( array( $id ), wp_list_pluck( $otras, 'ID' ) );
+					$otras = array_merge( $otras, get_posts( array( 'post_type' => 'post', 'numberposts' => 3 - count( $otras ), 'post__not_in' => $ya ) ) );
+				}
+				if ( $otras ) :
+					?>
+					<section class="cipba-nota__otras">
+						<div class="cipba-nota__inner">
+							<div class="cipba-nota__otras-head">
+								<h2>Otras novedades</h2>
+								<a href="<?php echo esc_url( $nov_url ); ?>">Ver listado completo <?php echo cipba_icon( 'chevron', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
+							</div>
+							<div class="cipba-nov-grid">
+								<?php foreach ( $otras as $o ) { cipba_render_nov_card( $o->ID ); } ?>
+							</div>
+						</div>
+					</section>
+				<?php endif; ?>
+
 			<?php endif; ?>
 
 		</main>
