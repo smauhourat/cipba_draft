@@ -93,6 +93,32 @@ while ( have_posts() ) :
 		<a class="cipba-nota__back" href="<?php echo esc_url( $nov_url ); ?>"><?php echo cipba_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> Volver a todas las novedades</a>
 		<?php
 	};
+
+	// Galería de fotos (campo "Galería de fotos"): miniaturas 4:5 que se amplían
+	// en el visor de novedades.js.
+	$galeria = function () use ( $id, $titulo ) {
+		$fotos = array_filter( array_map( 'absint', get_post_meta( $id, 'galeria', false ) ), 'wp_attachment_is_image' );
+		if ( ! $fotos ) {
+			return;
+		}
+		?>
+		<section class="cipba-galeria" data-galeria>
+			<h2>Galería de fotos</h2>
+			<div class="cipba-galeria__grid">
+				<?php
+				foreach ( $fotos as $n => $foto ) :
+					$full = wp_get_attachment_image_url( $foto, 'large' );
+					$alt  = trim( (string) get_post_meta( $foto, '_wp_attachment_image_alt', true ) );
+					$alt  = $alt ? $alt : sprintf( '%s – foto %d', $titulo, $n + 1 );
+					?>
+					<a class="cipba-galeria__item" href="<?php echo esc_url( $full ); ?>" data-galeria-item data-caption="<?php echo esc_attr( wp_get_attachment_caption( $foto ) ); ?>">
+						<?php echo wp_get_attachment_image( $foto, 'cipba-card-vert', false, array( 'alt' => $alt, 'loading' => 'lazy' ) ); ?>
+					</a>
+				<?php endforeach; ?>
+			</div>
+		</section>
+		<?php
+	};
 	?>
 	<div id="primary" class="content-area primary">
 		<main id="main" class="site-main cipba-nota">
@@ -127,6 +153,8 @@ while ( have_posts() ) :
 
 							<article class="cipba-nota__cuerpo"><?php the_content(); ?></article>
 
+							<?php $galeria(); ?>
+
 							<div class="cipba-ev-det__extras"><?php $extras(); ?></div>
 						</div>
 
@@ -155,7 +183,10 @@ while ( have_posts() ) :
 
 				<section class="cipba-nota__main">
 					<div class="cipba-nota__inner cipba-nota__grid">
-						<article class="cipba-nota__cuerpo"><?php the_content(); ?></article>
+						<div class="cipba-nota__col">
+							<article class="cipba-nota__cuerpo"><?php the_content(); ?></article>
+							<?php $galeria(); ?>
+						</div>
 
 						<aside class="cipba-nota__aside"><?php $extras(); ?></aside>
 					</div>

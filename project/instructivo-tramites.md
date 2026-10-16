@@ -188,6 +188,7 @@ Todas las publicaciones (jornadas, cursos, asambleas, beneficios, avisos) son **
 | **Bajada** | Resumen corto: va en las tarjetas y bajo el título. |
 | **Texto de fecha alternativo** | Opcional. Reemplaza a la fecha de publicación (ej.: *Vigente todo 2026*). |
 | **Destacada** | Se muestra como tarjeta grande arriba del listado. Si hay varias, la más reciente. |
+| **Galería de fotos** | Opcional. Botón *Agregar medios* para subir o elegir varias fotos a la vez; se arrastran para ordenarlas. Se muestran en una grilla debajo del texto y se amplían al hacer clic (con flechas para pasar de una a otra). Para quitar una, pasá el mouse sobre la miniatura y tocá la ×. |
 | **Botón de acción** | Texto y **enlace** (formulario de inscripción, otra página, un archivo…), o un **documento de la biblioteca**. Sin enlace, el botón lleva a Contacto. |
 | **Texto del recuadro** | Opcional. Reemplaza el texto fijo del recuadro *Inscripción / Más información* (vacío = el texto de siempre). |
 | **Es una actividad con fecha** | Tildalo para eventos: aparece la caja *Datos de la actividad*. |

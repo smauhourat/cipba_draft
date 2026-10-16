@@ -50,6 +50,14 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 				'type' => 'checkbox',
 			),
 			array(
+				'name'             => 'Galería de fotos',
+				'id'               => 'galeria',
+				'desc'             => 'Opcional. Fotos del evento: se muestran en una grilla debajo del texto y se amplían al hacer clic. Se pueden arrastrar para cambiar el orden.',
+				'type'             => 'image_advanced',
+				'max_file_uploads' => 60,
+				'image_size'       => 'thumbnail',
+			),
+			array(
 				'type' => 'heading',
 				'name' => 'Botón de acción (opcional)',
 			),
