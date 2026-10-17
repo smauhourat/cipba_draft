@@ -22,6 +22,8 @@ $excluir = array(
 	// Sin esta exclusion el paquete se lleva al servidor la version vulnerable.
 	'wp-content/upgrade-temp-backup',
 	'wp-content/updraft',
+	// Datos que LiteSpeed Cache genera por entorno (CSS/JS optimizado, debug); se regeneran en el servidor.
+	'wp-content/litespeed',
 	'wp-content/duplicator-backups',
 	'wp-content/plugins/wp-reset',
 	'wp-content/plugins/duplicator',

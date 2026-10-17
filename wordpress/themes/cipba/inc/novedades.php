@@ -484,8 +484,8 @@ add_action( 'admin_enqueue_scripts', 'cipba_novedad_admin_script' );
 
 /**
  * Agenda de la home ("Eventos y novedades"): publicaciones de tipo "Evento o novedad", sin las
- * actividades ya pasadas, por fecha ascendente (fecha de la actividad o, si no
- * es una actividad, fecha de publicación).
+ * actividades ya pasadas, por fecha de publicación descendente (mismo orden que
+ * el listado de /novedades/).
  *
  * @return WP_Post[]
  */
@@ -493,6 +493,8 @@ function cipba_get_agenda( $limit = 3 ) {
 	$posts = get_posts( array(
 		'post_type'   => 'post',
 		'numberposts' => -1,
+		'orderby'     => 'date',
+		'order'       => 'DESC',
 		'meta_key'    => 'tipo_pub',
 		'meta_value'  => 'evento',
 	) );
@@ -504,10 +506,7 @@ function cipba_get_agenda( $limit = 3 ) {
 		if ( $ini && ( $fin ? $fin : $ini ) < $hoy ) {
 			continue; // Actividad ya realizada.
 		}
-		$items[] = array( 'post' => $p, 'fecha' => $ini ? $ini : substr( $p->post_date, 0, 10 ) );
+		$items[] = $p;
 	}
-	usort( $items, function ( $a, $b ) {
-		return strcmp( $a['fecha'], $b['fecha'] );
-	} );
-	return array_slice( wp_list_pluck( $items, 'post' ), 0, $limit );
+	return array_slice( $items, 0, $limit );
 }

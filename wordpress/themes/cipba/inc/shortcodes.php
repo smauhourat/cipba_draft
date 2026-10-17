@@ -25,8 +25,8 @@ function cipba_fecha_corta( $fecha ) {
 
 /**
  * [cipba_eventos] — sección "Eventos y novedades" de la home: hasta 3 publicaciones de tipo
- * "Evento o novedad", sin las actividades ya realizadas, por fecha
- * ascendente (ver cipba_get_agenda() en inc/novedades.php).
+ * "Evento o novedad", sin las actividades ya realizadas, la más reciente
+ * primero (ver cipba_get_agenda() en inc/novedades.php).
  */
 function cipba_eventos_shortcode() {
 	$agenda = cipba_get_agenda( 3 );
