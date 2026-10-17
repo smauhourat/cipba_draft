@@ -86,6 +86,8 @@ docker compose up -d --build    # el Dockerfile agrega WP-CLI
 - Para PHP no trivial: escribir un archivo, `docker cp` al contenedor y `wp eval-file` (pasar PHP inline por PowerShell es frágil). Con Git Bash, usar `MSYS_NO_PATHCONV=1` para rutas del contenedor.
 - `wordpress/scripts/`: `chequeo-pre-deploy.php` (solo lectura, chequeos de seguridad previos al deploy) y `zip-wp-content.php` (empaqueta `wp-content` dentro del contenedor).
 
+**Replicar el entorno en otra PC** (base + `wp-content` + `.env`): paso a paso en `wordpress/README.md`, sección *Replicar el entorno en otra PC*.
+
 **Cuidado:**
 
 - **Nunca** `docker compose down -v`: borra la base y los uploads.
