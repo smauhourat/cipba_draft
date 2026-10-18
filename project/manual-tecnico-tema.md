@@ -2,7 +2,7 @@
 
 Guía para quien mantiene el código del sitio CIPBA Distrito VII: tema hijo, tipos de contenido, campos, plantillas, estilos, entorno local y despliegue.
 
-> El manual para quien carga contenido es `project/manual-usuario-contenido.md`. Mantenelos en sync: cada cambio de campos o de comportamiento visible debería reflejarse en los dos.
+> El manual para quien carga contenido es `project/manual-usuario-contenido.md`. Mantenelos en sync: cada cambio de campos o de comportamiento visible debería reflejarse en los dos. Después de editar un `.md`, regenerá los PDF con `python project/tools/generar-pdf-manuales.py` (requiere `pip install markdown` y Chrome o Edge).
 
 ---
 
@@ -109,7 +109,7 @@ themes/cipba/
 ├── single-tramite.php         Plantilla común de trámites
 ├── single-tramite-pago-matricula.php   Medios de pago (WP la elige por single-{tipo}-{slug})
 ├── inc/
-│   ├── custom-post-types.php  CPT, categorías semilla, columnas/orden del admin, editor clásico, limpieza de cajas
+│   ├── custom-post-types.php  CPT, categorías semilla, admin (columnas, orden, editor)
 │   ├── meta-boxes.php         Todas las cajas de campos (Meta Box)
 │   ├── settings.php           Datos del Distrito, marcadores, [cipba_dato]
 │   ├── helpers.php            Documentos, íconos SVG, teléfonos, slots, partidos, SVG upload, helpers de admin
