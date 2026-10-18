@@ -20,7 +20,7 @@ docker compose up -d --build   # el Dockerfile agrega WP-CLI (`docker exec wordp
 ## Cuidado
 - No correr `docker compose down -v` (borra los volumenes con la DB y los uploads).
 - Al editar `style.css` subir `CHILD_THEME_CIPBA_VERSION` en `functions.php` para invalidar cache.
-- Plan de migracion a DonWeb: `../project/plan-migracion-donweb.md`.
+- Plan de migracion a DonWeb: `../project/plan-migracion-donweb.md`. Deploy: `../project/runbook-migracion-manual.md`; la parte local la arma `/deploy_cipba` (o `scripts/preparar-deploy.ps1 -Dominio <dominio> [-SoloTema]`).
 - Manuales: `../project/manual-usuario-contenido.md` (carga de contenido) y `../project/manual-tecnico-tema.md` (mantenimiento del tema).
 
 ## Replicar el entorno en otra PC (con todos los datos)
@@ -35,26 +35,38 @@ Ademas del codigo de GitHub hacen falta 3 cosas que **no estan en git** (`.gitig
 
 El nucleo de WordPress (volumen `wordpress_data`) no hace falta: lo regenera la imagen. Antes de empezar, hacer commit y push de lo pendiente.
 
-### 1. Exportar (PC de origen, PowerShell, desde `wordpress\`)
+### 1. Exportar (PC de origen)
 
-Base de datos. El dump se escribe **dentro** del contenedor y se copia afuera: redirigir con `>` en PowerShell 5.1 lo guarda en UTF-16 y no se puede importar.
+Con Claude Code: **`/bkp_cipba`**. Sin Claude, desde la raiz del repo:
 ```powershell
-docker exec wordpress_db sh -c 'mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --single-transaction --default-character-set=utf8mb4 $MYSQL_DATABASE > /tmp/cipba-local.sql'
-docker cp wordpress_db:/tmp/cipba-local.sql .\backups\cipba-local-AAAAMMDD.sql
+powershell -ExecutionPolicy Bypass -File .\wordpress\scripts\backup-entorno-local.ps1
 ```
-Este dump conserva las URLs `http://localhost:8080`. Los `.sql` preparados para DonWeb **no sirven** para esto (tienen las URLs ya reemplazadas por el dominio).
+El script (`scripts/backup-entorno-local.ps1`, solo lee) deja todo en `wordpress\backups\local-AAAAMMDD-HHMM\`:
 
-`wp-content` (sin el tema, que viene de GitHub):
+| Archivo | Que es |
+|---|---|
+| `cipba-local.sql` | Dump de la base, con las URLs `http://localhost:8080` |
+| `wp-content-local.tar.gz` | Plugins y uploads (sin `themes/cipba`, que viene de GitHub) |
+| `.env` | Credenciales de la base |
+
+Verifica que el dump termine en "Dump completed" y que el `.tar.gz` se pueda leer. Los `.sql` preparados para DonWeb **no sirven** para esto (tienen las URLs ya reemplazadas por el dominio).
+
+<details><summary>Lo que hace el script, a mano</summary>
+
+El dump se escribe **dentro** del contenedor y se copia afuera: redirigir con `>` en PowerShell 5.1 lo guarda en UTF-16 y no se puede importar.
 ```powershell
-docker run --rm -v wordpress_docker_wp_content:/data -v "${PWD}\backups:/backup" alpine tar czf /backup/wp-content-local-AAAAMMDD.tar.gz -C /data --exclude=./themes/cipba --exclude=./cache --exclude=./upgrade-temp-backup .
+docker exec wordpress_db sh -c 'MYSQL_PWD=$MYSQL_ROOT_PASSWORD mysqldump -uroot --single-transaction --routines --default-character-set=utf8mb4 $MYSQL_DATABASE > /tmp/cipba-local.sql'
+docker cp wordpress_db:/tmp/cipba-local.sql .\backups\local-AAAAMMDD-HHMM\cipba-local.sql
+docker run --rm -v wordpress_docker_wp_content:/data -v "${PWD}\backups\local-AAAAMMDD-HHMM:/backup" alpine tar czf /backup/wp-content-local.tar.gz -C /data --exclude=./themes/cipba --exclude=./cache --exclude=./upgrade-temp-backup .
 ```
+</details>
 
-Llevar el `.sql`, el `.tar.gz` y el `.env` a la otra PC por pendrive o un Drive privado. **No subirlos a GitHub**: contienen hashes de contraseñas y los envios del formulario de contacto.
+Llevar la carpeta `local-AAAAMMDD-HHMM` a la otra PC por pendrive o un Drive privado. **No subirla a GitHub**: contiene hashes de contraseñas y los envios del formulario de contacto.
 
 ### 2. Importar (PC nueva)
 
 1. Instalar Docker Desktop (con WSL2) y Git; clonar el repo (mejor fuera de OneDrive).
-2. Copiar el `.env` a `wordpress\.env` y los archivos a `wordpress\backups\`.
+2. Copiar la carpeta `local-AAAAMMDD-HHMM` a `wordpress\backups\` y su `.env` a `wordpress\.env`.
 3. Levantar el entorno (si aparece el instalador de WordPress, **no completarlo**) y frenar la app:
    ```powershell
    cd wordpress
@@ -63,14 +75,14 @@ Llevar el `.sql`, el `.tar.gz` y el `.env` a la otra PC por pendrive o un Drive 
    ```
 4. Restaurar `wp-content` en el volumen y volver a levantar la app:
    ```powershell
-   docker run --rm -v wordpress_docker_wp_content:/data -v "${PWD}\backups:/backup" alpine tar xzf /backup/wp-content-local-AAAAMMDD.tar.gz -C /data
+   docker run --rm -v wordpress_docker_wp_content:/data -v "${PWD}\backups\local-AAAAMMDD-HHMM:/backup" alpine tar xzf /backup/wp-content-local.tar.gz -C /data
    docker compose start wordpress
    docker exec wordpress_app chown -R www-data:www-data /var/www/html/wp-content/uploads /var/www/html/wp-content/plugins
    ```
 5. Importar la base:
    ```powershell
-   docker cp .\backups\cipba-local-AAAAMMDD.sql wordpress_db:/tmp/db.sql
-   docker exec wordpress_db sh -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /tmp/db.sql'
+   docker cp .\backups\local-AAAAMMDD-HHMM\cipba-local.sql wordpress_db:/tmp/db.sql
+   docker exec wordpress_db sh -c 'MYSQL_PWD=$MYSQL_ROOT_PASSWORD mysql -uroot $MYSQL_DATABASE < /tmp/db.sql'
    ```
 6. Verificar:
    - Entrar a http://localhost:8080/wp-admin con los mismos usuarios de siempre.

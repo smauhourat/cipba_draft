@@ -8,6 +8,13 @@ Sirve igual para el ensayo (`cipba.site`) y para el destino final (`cipba.org`):
 
 > Convención: `<DOMINIO>` = `cipba.site` (staging) o `cipba.org` (final). Todos los comandos se corren desde `wordpress/` en el repo, con los contenedores levantados (`docker compose up -d`). Contenedor de WordPress: `wordpress_app`.
 
+> **Atajo para la parte local (Fases 0, 0-bis, 1 y 2):** con Claude Code, `/deploy_cipba` (pregunta el dominio y si es deploy completo o solo tema). Sin Claude, desde la raíz del repo:
+> ```powershell
+> powershell -ExecutionPolicy Bypass -File .\wordpress\scripts\preparar-deploy.ps1 -Dominio <DOMINIO>            # completo
+> powershell -ExecutionPolicy Bypass -File .\wordpress\scripts\preparar-deploy.ps1 -Dominio <DOMINIO> -SoloTema  # solo tema
+> ```
+> Deja todo en `wordpress/backups/deploy-<DOMINIO>-AAAAMMDD-HHMM/`: `backup-local.sql`, `chequeo-pre-deploy.txt`, `deploy-<DOMINIO>.sql`, `wp-content-<DOMINIO>.zip` y `resumen.txt` (con `-SoloTema`, `cipba-tema-<versión>.zip`). Además del chequeo pre-deploy, hace la prueba de humo, verifica que no queden restos de `localhost:8080` ni que cambie la base local, y revisa el zip (entradas, barras invertidas, `upgrade-temp-backup`, tema y plugins clave, límite de 128 MB). No actualiza plugins ni toca el hosting. Las Fases 3 a 7 siguen siendo manuales.
+
 **Idea central:** hay 3 cosas para mover y solo una es delicada.
 | Qué | Cómo llega al hosting | Delicado |
 |---|---|---|
