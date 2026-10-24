@@ -23,6 +23,13 @@ docker compose up -d --build   # el Dockerfile agrega WP-CLI (`docker exec wordp
 - Plan de migracion a DonWeb: `../project/plan-migracion-donweb.md`. Deploy: `../project/runbook-migracion-manual.md`; la parte local la arma `/deploy_cipba` (o `scripts/preparar-deploy.ps1 -Dominio <dominio> [-SoloTema]`).
 - Manuales: `../project/manual-usuario-contenido.md` (carga de contenido) y `../project/manual-tecnico-tema.md` (mantenimiento del tema).
 
+## Pendientes
+- **Copias remitidas: agregar Cloudflare Turnstile** (captcha gratuito, sin plugin). Hoy el formulario (`themes/cipba/inc/copias-remitidas.php`) se defiende de los robots solo con un campo trampa y un tope de 6 envíos por hora por IP: un robot con muchas IP podría llenar de PDFs la casilla de la secretaría. Para hacerlo:
+  - Crear el sitio en Cloudflare → Turnstile, con el dominio de producción y `localhost`, y obtener la *site key* y la *secret key*.
+  - Guardar las claves en Datos del Distrito o en `wp-config.php`, sin versionar la secreta.
+  - Agregar el widget al template y validarlo del lado del servidor contra `https://challenges.cloudflare.com/turnstile/v0/siteverify` antes de `wp_mail()`.
+- **Copias remitidas: revisar el tope por IP en producción.** Si DonWeb pone un proxy delante del sitio, `REMOTE_ADDR` puede ser la misma para todos los visitantes y el límite de 6 por hora bloquearía el formulario para todos.
+
 ## Replicar el entorno en otra PC (con todos los datos)
 
 Ademas del codigo de GitHub hacen falta 3 cosas que **no estan en git** (`.gitignore` excluye `wordpress/.env`, `wordpress/backups/` y `*.sql`):
