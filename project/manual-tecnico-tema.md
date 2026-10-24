@@ -116,6 +116,7 @@ themes/cipba/
 │   ├── tramites.php           Constantes y lectura de trámites, cajita de marcadores, layout Astra
 │   ├── novedades.php          Paletas de categoría, fechas, tarjetas, tabs, agenda, admin de Entradas
 │   ├── honorarios.php         Título automático, una sola vigente, listados, aviso de la home
+│   ├── copias-remitidas.php   Formulario propio de Copias remitidas: validación y envío por mail
 │   ├── shortcodes.php         Shortcodes de home, institucional, contacto, normativa, TAD
 │   ├── topbar.php             Barra superior (antes del #masthead)
 │   ├── navbar.php             Sombra al scrollear, panel mobile de Mega Menu, links en pestaña nueva
@@ -123,7 +124,8 @@ themes/cipba/
 │   ├── image-sizes.php        Tamaños de imagen
 │   └── favicon.php            Set de favicons propio
 ├── template-parts/            Markup de listados (autoridades, sedes, subcomisiones, partidos,
-│                              consultor-partidos, novedades-list, honorarios, normativa, tad)
+│                              consultor-partidos, novedades-list, honorarios, normativa, tad,
+│                              copias-remitidas)
 └── assets/
     ├── js/                    Scripts por sección (§10.3)
     ├── data/partidos-distrito-vii.json
@@ -131,7 +133,7 @@ themes/cipba/
     └── img/                   Logos, mapa, favicons
 ```
 
-Orden de carga en `functions.php`: CPT → image-sizes → helpers → settings → tramites → novedades → honorarios → topbar → navbar → footer → shortcodes → favicon → meta-boxes (condicional). `helpers.php` y `tramites.php` definen constantes que `meta-boxes.php` usa, por eso van antes.
+Orden de carga en `functions.php`: CPT → image-sizes → helpers → settings → tramites → novedades → honorarios → copias-remitidas → topbar → navbar → footer → shortcodes → favicon → meta-boxes (condicional). `helpers.php` y `tramites.php` definen constantes que `meta-boxes.php` usa, por eso van antes.
 
 ---
 
@@ -260,6 +262,7 @@ Agregá el marcador a la tabla del manual de usuario (§3.2). **No renombres cla
 | `[cipba_honorarios]` | Honorarios mínimos (220) | `template-parts/honorarios.php` |
 | `[cipba_normativa]` | Normativa (262) | `template-parts/normativa.php` |
 | `[cipba_tad]` | TAD (285) | `template-parts/tad.php` |
+| `[cipba_copias_remitidas]` | Copias remitidas (375) | `inc/copias-remitidas.php` + `template-parts/copias-remitidas.php` + `copias-remitidas.js` |
 
 Las páginas combinan bloques `wp:html` (encabezados, secciones fijas con el markup del prototipo) con los shortcodes. Los IDs son los del entorno local; en producción pueden diferir si no se migró la base.
 
@@ -345,6 +348,17 @@ Quita `primary_footer` y `below_footer` de Astra (`Astra_Builder_Footer`) y pint
 
 Al agregar o cambiar un tamaño, las imágenes ya subidas no lo tienen hasta regenerar miniaturas (`wp media regenerate --yes` o un plugin).
 
+### 8.9 Copias remitidas (`inc/copias-remitidas.php`)
+
+Formulario propio, **sin plugin**: Fluent Forms free no trae campo de archivo (es Pro), y el resto de los plugins de formularios con adjuntos son pagos o traen mucho de más.
+
+- **Flujo:** el `<form>` (multipart) postea a la misma página con `?copia=enviar`. `cipba_copias_template_redirect()` (solo si la página tiene el shortcode) marca la página como no cacheable (`DONOTCACHEPAGE`, `litespeed_control_set_nocache`, `nocache_headers()`) y llama a `cipba_copias_procesar()`. Si sale bien, redirige a `?copia=enviada#copias-form` (PRG). Si hay errores, los deja en `cipba_copias_state()` y el template vuelve a mostrar el formulario con los valores cargados.
+- **Validación:** nonce `cipba_copias`; campo trampa `cr_web` (si viene completo, se finge éxito); nombre ≤ 120; `is_email`; matrícula con `^[\p{L}\d][\p{L}\d .\/-]{0,24}$`; PDF por extensión **y** por cabecera `%PDF-`; tamaño ≤ `cipba_copias_max_bytes()` (el menor entre `CIPBA_COPIAS_MAX_BYTES` = 10 MB y `wp_max_upload_size()`). Si el archivo supera `post_max_size`, PHP vacía `$_POST` y se informa "demasiado grande". Hay un límite de `CIPBA_COPIAS_MAX_HORA` (6) envíos por IP por hora, contados con un transient.
+- **Mail:** `wp_mail()` (o sea FluentSMTP) a `cipba_copias_destinatario()`, que usa el dato `email_copias` o, si está vacío, `email`. Lleva `Reply-To` al matriculado, cuerpo en texto plano y el adjunto con clave de nombre (`array( 'copia-<matrícula>-<nombre>.pdf' => $tmp )`, soportado desde WP 6.2). El PDF se adjunta desde el temporal de PHP y **no se guarda** en el sitio ni en la base.
+- **Si falla el envío:** el formulario muestra un error genérico. A un administrador logueado le agrega el detalle de `wp_mail_failed`, que también va al log de PHP; además está **FluentSMTP → Email Logs**. En local, `certificate verify failed` hacia smtp.gmail.com lo causa el antivirus de la PC, que intercepta el SMTP con TLS (por ejemplo Avast Mail Shield): el contenedor no confía en su certificado raíz. Se arregla desactivando el escaneo de SMTP saliente en el antivirus; no es un problema del sitio.
+- **Probar sin enviar mails reales:** un mu-plugin temporal con `add_filter( 'pre_wp_mail', … return true; )` que escriba los argumentos a un log. Borrarlo al terminar.
+- **Límite de subida:** en el Docker local PHP tiene `upload_max_filesize = 2M`, así que el formulario muestra "hasta 2 MB". En DonWeb, verificar que `upload_max_filesize` y `post_max_size` sean ≥ 10 MB (Ferozo → PHP), o el máximo baja solo.
+
 ---
 
 ## 9. Hooks del tema
@@ -364,6 +378,7 @@ Al agregar o cambiar un tamaño, las imágenes ya subidas no lo tienen hasta reg
 | `rwmb_meta_boxes` | `cipba_register_meta_boxes` | Campos |
 | `astra_header_before` (5) | `cipba_render_topbar` | Barra superior |
 | `wp` | `cipba_replace_primary_footer` | Pie propio |
+| `template_redirect` | `cipba_copias_template_redirect` | Página de Copias remitidas: sin caché y procesa el POST |
 | `nav_menu_link_attributes` | `cipba_menu_link_attributes` | Pestaña nueva |
 | `document_title_parts` | `cipba_novedades_document_title` | Título por tab |
 | `pre_get_posts` | `cipba_*_admin_default_order`, `cipba_post_admin_tipo_query` | Orden y filtro en admin |
@@ -397,6 +412,7 @@ Vanilla, encolados con la versión del tema y solo donde se usan:
 | `partidos.js` | `[cipba_partidos]` | Buscador |
 | `consultor-partidos.js` | `[cipba_consultor_partidos]` | Búsqueda difusa de partidos |
 | `contact-form.js` | Páginas con `[fluentform]` | Desvanece el mensaje de envío |
+| `copias-remitidas.js` | `[cipba_copias_remitidas]` | Zona para arrastrar el PDF, nombre/peso del archivo, chequeo de tipo y tamaño, botón "Enviando…" |
 | `admin-novedad.js` | Admin, edición de Entradas | Muestra/oculta *Datos de la actividad* |
 | `sticky-header.js` | — | Vacío y sin encolar (resto; se puede borrar) |
 

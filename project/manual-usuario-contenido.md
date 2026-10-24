@@ -19,14 +19,15 @@ El sitio arma solo el diseño: quien edita carga textos, fechas, imágenes y arc
 7. [Documentos descargables y página Normativa](#7-documentos-descargables-y-página-normativa)
 8. [Honorarios mínimos](#8-honorarios-mínimos)
 9. [Página TAD (Tribunal de Árbitros)](#9-página-tad-tribunal-de-árbitros)
-10. [Institucional: autoridades, sedes y partidos](#10-institucional-autoridades-sedes-y-partidos)
-11. [Subcomisiones](#11-subcomisiones)
-12. [Contacto: áreas, formulario y WhatsApp](#12-contacto-áreas-formulario-y-whatsapp)
-13. [Página de inicio](#13-página-de-inicio)
-14. [Pie de página y menús](#14-pie-de-página-y-menús)
-15. [Imágenes: tamaños recomendados](#15-imágenes-tamaños-recomendados)
-16. [Tareas frecuentes (recetas)](#16-tareas-frecuentes-recetas)
-17. [Preguntas y problemas comunes](#17-preguntas-y-problemas-comunes)
+10. [Copias remitidas](#10-copias-remitidas)
+11. [Institucional: autoridades, sedes y partidos](#11-institucional-autoridades-sedes-y-partidos)
+12. [Subcomisiones](#12-subcomisiones)
+13. [Contacto: áreas, formulario y WhatsApp](#13-contacto-áreas-formulario-y-whatsapp)
+14. [Página de inicio](#14-página-de-inicio)
+15. [Pie de página y menús](#15-pie-de-página-y-menús)
+16. [Imágenes: tamaños recomendados](#16-imágenes-tamaños-recomendados)
+17. [Tareas frecuentes (recetas)](#17-tareas-frecuentes-recetas)
+18. [Preguntas y problemas comunes](#18-preguntas-y-problemas-comunes)
 
 ---
 
@@ -65,7 +66,7 @@ Muchas secciones (Trámites, Subcomisiones, Sedes, Autoridades, Áreas de contac
 
 ### 1.5 Ver los cambios
 
-Los cambios se ven al instante. Si no los ves, recargá con **Ctrl + F5**. Si el sitio tiene una caché activa en el servidor y sigue sin verse, avisale a quien mantiene el sitio (ver §17).
+Los cambios se ven al instante. Si no los ves, recargá con **Ctrl + F5**. Si el sitio tiene una caché activa en el servidor y sigue sin verse, avisale a quien mantiene el sitio (ver §18).
 
 ---
 
@@ -84,6 +85,7 @@ Los cambios se ven al instante. Si no los ves, recargá con **Ctrl + F5**. Si el
 | Página **Normativa** (`/normativa/`) | **Documentos (Normativa)** (tilde *Mostrar en la página Normativa*) |
 | Página **Honorarios mínimos** y la **barra de aviso** de la home | **Resoluciones (Honorarios)** |
 | Página **TAD** (`/tad/`) | **Páginas → TAD** |
+| Casilla que recibe las **copias remitidas** (`/copias-remitidas/`) | **Datos del Distrito** → *Correo para copias remitidas* |
 | **Autoridades** (Institucional) | **Autoridades** + período en **Datos del Distrito** |
 | **Sedes y delegaciones** (Institucional, Contacto y home) y la **foto de la home** | **Sedes** |
 | **Subcomisiones** (página Subcomisiones y home) | **Subcomisiones** |
@@ -91,7 +93,7 @@ Los cambios se ven al instante. Si no los ves, recargá con **Ctrl + F5**. Si el
 | Mensajes recibidos por el **formulario de contacto** | **Fluent Forms → Entries** |
 | Columna **Links de interés** del pie | **Links de interés** |
 | Menú principal y las otras columnas del pie | **Apariencia → Menús** (solo administrador) |
-| Textos fijos de la home (portada, autogestión, preguntas frecuentes) | **Páginas → Inicio** (ver §13: con cuidado) |
+| Textos fijos de la home (portada, autogestión, preguntas frecuentes) | **Páginas → Inicio** (ver §14: con cuidado) |
 
 ---
 
@@ -107,7 +109,7 @@ Los cambios se ven al instante. Si no los ves, recargá con **Ctrl + F5**. Si el
 | **Contacto general** | Teléfono, correo, correo de tesorería, horario, WhatsApp, enlace al Consejo Superior | Barra superior, botón de WhatsApp (Contacto y Subcomisiones), recuadros de las publicaciones |
 | **Redes sociales** | Instagram, Facebook, LinkedIn | Íconos del sitio. **Vacío = el ícono no aparece** |
 | **Página de honorarios mínimos** | Enlace al listado del Consejo Superior; cantidad de resoluciones anteriores a mostrar | Página `/honorarios/` |
-| **Matrícula y trámites** | Correo para trámites, resolución vigente, módulos y fecha límite, códigos de formularios | Textos de los trámites (vía marcadores) |
+| **Matrícula y trámites** | Correo para trámites, correo para copias remitidas, resolución vigente, módulos y fecha límite, códigos de formularios | Textos de los trámites (vía marcadores); el correo de copias es la casilla que recibe el formulario de Copias remitidas (§10) |
 | **Datos bancarios (transferencia)** | Cuenta, sucursal, titular, C.B.U., alias, C.U.I.T. | Ventana "Datos de la cuenta" de Medios de pago |
 
 Para cambiar un valor: **Datos del Distrito** → modificá el campo → **Guardar cambios** (abajo de todo).
@@ -179,7 +181,7 @@ El listado `/novedades/` tiene dos pestañas (una por tipo), filtros por categor
 2. **Título.**
 3. **Contenido** con el editor de bloques: párrafos; subtítulos con el bloque *Encabezado*; listas con el bloque *Lista* (se ven con tildes verdes). Evitá pegar texto con formato desde Word: pegalo como texto simple (**Ctrl + Shift + V**).
 4. Panel derecho:
-   - **Imagen destacada** (ver §15 sobre el formato según el tipo).
+   - **Imagen destacada** (ver §16 sobre el formato según el tipo).
    - **Categoría**: elegí **una sola**. Define el color de la etiqueta y el filtro del listado.
    - **Fecha de publicación** (en *Publicar*): ordena el listado y es la fecha que se muestra. Se puede **programar** una fecha futura: la publicación aparece sola ese día.
 5. Debajo del editor, la caja **Datos de la publicación** (ver 4.2).
@@ -279,7 +281,7 @@ La numeración y el diseño de tarjeta los pone el sitio. Un ítem solo con el n
 
 1. **Trámites → Agregar trámite**.
 2. Título + **Datos del trámite**.
-3. **Publicar.** Aparece solo en "Otros trámites" de los demás. Para sumarlo al menú principal o al pie, pedíselo a un administrador (§14.2). Su dirección será `/tramites/nombre-del-tramite/`.
+3. **Publicar.** Aparece solo en "Otros trámites" de los demás. Para sumarlo al menú principal o al pie, pedíselo a un administrador (§15.2). Su dirección será `/tramites/nombre-del-tramite/`.
 
 ---
 
@@ -385,9 +387,30 @@ El título y el texto del encabezado se editan en el contenido de la página.
 
 ---
 
-## 10. Institucional: autoridades, sedes y partidos
+## 10. Copias remitidas
 
-### 10.1 Autoridades (Consejo Directivo)
+**`/copias-remitidas/`** es un formulario para que el matriculado envíe a la secretaría la copia de su **contrato firmado en PDF**. Completa **Apellido y nombre**, **Mail** y **N° de matrícula**, arrastra el PDF (o hace clic para elegirlo) y presiona **Enviar copia**. Al terminar ve el aviso **"¡Copia enviada!"**.
+
+**A dónde llega:** a la casilla que figura en **Datos del Distrito → Matrícula y trámites → Correo para copias remitidas**. Si ese campo está vacío, llega al **correo de contacto general**. Cada envío es un mail con:
+
+- Asunto: *Copia remitida — Pérez, Juan (Mat. 12345)*.
+- Los datos cargados, la fecha y el nombre del archivo original.
+- El PDF adjunto, renombrado como `copia-12345-Perez-Juan.pdf`.
+- **Responder** el mail le contesta directamente al matriculado.
+
+**Para tener en cuenta:**
+
+- Solo se aceptan archivos **PDF** de hasta **10 MB** (o menos, si el servidor tiene un límite menor; el formulario muestra el máximo real).
+- El archivo **no se guarda en el sitio** ni queda en el panel: la única copia es el mail. Si la casilla lo borra, se pierde.
+- Para frenar el abuso, se aceptan hasta 6 envíos por hora desde una misma conexión.
+- El título y el texto del encabezado se editan en **Páginas → Copias remitidas**. El recuadro amarillo y los textos del formulario son parte del tema (pedir el cambio a quien lo mantiene).
+- Si alguien avisa que envió y no llegó nada: revisar la carpeta de spam y, si el administrador tiene acceso, **FluentSMTP → Email Logs**.
+
+---
+
+## 11. Institucional: autoridades, sedes y partidos
+
+### 11.1 Autoridades (Consejo Directivo)
 
 **Autoridades → Agregar autoridad.**
 
@@ -400,7 +423,7 @@ Las iniciales del avatar se generan solas del nombre. El **período** (2024 – 
 
 **Cambio de autoridades:** editá cada ficha (nombre, cargo, título) en lugar de borrar y crear; mandá a la papelera las que sobren y actualizá el período.
 
-### 10.2 Sedes y delegaciones
+### 11.2 Sedes y delegaciones
 
 **Sedes → Agregar sede.** Se usan en tres lugares: Institucional, Contacto y la sección "El Distrito VII" de la home.
 
@@ -413,13 +436,13 @@ Las iniciales del avatar se generan solas del nombre. El **período** (2024 – 
 | **Contacto directo 1 a 8** | Solo Casa Central: área, nombre, teléfono y email de cada contacto. |
 | **Foto de la sede** (columna derecha) | Solo se usa la de la Casa Central: es la foto de la home, con la dirección como epígrafe. Sin foto, no se muestra nada. |
 
-### 10.3 Partidos comprendidos
+### 11.3 Partidos comprendidos
 
 La lista de los 23 partidos del Distrito VII (sección de Institucional y el buscador "¿Tu partido pertenece al Distrito VII?" de la home) es **fija** y no se edita desde el panel: la fija la Ley 10.416. Si hubiera que corregirla, pedíselo a quien mantiene el tema.
 
 ---
 
-## 11. Subcomisiones
+## 12. Subcomisiones
 
 **Subcomisiones → Agregar subcomisión.** Se muestran en la página `/subcomisiones/` (con buscador) y las **3 primeras** según el orden en la home.
 
@@ -434,9 +457,9 @@ La lista de los 23 partidos del Distrito VII (sección de Institucional y el bus
 
 ---
 
-## 12. Contacto: áreas, formulario y WhatsApp
+## 13. Contacto: áreas, formulario y WhatsApp
 
-### 12.1 Áreas de contacto
+### 13.1 Áreas de contacto
 
 **Áreas de contacto → Agregar.** Son las tarjetas de la página Contacto.
 
@@ -446,17 +469,17 @@ La lista de los 23 partidos del Distrito VII (sección de Institucional y el bus
 - **Persona 1 a 4:** nombre, teléfono y email.
 - **Orden** (Atributos).
 
-### 12.2 Formulario de contacto: leer los mensajes
+### 13.2 Formulario de contacto: leer los mensajes
 
 Los mensajes que envían los visitantes se guardan en **Fluent Forms → Entries** (además de llegar por mail, si el servidor tiene el envío de correo configurado). Ahí se pueden leer, marcar como leídos y exportar. Si alguien dice que escribió y no llegó el mail, buscalo ahí.
 
-### 12.3 Botón de WhatsApp y sedes
+### 13.3 Botón de WhatsApp y sedes
 
 El botón verde de WhatsApp usa el número de **Datos del Distrito**; si se vacía, el botón desaparece. Las tarjetas de sedes de Contacto salen de **Sedes**.
 
 ---
 
-## 13. Página de inicio
+## 14. Página de inicio
 
 La home combina partes **automáticas** (se actualizan solas desde otras secciones) y partes de **texto fijo** (en la página *Inicio*).
 
@@ -467,8 +490,8 @@ La home combina partes **automáticas** (se actualizan solas desde otras seccion
 | Autogestión y Trámites del Distrito (tarjetas) | Texto fijo en **Páginas → Inicio** |
 | Eventos y novedades | Automática: Entradas tipo *Evento o novedad* (§4) |
 | Noticias | Automática: Entradas tipo *Noticia* (§4) |
-| Subcomisiones | Automática: las 3 primeras (§11) |
-| El Distrito VII (foto, Casa Central, delegaciones, buscador de partidos) | Automática: **Sedes** (§10.2) |
+| Subcomisiones | Automática: las 3 primeras (§12) |
+| El Distrito VII (foto, Casa Central, delegaciones, buscador de partidos) | Automática: **Sedes** (§11.2) |
 | Preguntas frecuentes | Texto fijo en **Páginas → Inicio** |
 | Contacto por función | Texto fijo en **Páginas → Inicio** |
 
@@ -476,9 +499,9 @@ La home combina partes **automáticas** (se actualizan solas desde otras seccion
 
 ---
 
-## 14. Pie de página y menús
+## 15. Pie de página y menús
 
-### 14.1 Links de interés (última columna del pie)
+### 15.1 Links de interés (última columna del pie)
 
 Panel → **Links de interés**.
 
@@ -488,13 +511,13 @@ Panel → **Links de interés**.
 
 Se abren en pestaña nueva con el ícono de enlace externo. Un link sin dirección no se muestra.
 
-### 14.2 Menús (solo administrador)
+### 15.2 Menús (solo administrador)
 
 El menú principal y las columnas **Trámites**, **Normativa** e **Institucional** del pie, y los enlaces legales del final, se editan en **Apariencia → Menús** (menús *Principal*, *Pie - Trámites*, *Pie - Normativa*, *Pie - Institucional* y *Pie - Legal*). Requiere usuario administrador.
 
 ---
 
-## 15. Imágenes: tamaños recomendados
+## 16. Imágenes: tamaños recomendados
 
 | Dónde | Formato recomendado | Qué pasa |
 |---|---|---|
@@ -511,7 +534,7 @@ Consejos:
 
 ---
 
-## 16. Tareas frecuentes (recetas)
+## 17. Tareas frecuentes (recetas)
 
 ### Publicar un evento con inscripción
 1. **Entradas → Añadir nueva** → título, contenido, flyer vertical como imagen destacada, categoría.
@@ -558,11 +581,11 @@ Editá el trámite → bloque de la lista → agregá o borrá un ítem de la li
 **Subcomisiones** → abrí la subcomisión → corregí el referente → **Actualizar**.
 
 ### Agregar, cambiar o quitar un link del pie
-Ver §14.1.
+Ver §15.1.
 
 ---
 
-## 17. Preguntas y problemas comunes
+## 18. Preguntas y problemas comunes
 
 **Veo `{{algo}}` con las llaves en la página.**
 El marcador está mal escrito o no existe. Compará con §3.2 o con la cajita lateral del trámite. Recordá que en las Entradas los marcadores no funcionan.
@@ -592,7 +615,7 @@ Son límites del formulario; los puede ampliar quien mantiene el tema.
 Falta activar el plugin *Meta Box*. Avisale al administrador.
 
 **¿Se puede romper el diseño escribiendo mal?**
-En los formularios, no: el sitio arma el diseño y limpia el código no permitido que se pegue. El único lugar delicado son los textos fijos de la página *Inicio* (§13).
+En los formularios, no: el sitio arma el diseño y limpia el código no permitido que se pegue. El único lugar delicado son los textos fijos de la página *Inicio* (§14).
 
 **Borré algo por error.**
 Está en la **Papelera** del listado correspondiente durante 30 días: *Restaurar*. Para un texto que se cambió mal en una página o entrada, usá **Revisiones** (columna derecha) para volver a una versión anterior.

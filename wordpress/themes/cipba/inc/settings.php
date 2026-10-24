@@ -137,6 +137,14 @@ function cipba_datos_fields() {
 			'default'     => '',
 			'type'        => 'email',
 		),
+		'email_copias'        => array(
+			'section'     => 'Matrícula y trámites',
+			'label'       => 'Correo para copias remitidas',
+			'desc'        => 'Casilla que recibe los contratos enviados desde el formulario de la página Copias remitidas (llegan con el PDF adjunto). Si lo dejás vacío, se usa el correo de contacto general.',
+			'placeholder' => 'secretaria@cipba.org',
+			'default'     => '',
+			'type'        => 'email',
+		),
 		'resolucion'          => array(
 			'section'     => 'Matrícula y trámites',
 			'label'       => 'Resolución vigente',

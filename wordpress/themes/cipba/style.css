@@ -1694,6 +1694,58 @@ a.cipba-hon-row:hover .cipba-hon-row__side { color: var(--wp--preset--color--ver
 .cipba-tad__mail svg, .cipba-tad__mail span { color: var(--wp--preset--color--verde-500, #00a48a); }
 @media (max-width: 640px) { .cipba-tad__box { padding: 18px; } .cipba-tad__btn { width: 100%; justify-content: center; } }
 
+/* ==========================================================================
+   Copias remitidas ([cipba_copias_remitidas]): datos del matriculado + PDF
+   del contrato firmado, que se envía por mail a la secretaría.
+   ========================================================================== */
+.cipba-copias { display: grid; gap: 16px; max-width: 900px !important; margin: 0 auto !important; scroll-margin-top: 100px; }
+.cipba-copias__card { background: #fff; border: 1px solid var(--cipba-border-card, #e8f5f1); border-radius: 12px; padding: 28px 30px 30px; box-shadow: 0 2px 8px rgba(0,0,0,.04); margin: 0; }
+.cipba-copias__fields { display: grid; grid-template-columns: 1.4fr 1.3fr 1fr; gap: 16px; margin-bottom: 22px; }
+.cipba-copias__field label, .cipba-copias__label { display: block; font-size: 13.5px; font-weight: 700; color: #4a6062; margin-bottom: 6px; }
+.cipba-copias__field label span, .cipba-copias__label span { color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-copias__field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--cipba-border-input, #dbe6e3); border-radius: 6px; font-family: inherit; font-size: 14px; color: var(--wp--preset--color--tinta-900, #373d3e); background: #fff; box-shadow: none; transition: border-color var(--cipba-fast, .2s); }
+.cipba-copias__field input::placeholder { color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-copias__field input:focus { border-color: var(--wp--preset--color--verde-500, #00a48a); outline: 0; }
+.cipba-copias__trap { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Zona para arrastrar el PDF */
+.cipba-copias__drop { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 170px; padding: 26px 20px; border: 2px dashed var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 12px; background: var(--wp--preset--color--gris-50, #f7faf9); text-align: center; color: #4a6062; font-size: 14.5px; cursor: pointer; transition: border-color var(--cipba-fast, .2s), background var(--cipba-fast, .2s); }
+.cipba-copias__drop:hover, .cipba-copias__drop.is-over, .cipba-copias__drop:focus-within { border-color: var(--wp--preset--color--verde-500, #00a48a); background: var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-copias__drop input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.cipba-copias__drop-ico { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #fff; border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); color: var(--wp--preset--color--verde-500, #00a48a); }
+.cipba-copias__drop strong { color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-copias__drop u { color: #00705e; font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.cipba-copias__drop small { display: block; margin-top: 6px; font-size: 12.5px; color: var(--wp--preset--color--gris-400, #9aa8a9); }
+.cipba-copias__drop-empty, .cipba-copias__drop-file { line-height: 1.5; }
+.cipba-copias__drop-name { font-weight: 800; color: var(--wp--preset--color--verde-700, #14484a); word-break: break-all; }
+.cipba-copias__drop.has-file { border-style: solid; border-color: var(--wp--preset--color--verde-500, #00a48a); background: var(--wp--preset--color--verde-100, #e8f5f1); }
+.cipba-copias__drop.has-file .cipba-copias__drop-ico { background: var(--wp--preset--color--verde-500, #00a48a); border-color: transparent; color: #fff; }
+.cipba-copias__drop.is-invalid { border-color: #c0392b; background: #fdf3f2; }
+.cipba-copias__drop-error { margin: 8px 0 0; font-size: 13px; font-weight: 700; color: #c0392b; }
+
+.cipba-copias__foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--wp--preset--color--gris-100, #eef2f1); }
+.cipba-copias__foot p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--wp--preset--color--gris-400, #9aa8a9); max-width: 460px; }
+.cipba-copias__btn { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; padding: 14px 26px; border: 0; border-radius: 8px; background: #00705e; color: #fff; font-family: inherit; font-size: 14.5px; font-weight: 800; cursor: pointer; transition: background var(--cipba-fast, .2s); }
+.cipba-copias__btn:hover { background: #005e4f; }
+.cipba-copias__btn:disabled { opacity: .7; cursor: progress; }
+
+/* Errores del envío y confirmación */
+.cipba-copias__errors { padding: 16px 18px; border: 1px solid #f1c4bf; border-radius: 10px; background: #fdf3f2; color: #8e2b20; font-size: 13.5px; }
+.cipba-copias__errors ul { margin: 6px 0 0; padding-left: 18px; }
+.cipba-copias__errors li { margin: 2px 0; }
+.cipba-copias__ok { padding: 42px 30px; text-align: center; background: #fff; border: 1px solid var(--wp--preset--color--verde-200, #c0e2ca); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+.cipba-copias__ok-ico { display: inline-grid; place-items: center; width: 64px; height: 64px; margin-bottom: 14px; border-radius: 50%; background: var(--wp--preset--color--verde-500, #00a48a); color: #fff; }
+.cipba-copias__ok h2 { font-family: var(--wp--preset--font-family--condensed); font-size: 26px; font-weight: 900; color: var(--wp--preset--color--verde-700, #14484a); margin: 0 0 8px; }
+.cipba-copias__ok p { max-width: 520px; margin: 0 auto 20px; font-size: 14.5px; line-height: 1.6; color: #4a6062; }
+.cipba-copias__again { font-size: 14px; font-weight: 800; color: #00705e !important; }
+
+@media (max-width: 760px) {
+	.cipba-copias__fields { grid-template-columns: 1fr; }
+	.cipba-copias__card { padding: 22px 18px 24px; }
+	.cipba-copias__foot { flex-direction: column; align-items: stretch; }
+	.cipba-copias__btn { justify-content: center; }
+}
+
 /* ===== Galería de fotos (detalle de novedad/evento) + visor ===== */
 .cipba-nota__col { min-width: 0; }
 .cipba-galeria { margin-top: 30px; }
