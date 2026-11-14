@@ -484,8 +484,9 @@ add_action( 'admin_enqueue_scripts', 'cipba_novedad_admin_script' );
 
 /**
  * Agenda de la home ("Eventos y novedades"): publicaciones de tipo "Evento o novedad", sin las
- * actividades ya pasadas, por fecha de publicación descendente (mismo orden que
- * el listado de /novedades/).
+ * actividades ya pasadas. Primero las actividades, por fecha del evento (la
+ * más próxima primero); después las novedades sin fecha, por fecha de
+ * publicación descendente.
  *
  * @return WP_Post[]
  */
@@ -498,15 +499,22 @@ function cipba_get_agenda( $limit = 3 ) {
 		'meta_key'    => 'tipo_pub',
 		'meta_value'  => 'evento',
 	) );
-	$hoy   = current_time( 'Y-m-d' );
-	$items = array();
+	$hoy         = current_time( 'Y-m-d' );
+	$actividades = array();
+	$novedades   = array();
 	foreach ( $posts as $p ) {
 		$ini = trim( (string) get_post_meta( $p->ID, 'fecha_inicio', true ) );
 		$fin = trim( (string) get_post_meta( $p->ID, 'fecha_fin', true ) );
-		if ( $ini && ( $fin ? $fin : $ini ) < $hoy ) {
-			continue; // Actividad ya realizada.
+		if ( ! $ini ) {
+			$novedades[] = $p;
+		} elseif ( ( $fin ? $fin : $ini ) >= $hoy ) {
+			$actividades[] = array( $ini, $p );
 		}
-		$items[] = $p;
+		// Si no, es una actividad ya realizada.
 	}
+	usort( $actividades, function ( $a, $b ) {
+		return strcmp( $a[0], $b[0] );
+	} );
+	$items = array_merge( array_column( $actividades, 1 ), $novedades );
 	return array_slice( $items, 0, $limit );
 }
