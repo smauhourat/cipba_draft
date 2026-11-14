@@ -108,8 +108,9 @@ function cipba_render_footer_columns() {
 }
 
 /**
- * "Below Footer": copyright a la izquierda, enlaces legales a la
- * derecha (menú "Pie - Legal"), fondo verde-950. Reemplaza el
+ * "Below Footer": copyright a la izquierda, crédito del desarrollador al
+ * centro y enlaces legales a la derecha (menú "Pie - Legal"), fondo
+ * verde-950. Reemplaza el
  * "Copyright" por defecto de Astra (que traía "Powered by Astra").
  */
 function cipba_render_footer_below() {
@@ -117,6 +118,7 @@ function cipba_render_footer_below() {
 	<div class="cipba-footer-below">
 		<div class="cipba-footer-below__inner">
 			<span>&copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> Colegio de Ingenieros de la Provincia de Buenos Aires — Distrito VII</span>
+			<span class="cipba-footer-below__credit">Desarrollado por <a href="https://adhentux.com" target="_blank" rel="noopener">Adhentux</a></span>
 			<?php
 			wp_nav_menu( array(
 				'menu'        => 'Pie - Legal',

@@ -392,6 +392,8 @@ Formulario propio, **sin plugin**: Fluent Forms free no trae campo de archivo (e
 
 Un único archivo, organizado en bloques con encabezados `/* ===… */` que referencian las secciones del handoff (`project/Handoff WordPress - CIPBA Distrito VII.md`): §4.x por sección de la home, §5.x por patrones (navbar sticky, tarjetas, badges, avatares, columna fija de trámites…), y al final bloques por página: Subcomisiones, cabecera interna, Sedes, Autoridades, Institucional, Barra superior, Contacto, **Trámites**, **Medios de pago**, **Novedades**, **Honorarios**, **Normativa**, **TAD**, **Galería**. Para encontrar algo, buscá la clase `cipba-…` del markup.
 
+Tarjetas de la home (`cipba-card`, §5.4): verde por defecto; `cipba-card--purpura` para la variante institucional, y dos tonos más oscuros que se suman a esa clase: `cipba-card--purpura-medio` (la usa *Medios de pago*) y `cipba-card--purpura-acent`, el más oscuro (la usa *Copias Remitidas*). El markup está en el bloque HTML de la página Inicio, no en el tema.
+
 Hay muchos `!important` en la zona de Max Mega Menu: su CSS dinámico usa selectores de dos IDs.
 
 **Regla obligatoria:** cada cambio en `style.css` (o en un JS) requiere subir `CHILD_THEME_CIPBA_VERSION` en `functions.php`. Es el `?ver=` de los assets: sin eso, navegadores y cachés siguen sirviendo la versión vieja.
