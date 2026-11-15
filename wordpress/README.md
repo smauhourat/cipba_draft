@@ -36,11 +36,15 @@ Ademas del codigo de GitHub hacen falta 3 cosas que **no estan en git** (`.gitig
 
 | Que | Donde esta | Que contiene |
 |---|---|---|
-| Base de datos | volumen `wordpress_docker_db_data` | Paginas, entradas, tramites, documentos, sedes, menus, Datos del Distrito, usuarios, envios del formulario |
+| Base de datos | volumen `wordpress_docker_db_data` | Paginas (incluido el HTML de la Home y la Politica de privacidad), entradas, tramites, documentos, sedes, menus, Datos del Distrito, usuarios, envios del formulario y los ajustes de los plugins (Fluent Forms, FluentSMTP, Mega Menu, Rank Math, Code Snippets, LiteSpeed) |
 | `wp-content` | volumen `wordpress_docker_wp_content` | Plugins y uploads (imagenes, PDFs) |
 | `wordpress/.env` | disco local | Credenciales de la base (usar el mismo en la PC nueva) |
 
-El nucleo de WordPress (volumen `wordpress_data`) no hace falta: lo regenera la imagen. Antes de empezar, hacer commit y push de lo pendiente.
+Nada mas: Docker Desktop abierto y los contenedores `wordpress_db` y `wordpress_app` corriendo. Antes de empezar, hacer commit y push de lo pendiente (`git status`, `git log @{u}..`).
+
+**No hace falta** el volumen `wordpress_data` (nucleo de WordPress en `/var/www/html`): lo regenera la imagen. `wp-config.php` se arma con las variables del `.env`; lo unico extra que tiene (`WP_CACHE` y el bloque de LiteSpeed en `.htaccess`) lo reescribe LiteSpeed Cache. Las claves (salts) salen nuevas, asi que solo hay que volver a iniciar sesion. Tampoco la imagen Docker: se reconstruye con `Dockerfile` y `docker-compose.yml`.
+
+Referencia de tamaño (2026-11-14): `cipba-local.sql` 2.5 MB (30 tablas), `wp-content-local.tar.gz` 133 MB.
 
 ### 1. Exportar (PC de origen)
 
@@ -96,6 +100,7 @@ Llevar la carpeta `local-AAAAMMDD-HHMM` a la otra PC por pendrive o un Drive pri
    - Plugins: **Meta Box** activo (sin el, las pantallas de edicion quedan sin campos).
    - Ajustes → Enlaces permanentes → **Guardar** (si no, `/tramites/...` puede dar 404).
    - Mega Menu → Menu Themes → **Guardar** una vez (regenera el CSS del menu).
+   - Si LiteSpeed Cache avisa que falta `WP_CACHE`, desactivarlo y volver a activarlo.
 
 Si en la PC nueva se usa otro puerto que 8080, despues de importar:
 ```powershell
