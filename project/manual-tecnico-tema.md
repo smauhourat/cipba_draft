@@ -173,7 +173,7 @@ Todas en `cipba_register_meta_boxes()` (`inc/meta-boxes.php`), filtro `rwmb_meta
 | Datos de la resolución | `resolucion` | `numero`, `fecha_publicacion`, `vigencia_desde`, `vigencia_hasta`, `vigente`, `descripcion`, `archivo_resolucion`, `archivo_anexos`, `enlace_externo` |
 | Datos de la subcomisión | `subcomision` | `tag`, `mail`, `descripcion`, `ref{1..4}_nombre/_matricula/_telefono/_mail` |
 | Datos de la sede | `sede` | `tag`, `destacada`, `direccion`, `telefono`, `email`, `visador`, `horario`, `contacto{1..8}_rol/_nombre/_tel/_email` |
-| Datos de la autoridad | `autoridad` | `cargo`, `titulo`, `destacado` |
+| Datos de la autoridad | `autoridad` | `cargo`, `titulo`, `email`, `destacado` |
 | Datos del área | `area_contacto` | `icono`, `email`, `persona{1..4}_nombre/_tel/_email` |
 | Datos del trámite | `tramite` (≠ pago) | `icono`, `eyebrow`, `breadcrumb`, `intro`, `costo_titulo`, `costo{1..4}_label/_value`, `bloque{1..6}_tipo/_titulo/_sub/_contenido`, `docs_titulo`, `docs_intro`, `doc{1..8}` |
 | Datos de la página de pago | `tramite` slug `pago-matricula` | `pago_h1`, `eyebrow`, `breadcrumb`, `intro`, `pago_antes_*`, `pago_mod_*`, `mod{1..4}_titulo/_boton/_desc/_pasos`, `mod1_pie`, `mod2_doc`, `mod3_url`, `mod4_doc`, `pago_cta_titulo/_texto` |

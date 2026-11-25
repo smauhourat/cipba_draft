@@ -28,6 +28,7 @@ if ( ! $query->have_posts() ) {
 		$main   = (bool) get_post_meta( $id, 'destacado', true );
 		$cargo  = trim( (string) get_post_meta( $id, 'cargo', true ) );
 		$titulo = trim( (string) get_post_meta( $id, 'titulo', true ) );
+		$email  = sanitize_email( (string) get_post_meta( $id, 'email', true ) );
 		?>
 		<article class="cipba-autoridad<?php echo $main ? ' cipba-autoridad--main' : ''; ?>">
 			<?php if ( $main ) : ?>
@@ -38,6 +39,9 @@ if ( ! $query->have_posts() ) {
 				<?php if ( $cargo ) : ?><div class="cipba-autoridad__cargo"><?php echo esc_html( $cargo ); ?></div><?php endif; ?>
 				<div class="cipba-autoridad__nombre"><?php the_title(); ?></div>
 				<?php if ( $titulo ) : ?><div class="cipba-autoridad__titulo"><?php echo esc_html( $titulo ); ?></div><?php endif; ?>
+				<?php if ( $email ) : ?>
+					<a class="cipba-autoridad__mail" href="mailto:<?php echo esc_attr( antispambot( $email ) ); ?>"><?php echo cipba_icon( 'mail', 12 ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <span><?php echo esc_html( antispambot( $email ) ); ?></span></a>
+				<?php endif; ?>
 			</div>
 		</article>
 	<?php endwhile; wp_reset_postdata(); ?>

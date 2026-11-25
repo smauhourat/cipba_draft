@@ -328,6 +328,7 @@ function cipba_autoridad_admin_columns( $cols ) {
 		'title'  => 'Autoridad',
 		'cargo'  => 'Cargo',
 		'titulo' => 'Título',
+		'email'  => 'Email',
 		'orden'  => 'Orden',
 	);
 }
@@ -341,6 +342,8 @@ function cipba_autoridad_admin_column_content( $col, $post_id ) {
 		}
 	} elseif ( 'titulo' === $col ) {
 		echo esc_html( get_post_meta( $post_id, 'titulo', true ) );
+	} elseif ( 'email' === $col ) {
+		echo esc_html( get_post_meta( $post_id, 'email', true ) );
 	} elseif ( 'orden' === $col ) {
 		echo (int) get_post_field( 'menu_order', $post_id );
 	}

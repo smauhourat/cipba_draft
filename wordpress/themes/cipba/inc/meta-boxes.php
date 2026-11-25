@@ -532,6 +532,13 @@ function cipba_register_meta_boxes( $meta_boxes ) {
 				'placeholder' => 'Ej: Ing. Civil',
 			),
 			array(
+				'name'        => 'Email',
+				'id'          => 'email',
+				'desc'        => 'Opcional. Se muestra en la tarjeta como enlace para escribirle.',
+				'type'        => 'email',
+				'placeholder' => 'nombre@cipba.org.ar',
+			),
+			array(
 				'name' => 'Presidencia',
 				'id'   => 'destacado',
 				'desc' => 'Tildar solo en el presidente: se muestra como tarjeta grande y destacada.',

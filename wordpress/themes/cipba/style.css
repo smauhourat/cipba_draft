@@ -1144,6 +1144,11 @@ input, select, textarea {
 .cipba-autoridad--main .cipba-autoridad__nombre { font-size: 19px; color: #fff; }
 .cipba-autoridad__titulo { font-size: 13px; font-style: italic; color: var(--wp--preset--color--gris-teal, #607a7c); }
 .cipba-autoridad--main .cipba-autoridad__titulo { color: rgba(255,255,255,.7); }
+.cipba-autoridad__mail { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 13px; color: var(--wp--preset--color--verde-500, #00a48a); text-decoration: none !important; word-break: break-all; }
+.cipba-autoridad__mail svg { flex-shrink: 0; }
+.cipba-autoridad__mail:hover { color: var(--wp--preset--color--verde-700, #14484a); }
+.cipba-autoridad--main .cipba-autoridad__mail { color: var(--wp--preset--color--verde-200, #c0e2ca); }
+.cipba-autoridad--main .cipba-autoridad__mail:hover { color: #fff; }
 @media (prefers-reduced-motion: reduce) { .cipba-autoridad { transition: none; } .cipba-autoridad:hover { transform: none; } }
 
 /* ==========================================================================

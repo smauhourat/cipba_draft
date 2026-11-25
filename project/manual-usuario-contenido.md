@@ -416,6 +416,7 @@ El título y el texto del encabezado se editan en el contenido de la página.
 
 - **Título:** nombre y apellido (ej.: *Daniel Héctor PALACIOS*).
 - **Cargo** (Presidente, Secretario, Vocal Titular 1°…) y **Título profesional** (Ing. Civil…).
+- **Email** (opcional): si lo cargás, aparece en la tarjeta como enlace para escribirle; si lo dejás vacío no se muestra nada.
 - **Presidencia:** tildalo **solo** en quien preside: se muestra como tarjeta grande.
 - **Orden** (Atributos): posición en la grilla.
 
